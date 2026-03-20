@@ -1,6 +1,6 @@
 # Legal RAG Eval
 
-Evaluation harness proving that clause-aware legal chunking ([LexiChunk](https://github.com/emmcygn/lexichunk)) improves RAG retrieval P@5 by **100%** over RecursiveCharacterTextSplitter with statistical significance (p<0.05) -- built in 20 days by two parallel AI agents via Claude Code.
+Evaluation harness proving that clause-aware legal chunking ([LexiChunk](https://github.com/emmcygn/lexichunk)) improves RAG retrieval P@5 by **100%** over RecursiveCharacterTextSplitter with statistical significance (p<0.05) 
 
 ## Key Results
 
@@ -213,7 +213,7 @@ make ci            # all of the above
 
 ## How This Was Built
 
-This project was built by **two parallel AI agents** (Claude Code) over 20 days each, running autonomously with daily plans and shared coordination files. Agent A owned the pipeline (chunking, embedding, retrieval, metrics, reporting) while Agent B owned the UI and configuration (Streamlit dashboard, config system, query annotations, CI).
+This project was built by **two parallel AI agents** (Claude Code) over 2 days with 20 "days" planning files each, running autonomously with daily plans and shared coordination files. Agent A owned the pipeline (chunking, embedding, retrieval, metrics, reporting) while Agent B owned the UI and configuration (Streamlit dashboard, config system, query annotations, CI).
 
 The agents coordinated through:
 - **Shared data contracts** (`models.py`) as the interface boundary

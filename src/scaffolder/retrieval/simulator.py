@@ -1,13 +1,21 @@
-"""Retrieval simulation: query execution and relevance matching."""
+"""Retrieval simulation: query execution and relevance matching.
+
+Relevance itself is not defined here. :func:`RetrievalSimulator.run` uses
+:func:`scaffolder.metrics.retrieval.is_relevant` — the same span-overlap
+definition every metric in :mod:`scaffolder.metrics.retrieval` uses — to fill in
+``RetrievalResult.relevant_retrieved``. A prior version of this module carried
+its own near-duplicate copy of the relevance test, so the count printed on a
+``RetrievalResult`` and the metrics computed from it could quietly diverge; see
+``tests/test_simulator.py`` for a regression test pinning the two together.
+"""
 
 from __future__ import annotations
 
 import logging
 from typing import TYPE_CHECKING
 
+from scaffolder.metrics.retrieval import DEFAULT_MIN_OVERLAP_CHARS, is_relevant
 from scaffolder.models import (
-    EmbeddingModelName,
-    RelevanceGrade,
     RetrievalResult,
     StrategyName,
 )
@@ -16,68 +24,31 @@ if TYPE_CHECKING:
     from collections.abc import Sequence
 
     from scaffolder.embedding.pipeline import EmbeddingPipeline
-    from scaffolder.models import AnnotatedQuery, Chunk, RelevantSection
+    from scaffolder.models import AnnotatedQuery, EmbeddingModelName
     from scaffolder.retrieval.index import IndexRegistry
 
 logger = logging.getLogger(__name__)
 
 
-def load_queries_from_yaml(queries_dir: str = "queries") -> list[AnnotatedQuery]:
-    """Load query annotations from YAML files using Agent B's loader.
+def load_queries_from_yaml(
+    queries_dir: str = "queries",
+    gold_dir: str = "gold",
+) -> list[AnnotatedQuery]:
+    """Load query YAML files and resolve them to gold clause spans.
 
-    Bridges Agent B's AnnotatedQuery format (queries.py) to models.py format.
+    Thin wrapper: parses the YAML with :func:`scaffolder.queries.load_queries`,
+    loads every gold annotation with :func:`scaffolder.gold.load_all_gold`, and
+    resolves the two together with :func:`scaffolder.queries.resolve_queries`.
+    Raises ``scaffolder.gold.GoldError`` if a gold file is missing or invalid, or
+    ``scaffolder.queries.QueryError`` if a query names an identifier that does
+    not exist in its document's gold annotation.
     """
-    from pathlib import Path
+    from scaffolder.gold import load_all_gold
+    from scaffolder.queries import load_queries, resolve_queries
 
-    from scaffolder.models import (
-        AnnotatedQuery as ModelQuery,
-    )
-    from scaffolder.models import (
-        Jurisdiction,
-        RelevanceGrade,
-    )
-    from scaffolder.models import (
-        RelevantSection as ModelSection,
-    )
-    from scaffolder.queries import load_queries
-
-    raw_queries = load_queries(Path(queries_dir))
-
-    model_queries: list[ModelQuery] = []
-    for rq in raw_queries:
-        # Infer jurisdiction from document_id prefix
-        doc_id = rq.document_id
-        if doc_id.startswith("uk_"):
-            jurisdiction = Jurisdiction.UK
-        elif doc_id.startswith("us_"):
-            jurisdiction = Jurisdiction.US
-        elif doc_id.startswith("eu_"):
-            jurisdiction = Jurisdiction.EU
-        else:
-            jurisdiction = Jurisdiction.UK
-
-        sections = tuple(
-            ModelSection(
-                document_id=rq.document_id,
-                section_id=s.section_id,
-                text_snippet=s.description[:200] if s.description else "",
-                grade=RelevanceGrade(s.relevance),
-            )
-            for s in rq.relevant_sections
-        )
-
-        model_queries.append(
-            ModelQuery(
-                id=rq.id,
-                text=rq.text,
-                document_ids=[rq.document_id],
-                jurisdiction=jurisdiction,
-                relevant_sections=sections,
-                category=rq.failure_mode,
-            )
-        )
-
-    return model_queries
+    raw_queries = load_queries(queries_dir)
+    gold_by_document = load_all_gold(gold_dir)
+    return resolve_queries(raw_queries, gold_by_document)
 
 
 class RetrievalSimulator:
@@ -104,10 +75,16 @@ class RetrievalSimulator:
         strategies: Sequence[StrategyName],
         models: Sequence[EmbeddingModelName],
         k: int = 10,
+        min_overlap_chars: int = DEFAULT_MIN_OVERLAP_CHARS,
     ) -> list[RetrievalResult]:
         """Run all queries against all (strategy, model) indices.
 
         Returns one RetrievalResult per (query, strategy, model) combination.
+        ``min_overlap_chars`` is forwarded to
+        :func:`scaffolder.metrics.retrieval.is_relevant` and must match whatever
+        value :func:`scaffolder.metrics.retrieval.compute_retrieval_metrics` is
+        later called with, or ``relevant_retrieved`` and the computed metrics
+        will disagree.
         """
         results: list[RetrievalResult] = []
 
@@ -131,7 +108,9 @@ class RetrievalSimulator:
                     hits = index.search(query_vec, k=k)
 
                     relevant_retrieved = sum(
-                        1 for h in hits if _is_relevant(h.chunk, query.relevant_sections)
+                        1
+                        for h in hits
+                        if is_relevant(h.chunk, query.relevant_sections, min_overlap_chars)
                     )
 
                     results.append(
@@ -153,80 +132,3 @@ class RetrievalSimulator:
             len(models),
         )
         return results
-
-
-def _is_relevant(
-    chunk: Chunk,
-    relevant_sections: tuple[RelevantSection, ...],
-) -> bool:
-    """Check if a retrieved chunk matches any relevant section."""
-    chunk_lower = chunk.text.lower()
-
-    for section in relevant_sections:
-        if section.document_id and chunk.document_id != section.document_id:
-            continue
-
-        snippet_lower = section.text_snippet.lower().strip()
-
-        # Check 1: snippet substring match
-        if snippet_lower and snippet_lower in chunk_lower:
-            return True
-
-        # Check 2: section_id appears in chunk
-        if section.section_id:
-            section_num = (
-                section.section_id.replace("clause_", "")
-                .replace("section_", "")
-                .replace("definition_", "")
-            )
-            if section_num in chunk.text:
-                return True
-
-        # Check 3: word overlap
-        if snippet_lower:
-            snippet_words = set(snippet_lower.split())
-            chunk_words = set(chunk_lower.split())
-            if snippet_words and len(snippet_words & chunk_words) / len(snippet_words) > 0.6:
-                return True
-
-    return False
-
-
-def get_relevance_grade(
-    chunk: Chunk,
-    relevant_sections: tuple[RelevantSection, ...],
-) -> RelevanceGrade:
-    """Get the relevance grade for a chunk (used in NDCG).
-
-    Returns the highest matching grade, or IRRELEVANT if no match.
-    """
-    best_grade = RelevanceGrade.IRRELEVANT
-    chunk_lower = chunk.text.lower()
-
-    for section in relevant_sections:
-        if section.document_id and chunk.document_id != section.document_id:
-            continue
-
-        snippet_lower = section.text_snippet.lower().strip()
-
-        matched = False
-        if snippet_lower and snippet_lower in chunk_lower:
-            matched = True
-        elif section.section_id:
-            section_num = (
-                section.section_id.replace("clause_", "")
-                .replace("section_", "")
-                .replace("definition_", "")
-            )
-            if section_num in chunk.text:
-                matched = True
-        elif snippet_lower:
-            snippet_words = set(snippet_lower.split())
-            chunk_words = set(chunk_lower.split())
-            if snippet_words and len(snippet_words & chunk_words) / len(snippet_words) > 0.6:
-                matched = True
-
-        if matched and section.grade.value > best_grade.value:
-            best_grade = section.grade
-
-    return best_grade

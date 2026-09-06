@@ -23,6 +23,22 @@ QUERY_DIR = REPO_ROOT / "queries"
 FIXTURE_DIR = REPO_ROOT / "src" / "scaffolder" / "fixtures" / "documents"
 
 MIN_QUERIES = 30
+MIN_QUERIES_PER_DOCUMENT = 6
+
+# `category` records the kind of question, not a chunker failure mode. The five failure
+# modes the previous schema used map almost one-to-one onto the structural metrics this
+# project uses to argue for LexiChunk, so the query set was labelled by the claims it was
+# meant to support. See queries/schema.md.
+ALLOWED_CATEGORIES = frozenset(
+    {
+        "definition_lookup",
+        "clause_lookup",
+        "numeric_lookup",
+        "conditional",
+        "multi_clause",
+        "cross_reference",
+    }
+)
 
 
 def test_queries_load_and_resolve() -> None:
@@ -45,6 +61,32 @@ def test_every_document_has_queries() -> None:
     documented = {q.document_id for q in raw}
     fixtures = {p.stem for p in FIXTURE_DIR.glob("*.txt")}
     assert fixtures <= documented, f"documents with no queries: {sorted(fixtures - documented)}"
+
+
+def test_queries_are_spread_across_documents() -> None:
+    """Per-document minimum, so 30 queries cannot all come from one document.
+
+    Leave-one-document-out on the old set moved the headline delta from +0.109 to
+    +0.024 because one document carried it. An even spread does not make the queries
+    independent, but it stops a single document from being the whole result.
+    """
+    counts: dict[str, int] = {}
+    for query in load_queries(QUERY_DIR):
+        counts[query.document_id] = counts.get(query.document_id, 0) + 1
+    thin = {d: n for d, n in counts.items() if n < MIN_QUERIES_PER_DOCUMENT}
+    assert not thin, f"documents with fewer than {MIN_QUERIES_PER_DOCUMENT} queries: {thin}"
+
+
+def test_categories_are_from_the_documented_set() -> None:
+    unknown = {
+        f"{q.id}: {q.category!r}"
+        for q in load_queries(QUERY_DIR)
+        if q.category not in ALLOWED_CATEGORIES
+    }
+    assert not unknown, (
+        "queries with a category outside queries/schema.md's set "
+        f"{sorted(ALLOWED_CATEGORIES)}:\n  " + "\n  ".join(sorted(unknown))
+    )
 
 
 def test_every_relevant_clause_exists_in_gold() -> None:
@@ -97,6 +139,36 @@ def test_relevant_spans_are_not_degenerate() -> None:
         if fraction > 0.25:
             offenders.append(f"{query.id}: {fraction:.0%} of {document_id}")
     assert not offenders, "queries covering too much of their document:\n  " + "\n  ".join(
+        offenders
+    )
+
+
+def test_no_query_marks_too_many_gold_clauses_relevant() -> None:
+    """The same degeneracy check, counted in clauses rather than characters.
+
+    A query may name a handful of short clauses (small character coverage) and still be
+    so broad that a third of the document's clause set answers it. Both counts are
+    capped so neither route to a degenerate query is open.
+    """
+    gold_by_document = load_all_gold(GOLD_DIR)
+    offenders: list[str] = []
+    for query in load_queries(QUERY_DIR):
+        gold = gold_by_document[query.document_id]
+        # Count the subtree, since resolution scores a named parent's descendants too.
+        relevant: set[str] = set()
+        for section in query.relevant_sections:
+            stack = [gold.by_identifier[section.section_id]]
+            while stack:
+                clause = stack.pop()
+                relevant.add(clause.identifier)
+                stack.extend(gold.children(clause.identifier))
+        fraction = len(relevant) / len(gold.clauses)
+        if fraction > 0.30:
+            offenders.append(
+                f"{query.id}: {len(relevant)}/{len(gold.clauses)} clauses "
+                f"({fraction:.0%}) of {query.document_id}"
+            )
+    assert not offenders, "queries marking too many gold clauses relevant:\n  " + "\n  ".join(
         offenders
     )
 

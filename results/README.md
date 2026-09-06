@@ -67,12 +67,18 @@ Hugging Face and need the `evals` extra.
 
 ## Reproducibility check
 
-`make benchmark-structural` against the released LexiChunk 0.9.0 wheel from PyPI
-reproduces `lexichunk_fixed/structural_benchmark.json` exactly: all 30 metric rows
-(6 strategies x 5 documents) match to the last floating-point bit. The committed run
-records `lexichunk_commit` `0346a12` and a local run records none, because a wheel
-install carries no VCS metadata -- but the numbers are identical, which is the claim
-that matters.
+`make benchmark-structural` against the released LexiChunk wheel from PyPI reproduces
+`lexichunk_fixed/structural_benchmark.json` exactly: all 30 metric rows (6 strategies x
+5 documents) match to the last floating-point bit. So does `make benchmark` against
+`lexichunk_fixed/evidence_benchmark.json`, on all three strategy aggregates.
+
+This was checked against **both** releases the dependency range admits, 0.9.0 and 0.9.1,
+so `lexichunk>=0.9.0,<0.10` does not silently move a published number. Anyone widening
+that range should repeat the check rather than assume it.
+
+The committed runs record `lexichunk_commit` `0346a12` and a local run records none,
+because a wheel install carries no VCS metadata. The numbers are identical, which is the
+claim that matters.
 
 ## What these files do and do not pin
 
@@ -86,10 +92,11 @@ Two honest gaps:
 - **No harness commit is recorded inside the JSON.** The harness identifies itself by
   version (`1.0.0`) and, for the evidence report, by a content hash of its own package
   tree. The commit above comes from git history, not from the file.
-- **The evidence report's `evaluator.package_tree_sha256` no longer matches a fresh run.**
-  Renaming the package changed the content of the tree that hash covers. The metrics are
-  unaffected — re-running `make benchmark` against LexiChunk 0.9.0 reproduces the same
-  numbers — but the hash is a fingerprint of the code, and the code was renamed.
+- **The evidence report's `evaluator.package_tree_sha256` and `payload_sha256` no longer
+  match a fresh run.** Renaming the package changed the content of the tree the first hash
+  covers, and the second covers a payload that names the evaluator. Every metric is
+  unaffected — a fresh `make benchmark` reproduces all three strategy aggregates exactly —
+  but those hashes fingerprint the code, and the code was renamed.
 
 The run configuration stored in the committed JSON also still names the pre-rename paths
 (`src/scaffolder/fixtures/documents`). That is what actually ran, and rewriting it would

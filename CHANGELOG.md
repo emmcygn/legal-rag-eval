@@ -31,9 +31,10 @@ released under those numbers at the time, and nothing is published to PyPI. `ver
   `legal_rag_eval.config.env_override`.
 - **LexiChunk installs from PyPI** (`lexichunk>=0.9.0,<0.10`) instead of a git reference
   pinned to a commit. LexiChunk 0.9.0 is published, so the workaround for a PyPI 404 is no
-  longer needed and a clean clone installs with no git access. `make benchmark-structural`
-  against the released wheel reproduces the committed `lexichunk_fixed` structural run on
-  all 30 metric rows exactly.
+  longer needed and a clean clone installs with no git access. Both releases the range
+  admits, 0.9.0 and 0.9.1, were checked: each reproduces the committed `lexichunk_fixed`
+  structural run on all 30 metric rows and the evidence run on all three aggregates,
+  exactly.
 - **One configuration file.** `scaffolder.yaml.example` and `evidence-benchmark.yaml.example`
   are merged into `legal-rag-eval.yaml.example`, with one commented section per benchmark
   (`evidence:`, `gold:`). Both loaders read their own section out of the same file and
@@ -66,8 +67,8 @@ released under those numbers at the time, and nothing is published to PyPI. `ver
 - `results/README.md` — every committed run, the LexiChunk version and commit that
   produced it, the harness commit it was committed in, and the command to regenerate it.
   It also names two gaps: no harness commit is recorded inside the result JSON, and the
-  evidence report's evaluator package-tree hash no longer matches a fresh run because the
-  rename changed the tree it covers.
+  evidence report's evaluator package-tree and payload hashes no longer match a fresh run,
+  because the rename changed the code those hashes fingerprint. No metric moved.
 - `evals/README.md` — why the LEDGAR label mapping is a committed, reviewable judgement
   call, and what its coverage does to the reported accuracy.
 - `tools/README.md` — what each maintenance script is for.

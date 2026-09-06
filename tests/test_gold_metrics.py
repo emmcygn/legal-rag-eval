@@ -428,6 +428,29 @@ class TestChunkSizeCV:
         ("1.1", "1.1"),
         ("article_4", "article_4"),
         ("  1.1  ", "1.1"),
+        # Roman numerals: US contracts number articles "Article VIII"; gold spells the
+        # same clause "article_8". A bare roman numeral must convert to arabic whether
+        # it comes from a "keep"-prefixed word (article/section/schedule), a
+        # "strip"-prefixed word (clause/paragraph), or with no word at all.
+        ("Article VIII", "article_8"),
+        ("ARTICLE I", "article_1"),
+        ("article iv", "article_4"),
+        ("Section IX", "section_9"),
+        ("Schedule II", "schedule_2"),
+        ("clause vii", "7"),
+        ("VIII", "8"),
+        # A roman numeral immediately followed by a lettered romanette sub-clause.
+        ("Article VIII(a)", "article_8(a)"),
+        # "Exhibit" is not a gold prefix word (gold/SCHEMA.md has no "exhibit_"
+        # identifiers -- exhibits are always external attachments, kind
+        # "external_document", with no internal target to resolve), and a bare
+        # letter like "A" is not a roman numeral, so this must pass through
+        # unfolded rather than being misread as a number.
+        ("Exhibit A", "exhibit a"),
+        # A decimal number contains no roman-numeral letters, so it must pass through
+        # unaffected, and a bare lettered romanette names a sub-clause, not a number.
+        ("Section 7.02", "section_7.02"),
+        ("(a)", "(a)"),
     ],
 )
 def test_normalize_identifier(raw: str, expected: str) -> None:

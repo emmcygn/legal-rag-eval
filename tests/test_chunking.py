@@ -75,6 +75,88 @@ class TestLexiChunkStrategy:
         assert cs.elapsed_seconds > 0
 
 
+# A US-style document using roman-numeral articles, the numbering convention
+# LegalChunker's "uk" default (jurisdiction is never pinned by the strategy's
+# constructor kwargs in these tests) does not recognise as a heading at all.
+US_DOC = Document(
+    id="test_us_doc",
+    text=(
+        "ARTICLE I - DEFINITIONS\n\n"
+        'Section 1.01 Definitions. As used in this Agreement, "Affiliate" means '
+        "any entity controlling, controlled by, or under common control with a Party.\n\n"
+        "ARTICLE II - TERM\n\n"
+        "Section 2.01 Term. This Agreement is effective as of the date set forth "
+        "above and shall continue as described in Article I.\n"
+    ),
+    jurisdiction=Jurisdiction.US,
+    document_type=DocumentType.MSA,
+    source="test_us.txt",
+)
+
+
+class TestLexiChunkStrategyJurisdiction:
+    """A single strategy instance is reused across every fixture document in a real
+    benchmark run (see ``chunking._STRATEGY_REGISTRY``), so ``LegalChunker`` cannot be
+    built once with a fixed jurisdiction in ``__init__`` -- it must pick up each
+    document's own ``jurisdiction`` per call. Before this was fixed, every US fixture
+    was parsed under LegalChunker's "uk" default, which does not recognise roman-numeral
+    "ARTICLE I" headings, collapsing the hierarchy breadcrumb to just the leaf section
+    and making every heading/cross-reference gold metric score 0.0 on US documents.
+    """
+
+    def test_uses_document_jurisdiction_for_us_roman_numeral_headings(self) -> None:
+        strategy = LexiChunkStrategy()
+        cs = strategy.chunk(US_DOC)
+        hierarchies = [
+            c.metadata.get("section_hierarchy")
+            for c in cs.chunks
+            if isinstance(c.metadata.get("section_hierarchy"), str)
+        ]
+        # The Section 2.01 chunk's breadcrumb must carry "Article II" as an ancestor.
+        # Under the "uk" default, "ARTICLE II" is not recognised as a heading at all,
+        # so the breadcrumb would be flat (just "Section 2.01", no ">" ancestor).
+        assert any("Article II" in h and ">" in h for h in hierarchies)
+
+    def test_cross_reference_target_carries_kind_prefix(self) -> None:
+        strategy = LexiChunkStrategy()
+        cs = strategy.chunk(US_DOC)
+        targets = [
+            ref["target"] for c in cs.chunks for ref in c.metadata.get("cross_references", [])
+        ]
+        # The "Article I" cross-reference is article-kind; its recorded target must
+        # carry the "article" label so normalize_identifier can fold it into
+        # "article_1" -- the bare roman numeral "I" alone normalizes to "i", which
+        # matches no gold identifier.
+        assert any(t.lower().startswith("article") for t in targets)
+
+    def test_reused_instance_does_not_leak_jurisdiction_across_documents(self) -> None:
+        # A real benchmark run chunks a mix of UK, US and EU fixtures with one shared
+        # strategy instance; chunking a UK document first must not pin the chunker's
+        # jurisdiction for the US document chunked next.
+        strategy = LexiChunkStrategy()
+        strategy.chunk(TINY_DOC)  # UK document first.
+        cs = strategy.chunk(US_DOC)
+        hierarchies = [
+            c.metadata.get("section_hierarchy")
+            for c in cs.chunks
+            if isinstance(c.metadata.get("section_hierarchy"), str)
+        ]
+        assert any("Article II" in h and ">" in h for h in hierarchies)
+
+    def test_explicit_jurisdiction_kwarg_overrides_document_jurisdiction(self) -> None:
+        # Preserves the pre-fix override behaviour: a caller that pins a jurisdiction
+        # explicitly gets that jurisdiction for every document, regardless of what
+        # document.jurisdiction says.
+        strategy = LexiChunkStrategy(jurisdiction="uk")
+        cs = strategy.chunk(US_DOC)
+        hierarchies = [
+            c.metadata.get("section_hierarchy")
+            for c in cs.chunks
+            if isinstance(c.metadata.get("section_hierarchy"), str)
+        ]
+        assert not any("Article II" in h and ">" in h for h in hierarchies)
+
+
 class TestRCTSStrategy:
     def test_returns_chunkset(self) -> None:
         strategy = RCTSStrategy()

@@ -81,7 +81,10 @@ def normalize_identifier(identifier: str) -> str:
     ``target_identifier`` in gold/SCHEMA.md's own example), or fold a leading
     "section "/"article "/"schedule " word into an underscore-joined prefix (these DO
     carry a prefix in gold identifiers -- ``"article 6"`` -> ``"article_6"``,
-    ``"Section 4.02"`` -> ``"section_4.02"``), then strip a trailing ``"."``.
+    ``"Section 4.02"`` -> ``"section_4.02"``), convert a bare roman numeral left after
+    that stripping into its arabic form (US documents number articles ``"Article
+    VIII"``; gold spells the same clause ``"article_8"`` -- ``"article viii"`` ->
+    ``"article_viii"`` would never match it), then strip a trailing ``"."``.
 
     Range: any string in, any string out -- this is a normalisation, not a metric.
     Does not measure anything by itself; it exists so that a claimed identifier coming
@@ -91,19 +94,41 @@ def normalize_identifier(identifier: str) -> str:
     """
     text = " ".join(identifier.strip().casefold().split())
 
+    prefix = ""
     for word in _STRIP_PREFIX_WORDS:
-        prefix = f"{word} "
-        if text.startswith(prefix):
-            text = text[len(prefix) :].strip()
+        strip_word_prefix = f"{word} "
+        if text.startswith(strip_word_prefix):
+            text = text[len(strip_word_prefix) :].strip()
             break
     else:
         for word in _KEEP_PREFIX_WORDS:
-            prefix = f"{word} "
-            if text.startswith(prefix):
-                text = f"{word}_{text[len(prefix) :].strip()}"
+            keep_word_prefix = f"{word} "
+            if text.startswith(keep_word_prefix):
+                prefix = f"{word}_"
+                text = text[len(keep_word_prefix) :].strip()
                 break
 
-    return text.rstrip(".")
+    text = _romanize_trailing_number(text)
+    return f"{prefix}{text}".rstrip(".")
+
+
+# A bare roman numeral, optionally followed by one or more lettered romanette suffixes
+# (``"viii"``, ``"viii(a)"``). Anchored on both ends so a decimal number ("1.01"), which
+# contains no roman-numeral letters, and a bare romanette ("(a)"), which names a lettered
+# sub-clause rather than a number, both pass through untouched.
+_BARE_ROMAN_RE = re.compile(r"^([ivxlcdm]+)((?:\([a-z]{1,3}\))*)$")
+
+
+def _romanize_trailing_number(token: str) -> str:
+    """Convert ``token`` from a roman numeral to arabic, leaving anything else as-is."""
+    match = _BARE_ROMAN_RE.match(token)
+    if match is None:
+        return token
+    number, suffix = match.groups()
+    arabic = _roman_to_int(number)
+    if arabic is None:
+        return token
+    return f"{arabic}{suffix}"
 
 
 # Leading numbering token of one hierarchy-path component. A strategy's breadcrumb reads

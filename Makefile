@@ -1,4 +1,4 @@
-.PHONY: help install install-all lint format typecheck test test-fast benchmark benchmark-structural report dashboard clean ci
+.PHONY: help install install-all lint format typecheck test test-fast benchmark benchmark-structural benchmark-embed report dashboard clean ci
 
 PYTHON ?= python
 SRC = src/scaffolder
@@ -31,11 +31,14 @@ test:  ## Run tests with coverage
 test-fast:  ## Run tests without coverage
 	$(PYTHON) -m pytest --no-cov -x
 
-benchmark:  ## Run the full benchmark suite
+benchmark:  ## Run structural metrics only (no embedding)
 	$(PYTHON) -m scaffolder benchmark
 
-benchmark-structural:  ## Run structural metrics only (no embedding)
-	$(PYTHON) -m scaffolder benchmark --no-embed
+benchmark-structural:  ## Alias for `benchmark` (structural metrics only)
+	$(PYTHON) -m scaffolder benchmark
+
+benchmark-embed:  ## Run the full benchmark: chunking + embedding + retrieval + significance
+	$(PYTHON) -m scaffolder benchmark-embed
 
 report:  ## Generate HTML report from benchmark results
 	$(PYTHON) -m scaffolder report

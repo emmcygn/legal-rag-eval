@@ -1,8 +1,8 @@
 """CLI for the external evaluations.
 
-    python -m scaffolder.evals ledgar --sample 5000 --seed 0
-    python -m scaffolder.evals cuad --contracts 100 --seed 0
-    python -m scaffolder.evals ledgar --smoke      # no download, synthetic data
+python -m scaffolder.evals ledgar --sample 5000 --seed 0
+python -m scaffolder.evals cuad --contracts 100 --seed 0
+python -m scaffolder.evals ledgar --smoke      # no download, synthetic data
 """
 
 from __future__ import annotations

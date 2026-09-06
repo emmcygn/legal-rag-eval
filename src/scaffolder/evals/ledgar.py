@@ -91,9 +91,7 @@ class SystemResult:
             "accuracy": self.accuracy.as_dict(),
             "macro_f1": self.macro_f1.as_dict(),
             "per_class": [s.as_dict() for s in self.per_class],
-            "confusions": [
-                {"gold": g, "predicted": p, "count": n} for g, p, n in self.confusions
-            ],
+            "confusions": [{"gold": g, "predicted": p, "count": n} for g, p, n in self.confusions],
             "calibration": self.calibration.as_dict() if self.calibration else None,
             "seconds": self.seconds,
         }

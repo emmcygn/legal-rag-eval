@@ -551,9 +551,7 @@ def run_cuad(
         evaluate_strategy(spec, sample, seed=seed, n_boot=n_boot, failures=failures)
         for spec in specs
     ]
-    structure = evaluate_structure(
-        sample, min_clauses=min_clauses, failures=failures
-    )
+    structure = evaluate_structure(sample, min_clauses=min_clauses, failures=failures)
 
     return CuadResult(
         dataset_id=dataset_id,
@@ -652,10 +650,14 @@ def render_markdown(result: CuadResult) -> str:
                         f"{st.parsed_any_level} ({st.parse_rate_any_level * 100:.1f}%)",
                     ],
                     ["Fell back to flat text", f"{st.fell_back} ({st.fallback_rate * 100:.1f}%)"],
-                    ["Mean / median top-level nodes",
-                     f"{st.mean_top_level_nodes:.1f} / {st.median_top_level_nodes:.0f}"],
-                    ["Mean / median total nodes",
-                     f"{st.mean_total_nodes:.1f} / {st.median_total_nodes:.0f}"],
+                    [
+                        "Mean / median top-level nodes",
+                        f"{st.mean_top_level_nodes:.1f} / {st.median_top_level_nodes:.0f}",
+                    ],
+                    [
+                        "Mean / median total nodes",
+                        f"{st.mean_total_nodes:.1f} / {st.median_total_nodes:.0f}",
+                    ],
                     ["Contracts yielding a single chunk", f"{st.single_chunk_contracts}"],
                     ["Exceptions during parsing", f"{st.exceptions}"],
                 ],

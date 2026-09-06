@@ -217,21 +217,27 @@ def precision_at_k(
 ) -> float:
     """Precision@k: fraction of the actually-retrieved top-k results that are relevant.
 
-    P@k = |relevant chunks in top-k| / min(k, |top-k|)
+    P@k = |distinct relevant chunks in top-k| / min(k, deepest rank returned)
 
-    Range: [0.0, 1.0]. The denominator is the number of chunks actually present
-    in the top-k, not the nominal ``k`` — a strategy that only returns 3 chunks
-    when asked for 10 is scored out of 3, not silently penalised by a fixed
-    denominator of 10 (that would conflate "retrieved nothing relevant" with
-    "returned fewer chunks than requested"). Returns 0.0 when there are no hits
-    at rank <= k, and 0.0 for ``k <= 0``.
+    Range: [0.0, 1.0]. Two separate decisions make up that denominator, and both
+    are load-bearing:
+
+    * It is *not* a fixed ``k``. A strategy that only returns 3 chunks when asked
+      for 10 is scored out of 3, not silently penalised by a denominator of 10 —
+      that would conflate "retrieved nothing relevant" with "returned fewer
+      chunks than requested".
+    * It is *not* the count of surviving hits either. It is the deepest rank the
+      strategy actually reached, so ranks it consumed but wasted still count: a
+      duplicate chunk at ranks 1 and 2 is scored 1/2, not 1/1, and a gap (hits at
+      ranks 1 and 3 with nothing at 2) is scored out of 3. Otherwise emitting the
+      same chunk twice would be free, which is exactly the bug this denominator
+      was changed to close.
 
     Relevance is decided by :func:`is_relevant` (span overlap only). This does
     NOT weight by relevance grade — a RELATED match counts identically to an
     EXACT match; use :func:`ndcg_at_k` when grade matters.
 
-    Hits are normalised by :func:`_ranked_hits` first, so a strategy that returns
-    the same chunk at two ranks is scored once for it and cannot inflate P@k.
+    Returns 0.0 when there are no valid hits at rank <= k, and 0.0 for ``k <= 0``.
     """
     if k <= 0:
         return 0.0
@@ -240,10 +246,13 @@ def precision_at_k(
     if not top_k:
         return 0.0
 
+    # Deepest rank across every *validly ranked* hit, before chunk-id
+    # de-duplication -- a rank a duplicate consumed is still a rank consumed.
+    slots = min(k, max(h.rank for h in _valid_ranks(hits, k)))
     relevant_count = sum(
         1 for h in top_k if is_relevant(h.chunk, relevant_sections, min_overlap_chars)
     )
-    return relevant_count / min(k, len(top_k))
+    return relevant_count / slots
 
 
 def recall_at_k(
@@ -381,6 +390,26 @@ def _dcg(grades: list[int]) -> float:
             for i, g in enumerate(grades)
         )
     )
+
+
+def _valid_ranks(
+    hits: Sequence[RetrievalHit],
+    k: int | None = None,
+) -> list[RetrievalHit]:
+    """Hits whose rank is a positive integer within ``k``, duplicates included.
+
+    Separate from :func:`_ranked_hits` because P@k's denominator has to count a
+    rank a duplicate chunk consumed, while its numerator must not score that
+    chunk twice.
+    """
+    return [
+        hit
+        for hit in hits
+        if isinstance(hit.rank, int)
+        and not isinstance(hit.rank, bool)
+        and hit.rank > 0
+        and (k is None or hit.rank <= k)
+    ]
 
 
 def _ranked_hits(

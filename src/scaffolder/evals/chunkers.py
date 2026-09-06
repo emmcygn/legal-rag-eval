@@ -117,9 +117,7 @@ def rcts_spans(text: str, chunk_size: int, chunk_overlap: int = 0) -> list[Span]
     """Character spans for LangChain's ``RecursiveCharacterTextSplitter``."""
     from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=chunk_size, chunk_overlap=chunk_overlap
-    )
+    splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
     return locate_sequentially(text, splitter.split_text(text))
 
 

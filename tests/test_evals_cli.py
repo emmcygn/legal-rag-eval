@@ -123,9 +123,10 @@ class TestCuadSmoke:
 class TestCuadMechanics:
     def test_a_single_whole_document_chunk_contains_everything(self) -> None:
         _, _, contracts = smoke_cuad_contracts()
-        whole = StrategySpec("whole-doc", lambda t: [__import__(
-            "scaffolder.evals.chunkers", fromlist=["Span"]
-        ).Span(0, len(t))])
+        whole = StrategySpec(
+            "whole-doc",
+            lambda t: [__import__("scaffolder.evals.chunkers", fromlist=["Span"]).Span(0, len(t))],
+        )
         result = evaluate_strategy(whole, contracts, n_boot=20)
         # Containment is trivially perfect, and the length-matched grid says so:
         # the lift over an equally long fixed-stride splitter is tiny.
@@ -170,9 +171,7 @@ class TestLedgarSmoke:
     def test_pipeline_runs_offline(self) -> None:
         if not DEFAULT_MAP_PATH.is_file():
             pytest.skip(f"{DEFAULT_MAP_PATH} not present")
-        result = run_ledgar(
-            sample=0, n_boot=20, skip_tfidf=True, provider=smoke_ledgar_split
-        )
+        result = run_ledgar(sample=0, n_boot=20, skip_tfidf=True, provider=smoke_ledgar_split)
         assert result.dataset_id == "synthetic-smoke"
         assert result.evaluated > 0
         assert 0.0 <= result.systems[0].accuracy.point <= 1.0

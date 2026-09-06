@@ -86,7 +86,7 @@ def test_adjacent_target_section_is_resolved(monkeypatch: pytest.MonkeyPatch) ->
     )
 
     assert (
-        structural.cross_ref_resolution_rate(
+        structural.legacy_cross_ref_resolution_rate(
             chunk_set,
             _document("xref-positive", "source text"),
         )
@@ -111,7 +111,7 @@ def test_cross_reference_self_mention_without_target_is_not_resolved(
     )
 
     assert (
-        structural.cross_ref_resolution_rate(
+        structural.legacy_cross_ref_resolution_rate(
             chunk_set,
             _document("xref-self-mention", "source text"),
         )
@@ -154,7 +154,7 @@ def test_term_use_without_definition_is_not_preserved(
     )
 
     assert (
-        structural.definition_preservation_rate(
+        structural.legacy_definition_preservation_rate(
             chunk_set,
             _document("definition-use-only", "source text"),
         )

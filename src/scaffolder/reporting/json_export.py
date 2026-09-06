@@ -230,6 +230,11 @@ def _parse_retrieval(d: Mapping[str, Any]) -> RetrievalMetrics:
         recall_at_10=d["recall_at_10"],
         mrr=d["mrr"],
         ndcg_at_10=d["ndcg_at_10"],
+        # Exports written before the NDCG variant was versioned carry no
+        # ndcg_metric. They must stay labelled "legacy_unversioned" rather than
+        # being relabelled with the current version, because the number in them
+        # was produced by the old per-rank formula and is not comparable.
+        ndcg_metric=d.get("ndcg_metric", "legacy_unversioned"),
         drm_hit=d["drm_hit"],
         drm_rate=d.get("drm_rate", 0.0),
         n_relevant_sections=d.get("n_relevant_sections", 0),

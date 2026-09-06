@@ -47,9 +47,10 @@ class TestPerClassScores:
         # pred:  a a b b x
         # class a: tp=2, predicted=2 -> P=1.0; support=3 -> R=2/3
         # class b: tp=1, predicted=2 -> P=0.5; support=2 -> R=0.5
-        scores = {s.label: s for s in per_class_scores(
-            ["a", "a", "a", "b", "b"], ["a", "a", "b", "b", "x"]
-        )}
+        scores = {
+            s.label: s
+            for s in per_class_scores(["a", "a", "a", "b", "b"], ["a", "a", "b", "b", "x"])
+        }
         assert scores["a"].precision == 1.0
         assert scores["a"].recall == pytest.approx(2 / 3)
         assert scores["a"].f1 == pytest.approx(2 * 1.0 * (2 / 3) / (1.0 + 2 / 3))

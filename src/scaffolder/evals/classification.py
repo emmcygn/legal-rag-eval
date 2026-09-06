@@ -75,9 +75,7 @@ def per_class_scores(
 
     support = Counter(y_true)
     predicted = Counter(y_pred)
-    correct: Counter[str] = Counter(
-        t for t, p in zip(y_true, y_pred, strict=True) if t == p
-    )
+    correct: Counter[str] = Counter(t for t, p in zip(y_true, y_pred, strict=True) if t == p)
 
     scores: list[ClassScore] = []
     for label in labels:

@@ -23,7 +23,9 @@ from scaffolder.models import EmbeddingModelName
 
 def test_voyage_skipped_without_key(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv("VOYAGE_API_KEY", raising=False)
-    config = BenchmarkConfig(embedding_models=["all-MiniLM-L6-v2", "voyage-law-2"], enable_voyage=True)
+    config = BenchmarkConfig(
+        embedding_models=["all-MiniLM-L6-v2", "voyage-law-2"], enable_voyage=True
+    )
     models = _resolve_models(config)
     assert EmbeddingModelName.MINILM in models
     assert EmbeddingModelName.VOYAGE_LAW_2 not in models
@@ -40,7 +42,9 @@ def test_api_key_alone_does_not_select_voyage(monkeypatch: pytest.MonkeyPatch) -
 
 def test_voyage_included_with_key_and_explicit_opt_in(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("VOYAGE_API_KEY", "test-key")
-    config = BenchmarkConfig(embedding_models=["all-MiniLM-L6-v2", "voyage-law-2"], enable_voyage=True)
+    config = BenchmarkConfig(
+        embedding_models=["all-MiniLM-L6-v2", "voyage-law-2"], enable_voyage=True
+    )
     models = _resolve_models(config)
     assert EmbeddingModelName.MINILM in models
     assert EmbeddingModelName.VOYAGE_LAW_2 in models

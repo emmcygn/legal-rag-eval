@@ -14,7 +14,11 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
-from scaffolder.metrics.retrieval import DEFAULT_MIN_OVERLAP_CHARS, is_relevant
+from scaffolder.metrics.retrieval import (
+    DEFAULT_MIN_OVERLAP_CHARS,
+    is_relevant,
+    valid_relevant_sections,
+)
 from scaffolder.models import (
     RetrievalResult,
     StrategyName,

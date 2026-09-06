@@ -1,4 +1,6 @@
-# Extensibility Guide
+# Legacy Extensibility Guide
+
+This guide describes the deprecated structural and embedding diagnostics. The authoritative public benchmark interface is the anchored-evidence schema and CLI documented in `README.md` and `docs/methodology.md`.
 
 This document describes how to extend the scaffolder with custom fixtures, chunking strategies, embedding models, metrics, queries, and output formats.
 

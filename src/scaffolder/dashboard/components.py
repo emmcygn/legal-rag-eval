@@ -63,7 +63,11 @@ def _highlight_terms(text: str, terms: list[str]) -> str:
             f'<strong style="color: #1565C0; '
             f'background: #E3F2FD;">{html.escape(str(term))}</strong>'
         )
-        escaped = pattern.sub(replacement, escaped)
+
+        def replace_match(_match: re.Match[str], value: str = replacement) -> str:
+            return value
+
+        escaped = pattern.sub(replace_match, escaped)
 
     return (
         f'<div style="font-family: monospace; white-space: pre-wrap; '

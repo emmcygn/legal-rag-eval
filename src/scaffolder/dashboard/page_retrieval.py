@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import html
 from typing import Any
 
 import streamlit as st
@@ -388,7 +389,7 @@ def _render_metrics_table(
 
 def _render_hit(hit: dict[str, Any], is_relevant: bool) -> None:
     """Render a single retrieval hit with optional relevance highlighting."""
-    clause_label = f" ({hit['clause_type']})" if hit.get("clause_type") else ""
+    clause_label = f" ({html.escape(str(hit['clause_type']))})" if hit.get("clause_type") else ""
 
     if is_relevant:
         # Green border + RELEVANT badge

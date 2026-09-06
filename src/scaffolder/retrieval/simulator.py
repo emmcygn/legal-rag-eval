@@ -11,6 +11,7 @@ from scaffolder.models import (
     RetrievalResult,
     StrategyName,
 )
+from scaffolder.relevance import matching_sections, valid_relevant_sections
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -129,9 +130,10 @@ class RetrievalSimulator:
                 for i, query in enumerate(queries):
                     query_vec = query_embeddings[i]
                     hits = index.search(query_vec, k=k)
+                    relevant_sections = valid_relevant_sections(query.relevant_sections)
 
                     relevant_retrieved = sum(
-                        1 for h in hits if _is_relevant(h.chunk, query.relevant_sections)
+                        1 for h in hits if _is_relevant(h.chunk, relevant_sections)
                     )
 
                     results.append(
@@ -141,7 +143,7 @@ class RetrievalSimulator:
                             embedding_model=model,
                             hits=tuple(hits),
                             relevant_retrieved=relevant_retrieved,
-                            total_relevant=len(query.relevant_sections),
+                            total_relevant=len(relevant_sections),
                         )
                     )
 
@@ -157,76 +159,23 @@ class RetrievalSimulator:
 
 def _is_relevant(
     chunk: Chunk,
-    relevant_sections: tuple[RelevantSection, ...],
+    relevant_sections: Sequence[RelevantSection],
 ) -> bool:
     """Check if a retrieved chunk matches any relevant section."""
-    chunk_lower = chunk.text.lower()
-
-    for section in relevant_sections:
-        if section.document_id and chunk.document_id != section.document_id:
-            continue
-
-        snippet_lower = section.text_snippet.lower().strip()
-
-        # Check 1: snippet substring match
-        if snippet_lower and snippet_lower in chunk_lower:
-            return True
-
-        # Check 2: section_id appears in chunk
-        if section.section_id:
-            section_num = (
-                section.section_id.replace("clause_", "")
-                .replace("section_", "")
-                .replace("definition_", "")
-            )
-            if section_num in chunk.text:
-                return True
-
-        # Check 3: word overlap
-        if snippet_lower:
-            snippet_words = set(snippet_lower.split())
-            chunk_words = set(chunk_lower.split())
-            if snippet_words and len(snippet_words & chunk_words) / len(snippet_words) > 0.6:
-                return True
-
-    return False
+    return bool(matching_sections(chunk, relevant_sections))
 
 
 def get_relevance_grade(
     chunk: Chunk,
-    relevant_sections: tuple[RelevantSection, ...],
+    relevant_sections: Sequence[RelevantSection],
 ) -> RelevanceGrade:
     """Get the relevance grade for a chunk (used in NDCG).
 
     Returns the highest matching grade, or IRRELEVANT if no match.
     """
-    best_grade = RelevanceGrade.IRRELEVANT
-    chunk_lower = chunk.text.lower()
-
-    for section in relevant_sections:
-        if section.document_id and chunk.document_id != section.document_id:
-            continue
-
-        snippet_lower = section.text_snippet.lower().strip()
-
-        matched = False
-        if snippet_lower and snippet_lower in chunk_lower:
-            matched = True
-        elif section.section_id:
-            section_num = (
-                section.section_id.replace("clause_", "")
-                .replace("section_", "")
-                .replace("definition_", "")
-            )
-            if section_num in chunk.text:
-                matched = True
-        elif snippet_lower:
-            snippet_words = set(snippet_lower.split())
-            chunk_words = set(chunk_lower.split())
-            if snippet_words and len(snippet_words & chunk_words) / len(snippet_words) > 0.6:
-                matched = True
-
-        if matched and section.grade.value > best_grade.value:
-            best_grade = section.grade
-
-    return best_grade
+    matched_sections = matching_sections(chunk, relevant_sections)
+    return max(
+        (section.grade for section in matched_sections),
+        default=RelevanceGrade.IRRELEVANT,
+        key=lambda grade: grade.value,
+    )

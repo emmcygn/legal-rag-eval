@@ -102,6 +102,84 @@ class TestIsRelevant:
         )
         assert not _is_relevant(chunk, SAMPLE_QUERY.relevant_sections)
 
+    def test_section_id_requires_a_heading_not_an_incidental_number(self) -> None:
+        section = RelevantSection(
+            document_id="doc1",
+            section_id="clause_1",
+            text_snippet="",
+            grade=RelevanceGrade.EXACT,
+        )
+
+        for text in ("The fee is $1 per user.", "10. Payment terms apply."):
+            chunk = Chunk(
+                id=text,
+                text=text,
+                document_id="doc1",
+                strategy=StrategyName.LEXICHUNK,
+                index=0,
+            )
+            assert not _is_relevant(chunk, (section,))
+
+    def test_section_kind_does_not_match_a_different_heading_namespace(self) -> None:
+        clause = RelevantSection(
+            document_id="doc1",
+            section_id="clause_1",
+            text_snippet="",
+            grade=RelevanceGrade.EXACT,
+        )
+        schedule = RelevantSection(
+            document_id="doc1",
+            section_id="schedule_1",
+            text_snippet="",
+            grade=RelevanceGrade.EXACT,
+        )
+        chunk = Chunk(
+            id="c1",
+            text="Schedule 1. Pricing",
+            document_id="doc1",
+            strategy=StrategyName.LEXICHUNK,
+            index=0,
+        )
+
+        assert not _is_relevant(chunk, (clause,))
+        assert _is_relevant(chunk, (schedule,))
+
+    def test_binary_and_graded_matching_reject_partial_description_overlap(self) -> None:
+        section = RelevantSection(
+            document_id="doc1",
+            section_id="clause_obligations",
+            text_snippet="service obligations in detail",
+            grade=RelevanceGrade.SAME_SECTION,
+        )
+        chunk = Chunk(
+            id="c1",
+            text="The service obligations are detailed elsewhere.",
+            document_id="doc1",
+            strategy=StrategyName.LEXICHUNK,
+            index=0,
+        )
+
+        assert not _is_relevant(chunk, (section,))
+        assert get_relevance_grade(chunk, (section,)) == RelevanceGrade.IRRELEVANT
+
+    def test_irrelevant_grade_does_not_make_a_binary_hit(self) -> None:
+        section = RelevantSection(
+            document_id="doc1",
+            section_id="clause_1",
+            text_snippet="answer passage",
+            grade=RelevanceGrade.IRRELEVANT,
+        )
+        chunk = Chunk(
+            id="c1",
+            text="This contains the answer passage.",
+            document_id="doc1",
+            strategy=StrategyName.LEXICHUNK,
+            index=0,
+        )
+
+        assert not _is_relevant(chunk, (section,))
+        assert get_relevance_grade(chunk, (section,)) == RelevanceGrade.IRRELEVANT
+
 
 class TestGetRelevanceGrade:
     def test_exact_match(self) -> None:

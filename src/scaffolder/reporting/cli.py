@@ -216,6 +216,11 @@ def render_retrieval_table(
         return
 
     sig = significance_results or []
+    metric_versions = ", ".join(sorted({metric.ndcg_metric for metric in metrics}))
+    console.print(f"NDCG compatibility field uses: {metric_versions}")
+    console.print(
+        "Do not compare different metric versions or interpret assignment scores as chunk NDCG."
+    )
 
     # Group by embedding model
     models = sorted({m.embedding_model.value for m in metrics})

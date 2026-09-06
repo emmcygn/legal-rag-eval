@@ -31,11 +31,11 @@ test:  ## Run tests with coverage
 test-fast:  ## Run tests without coverage
 	$(PYTHON) -m pytest --no-cov -x
 
-benchmark:  ## Run the full benchmark suite
+benchmark:  ## Run the deterministic anchored-evidence benchmark
 	$(PYTHON) -m scaffolder benchmark
 
-benchmark-structural:  ## Run structural metrics only (no embedding)
-	$(PYTHON) -m scaffolder benchmark --no-embed
+benchmark-structural:  ## Run deprecated SDK-generated structural diagnostics
+	$(PYTHON) -m scaffolder benchmark-legacy --no-embed
 
 report:  ## Generate HTML report from benchmark results
 	$(PYTHON) -m scaffolder report

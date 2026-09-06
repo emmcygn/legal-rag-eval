@@ -10,9 +10,16 @@ import logging
 import math
 from typing import TYPE_CHECKING
 
+from scipy.optimize import linear_sum_assignment
+
 from scaffolder.models import (
     RelevanceGrade,
     RetrievalMetrics,
+)
+from scaffolder.relevance import (
+    has_invalid_positive_gold,
+    matching_sections,
+    valid_relevant_sections,
 )
 
 if TYPE_CHECKING:
@@ -40,11 +47,12 @@ def precision_at_k(
     if k <= 0:
         return 0.0
 
-    top_k = [h for h in hits if h.rank <= k]
+    sections = valid_relevant_sections(relevant_sections)
+    top_k = _ranked_hits(hits, k)
     if not top_k:
         return 0.0
 
-    relevant_count = sum(1 for h in top_k if _is_hit(h.chunk, relevant_sections))
+    relevant_count = sum(1 for h in top_k if _is_hit(h.chunk, sections))
     return relevant_count / k
 
 
@@ -57,14 +65,18 @@ def recall_at_k(
 
     Returns 1.0 if there are no relevant sections (vacuously true).
     """
-    if not relevant_sections:
-        return 1.0
+    sections = valid_relevant_sections(relevant_sections)
+    if not sections:
+        return 0.0 if has_invalid_positive_gold(relevant_sections) else 1.0
     if k <= 0:
         return 0.0
 
-    top_k = [h for h in hits if h.rank <= k]
-    relevant_count = sum(1 for h in top_k if _is_hit(h.chunk, relevant_sections))
-    return relevant_count / len(relevant_sections)
+    matched_sections = {
+        section
+        for hit in _ranked_hits(hits, k)
+        for section in matching_sections(hit.chunk, sections)
+    }
+    return len(matched_sections) / len(sections)
 
 
 def mrr(
@@ -75,10 +87,10 @@ def mrr(
 
     Returns 0.0 if no relevant result is found.
     """
-    sorted_hits = sorted(hits, key=lambda h: h.rank)
+    sections = valid_relevant_sections(relevant_sections)
 
-    for h in sorted_hits:
-        if _is_hit(h.chunk, relevant_sections):
+    for h in _ranked_hits(hits):
+        if _is_hit(h.chunk, sections):
             return 1.0 / h.rank
 
     return 0.0
@@ -89,36 +101,54 @@ def ndcg_at_k(
     relevant_sections: Sequence[RelevantSection],
     k: int,
 ) -> float:
-    """Normalized Discounted Cumulative Gain at k.
+    """Compatibility alias for evidence-assignment NDCG v1.
 
-    Uses graded relevance: EXACT=3, SAME_SECTION=2, RELATED=1, IRRELEVANT=0.
-    NDCG@k = DCG@k / IDCG@k
+    This is not classical chunk NDCG: each rank can claim one unseen gold
+    section, selected by maximum discounted gain across all ranked evidence.
     """
-    if k <= 0 or not relevant_sections:
+    return evidence_assignment_ndcg_v1(hits, relevant_sections, k)
+
+
+def evidence_assignment_ndcg_v1(
+    hits: Sequence[RetrievalHit],
+    relevant_sections: Sequence[RelevantSection],
+    k: int,
+) -> float:
+    """Score ranked evidence using maximum-weight one-to-one gold assignment.
+
+    Each rank can receive credit for at most one unseen gold section. The
+    assignment maximizes discounted gain, while the ideal denominator remains
+    the descending list of all valid gold grades.
+    """
+    sections = valid_relevant_sections(relevant_sections)
+    if k <= 0 or not sections:
         return 0.0
 
-    sorted_hits = sorted(hits, key=lambda h: h.rank)[:k]
-    actual_grades = [_get_grade(h.chunk, relevant_sections).value for h in sorted_hits]
-
-    # Pad with zeros if fewer than k hits
-    while len(actual_grades) < k:
-        actual_grades.append(0)
+    section_indices = {section: index for index, section in enumerate(sections)}
+    weights = [[0.0] * (len(sections) + k) for _ in range(k)]
+    for hit in _ranked_hits(hits, k):
+        discount = math.log2(hit.rank + 1)
+        for section in matching_sections(hit.chunk, sections):
+            weights[hit.rank - 1][section_indices[section]] = (
+                2**section.grade.value - 1
+            ) / discount
 
     # Ideal grades: all relevant sections' grades sorted descending
     ideal_grades = sorted(
-        [s.grade.value for s in relevant_sections],
+        [s.grade.value for s in sections],
         reverse=True,
     )[:k]
-    while len(ideal_grades) < k:
-        ideal_grades.append(0)
+    ideal_grades.extend([0] * (k - len(ideal_grades)))
 
-    dcg = _dcg(actual_grades)
+    costs = [[-weight for weight in row] for row in weights]
+    row_indices, column_indices = linear_sum_assignment(costs)
+    dcg = sum(weights[row][column] for row, column in zip(row_indices, column_indices, strict=True))
     idcg = _dcg(ideal_grades)
 
     if idcg == 0.0:
         return 0.0
 
-    return dcg / idcg
+    return float(dcg / idcg)
 
 
 def _dcg(grades: list[int]) -> float:
@@ -144,7 +174,7 @@ def drm_rate(
     if k <= 0 or not query_document_ids:
         return 0.0
 
-    top_k = [h for h in hits if h.rank <= k]
+    top_k = _ranked_hits(hits, k)
     if not top_k:
         return 0.0
 
@@ -161,36 +191,7 @@ def _is_hit(
     relevant_sections: Sequence[RelevantSection],
 ) -> bool:
     """Check if a chunk matches any relevant section (binary relevance)."""
-    chunk_lower = chunk.text.lower()
-
-    for section in relevant_sections:
-        if section.document_id and chunk.document_id != section.document_id:
-            continue
-
-        snippet_lower = section.text_snippet.lower().strip()
-
-        # Substring match
-        if snippet_lower and snippet_lower in chunk_lower:
-            return True
-
-        # Section ID match
-        if section.section_id:
-            section_num = (
-                section.section_id.replace("clause_", "")
-                .replace("section_", "")
-                .replace("definition_", "")
-            )
-            if section_num in chunk.text:
-                return True
-
-        # Word overlap
-        if snippet_lower:
-            snippet_words = set(snippet_lower.split())
-            chunk_words = set(chunk_lower.split())
-            if snippet_words and len(snippet_words & chunk_words) / len(snippet_words) > 0.6:
-                return True
-
-    return False
+    return bool(matching_sections(chunk, relevant_sections))
 
 
 def _get_grade(
@@ -198,36 +199,38 @@ def _get_grade(
     relevant_sections: Sequence[RelevantSection],
 ) -> RelevanceGrade:
     """Get highest relevance grade for a chunk."""
-    best = RelevanceGrade.IRRELEVANT
-    chunk_lower = chunk.text.lower()
+    matched_sections = matching_sections(chunk, relevant_sections)
+    return max(
+        (section.grade for section in matched_sections),
+        default=RelevanceGrade.IRRELEVANT,
+        key=lambda grade: grade.value,
+    )
 
-    for section in relevant_sections:
-        if section.document_id and chunk.document_id != section.document_id:
+
+def _ranked_hits(
+    hits: Sequence[RetrievalHit],
+    k: int | None = None,
+) -> list[RetrievalHit]:
+    """Return one valid occurrence of each ranked chunk in rank order."""
+    ranked_hits: list[RetrievalHit] = []
+    seen_chunk_ids: set[str] = set()
+    seen_ranks: set[int] = set()
+
+    for hit in sorted(hits, key=lambda candidate: candidate.rank):
+        if (
+            not isinstance(hit.rank, int)
+            or isinstance(hit.rank, bool)
+            or hit.rank <= 0
+            or (k is not None and hit.rank > k)
+        ):
             continue
+        if hit.rank in seen_ranks or hit.chunk.id in seen_chunk_ids:
+            continue
+        ranked_hits.append(hit)
+        seen_ranks.add(hit.rank)
+        seen_chunk_ids.add(hit.chunk.id)
 
-        snippet_lower = section.text_snippet.lower().strip()
-
-        matched = False
-        if snippet_lower and snippet_lower in chunk_lower:
-            matched = True
-        elif section.section_id:
-            section_num = (
-                section.section_id.replace("clause_", "")
-                .replace("section_", "")
-                .replace("definition_", "")
-            )
-            if section_num in chunk.text:
-                matched = True
-        elif snippet_lower:
-            snippet_words = set(snippet_lower.split())
-            chunk_words = set(chunk_lower.split())
-            if snippet_words and len(snippet_words & chunk_words) / len(snippet_words) > 0.6:
-                matched = True
-
-        if matched and section.grade.value > best.value:
-            best = section.grade
-
-    return best
+    return ranked_hits
 
 
 # -- Convenience function ---------------------------------------------------
@@ -252,5 +255,6 @@ def compute_retrieval_metrics(result: RetrievalResult) -> RetrievalMetrics:
         recall_at_10=recall_at_k(hits, sections, k=10),
         mrr=mrr(hits, sections),
         ndcg_at_10=ndcg_at_k(hits, sections, k=10),
+        ndcg_metric="evidence_assignment_ndcg_v1",
         drm_hit=drm_rate(hits, result.query.document_ids, k=10) > 0.0,
     )

@@ -1,0 +1,175 @@
+{
+  "schema_version": "anchored_evidence_v1",
+  "corpus": {
+    "id": "synthetic-contracts-v1",
+    "title": "Synthetic contract evidence challenge",
+    "description": "Three compact AI-authored contract-like texts with fifteen source-anchored questions covering single evidence, multi-evidence, exceptions, cross-document distractors, and unanswerable cases. This corpus is not legal advice, law-validated, held out, or customer proof.",
+    "authorship": "ai_authored",
+    "legal_validation": "not_human_reviewed",
+    "held_out": false,
+    "customer_proof": false
+  },
+  "documents": [
+    {
+      "id": "synthetic_supply_agreement",
+      "jurisdiction": "uk",
+      "path": "documents/synthetic_supply_agreement.txt",
+      "sha256": "0f322ff4097e4de1d73c61d7cb16ab2dc9d72b068636167399d740c114f79608",
+      "provenance": {"kind": "synthetic", "source_url": null},
+      "license_status": "project_license",
+      "license_identifier": "MIT",
+      "review_status": "not_human_reviewed"
+    },
+    {
+      "id": "synthetic_service_credit_addendum",
+      "jurisdiction": "uk",
+      "path": "documents/synthetic_service_credit_addendum.txt",
+      "sha256": "8850e6797ccf8ab0d70981c2819cedacf0df187cff2911d1774bd066e82355ca",
+      "provenance": {"kind": "synthetic", "source_url": null},
+      "license_status": "project_license",
+      "license_identifier": "MIT",
+      "review_status": "not_human_reviewed"
+    },
+    {
+      "id": "synthetic_support_terms",
+      "jurisdiction": "uk",
+      "path": "documents/synthetic_support_terms.txt",
+      "sha256": "7b4535e1c7ff7173e6dda94a7dfe6424804d415dd7445e51700ac3df5182bf85",
+      "provenance": {"kind": "synthetic", "source_url": null},
+      "license_status": "project_license",
+      "license_identifier": "MIT",
+      "review_status": "not_human_reviewed"
+    }
+  ],
+  "evidence": [
+    {"id": "supply.payment_due", "document_id": "synthetic_supply_agreement", "start": 52, "end": 133, "text": "Buyer must pay each undisputed invoice within twenty calendar days after receipt.", "grade": 3},
+    {"id": "supply.dispatch", "document_id": "synthetic_supply_agreement", "start": 150, "end": 221, "text": "Seller must dispatch components by the shipment date in the order form.", "grade": 3},
+    {"id": "supply.delayed_delivery_report", "document_id": "synthetic_supply_agreement", "start": 226, "end": 322, "text": "Buyer must report delayed delivery in writing within five business days after the shipment date.", "grade": 3},
+    {"id": "supply.notice_exception", "document_id": "synthetic_supply_agreement", "start": 327, "end": 399, "text": "A routine shipment notice does not constitute a delayed-delivery report.", "grade": 3},
+    {"id": "supply.replacement", "document_id": "synthetic_supply_agreement", "start": 419, "end": 489, "text": "Seller will replace components that fail inspection before acceptance.", "grade": 3},
+    {"id": "credit.eligibility", "document_id": "synthetic_service_credit_addendum", "start": 53, "end": 182, "text": "A service credit is available only if Buyer submitted the delayed-delivery report required by clause 2.2 of the Supply Agreement.", "grade": 3},
+    {"id": "credit.request_deadline", "document_id": "synthetic_service_credit_addendum", "start": 187, "end": 290, "text": "The credit request must identify the affected order and arrive within ten business days after delivery.", "grade": 3},
+    {"id": "credit.complaint_exception", "document_id": "synthetic_service_credit_addendum", "start": 295, "end": 339, "text": "A general complaint is not a credit request.", "grade": 3},
+    {"id": "support.hours", "document_id": "synthetic_support_terms", "start": 45, "end": 108, "text": "Standard support operates from 09:00 to 17:00 on business days.", "grade": 3},
+    {"id": "support.critical_definition", "document_id": "synthetic_support_terms", "start": 126, "end": 198, "text": "A critical incident means a complete interruption of the hosted service.", "grade": 3},
+    {"id": "support.maintenance_exception", "document_id": "synthetic_support_terms", "start": 203, "end": 280, "text": "Routine maintenance announced two days in advance is not a critical incident.", "grade": 3},
+    {"id": "support.request_fields", "document_id": "synthetic_support_terms", "start": 296, "end": 378, "text": "Support requests must identify the account and describe the observed interruption.", "grade": 3}
+  ],
+  "queries": [
+    {
+      "id": "invoice_due_date",
+      "text": "When must Buyer pay an undisputed invoice?",
+      "answerable": true,
+      "answer_spans": [{"document_id": "synthetic_supply_agreement", "start": 52, "end": 133, "text": "Buyer must pay each undisputed invoice within twenty calendar days after receipt."}],
+      "evidence_ids": ["supply.payment_due"]
+    },
+    {
+      "id": "shipment_dispatch_date",
+      "text": "By what date must Seller dispatch the components?",
+      "answerable": true,
+      "answer_spans": [{"document_id": "synthetic_supply_agreement", "start": 150, "end": 221, "text": "Seller must dispatch components by the shipment date in the order form."}],
+      "evidence_ids": ["supply.dispatch"]
+    },
+    {
+      "id": "delayed_delivery_report_deadline",
+      "text": "How and when must Buyer report delayed delivery?",
+      "answerable": true,
+      "answer_spans": [{"document_id": "synthetic_supply_agreement", "start": 226, "end": 322, "text": "Buyer must report delayed delivery in writing within five business days after the shipment date."}],
+      "evidence_ids": ["supply.delayed_delivery_report"]
+    },
+    {
+      "id": "routine_notice_exception",
+      "text": "Does a routine shipment notice count as the delayed-delivery report?",
+      "answerable": true,
+      "answer_spans": [{"document_id": "synthetic_supply_agreement", "start": 327, "end": 399, "text": "A routine shipment notice does not constitute a delayed-delivery report."}],
+      "evidence_ids": ["supply.notice_exception"]
+    },
+    {
+      "id": "failed_inspection_replacement",
+      "text": "What happens to components that fail inspection before acceptance?",
+      "answerable": true,
+      "answer_spans": [{"document_id": "synthetic_supply_agreement", "start": 419, "end": 489, "text": "Seller will replace components that fail inspection before acceptance."}],
+      "evidence_ids": ["supply.replacement"]
+    },
+    {
+      "id": "delayed_delivery_credit_requirements",
+      "text": "What delayed-delivery report and credit-request steps are both required for a service credit?",
+      "answerable": true,
+      "answer_spans": [
+        {"document_id": "synthetic_supply_agreement", "start": 226, "end": 322, "text": "Buyer must report delayed delivery in writing within five business days after the shipment date."},
+        {"document_id": "synthetic_service_credit_addendum", "start": 53, "end": 182, "text": "A service credit is available only if Buyer submitted the delayed-delivery report required by clause 2.2 of the Supply Agreement."},
+        {"document_id": "synthetic_service_credit_addendum", "start": 187, "end": 290, "text": "The credit request must identify the affected order and arrive within ten business days after delivery."}
+      ],
+      "evidence_ids": ["supply.delayed_delivery_report", "credit.eligibility", "credit.request_deadline"]
+    },
+    {
+      "id": "credit_request_contents_and_deadline",
+      "text": "What must a credit request identify and when must it arrive?",
+      "answerable": true,
+      "answer_spans": [{"document_id": "synthetic_service_credit_addendum", "start": 187, "end": 290, "text": "The credit request must identify the affected order and arrive within ten business days after delivery."}],
+      "evidence_ids": ["credit.request_deadline"]
+    },
+    {
+      "id": "general_complaint_exception",
+      "text": "Is a general complaint treated as a credit request?",
+      "answerable": true,
+      "answer_spans": [{"document_id": "synthetic_service_credit_addendum", "start": 295, "end": 339, "text": "A general complaint is not a credit request."}],
+      "evidence_ids": ["credit.complaint_exception"]
+    },
+    {
+      "id": "support_hours",
+      "text": "During which hours does standard support operate?",
+      "answerable": true,
+      "answer_spans": [{"document_id": "synthetic_support_terms", "start": 45, "end": 108, "text": "Standard support operates from 09:00 to 17:00 on business days."}],
+      "evidence_ids": ["support.hours"]
+    },
+    {
+      "id": "critical_incident_definition_and_exception",
+      "text": "What is a critical incident, and which announced maintenance is excluded?",
+      "answerable": true,
+      "answer_spans": [
+        {"document_id": "synthetic_support_terms", "start": 126, "end": 198, "text": "A critical incident means a complete interruption of the hosted service."},
+        {"document_id": "synthetic_support_terms", "start": 203, "end": 280, "text": "Routine maintenance announced two days in advance is not a critical incident."}
+      ],
+      "evidence_ids": ["support.critical_definition", "support.maintenance_exception"]
+    },
+    {
+      "id": "support_request_fields",
+      "text": "What information must a support request contain?",
+      "answerable": true,
+      "answer_spans": [{"document_id": "synthetic_support_terms", "start": 296, "end": 378, "text": "Support requests must identify the account and describe the observed interruption."}],
+      "evidence_ids": ["support.request_fields"]
+    },
+    {
+      "id": "cross_document_request_requirements",
+      "text": "Compare the affected-order requirement for a credit request with the account and interruption details for a support request.",
+      "answerable": true,
+      "answer_spans": [
+        {"document_id": "synthetic_service_credit_addendum", "start": 187, "end": 290, "text": "The credit request must identify the affected order and arrive within ten business days after delivery."},
+        {"document_id": "synthetic_support_terms", "start": 296, "end": 378, "text": "Support requests must identify the account and describe the observed interruption."}
+      ],
+      "evidence_ids": ["credit.request_deadline", "support.request_fields"]
+    },
+    {
+      "id": "service_credit_percentage_absent",
+      "text": "What percentage of fees is the service credit for delayed delivery?",
+      "answerable": false,
+      "answer_spans": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "critical_incident_response_time_absent",
+      "text": "What response-time guarantee applies to a critical incident?",
+      "answerable": false,
+      "answer_spans": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "governing_tribunal_absent",
+      "text": "Which sovereign tribunal controls disputes?",
+      "answerable": false,
+      "answer_spans": [],
+      "evidence_ids": []
+    }
+  ]
+}

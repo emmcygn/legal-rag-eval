@@ -1,0 +1,29 @@
+"""Keep changed metric semantics visible across serialization and reports."""
+
+import json
+
+from scaffolder.__main__ import _reconstruct_benchmark_result
+from scaffolder.metrics.retrieval import compute_retrieval_metrics
+from scaffolder.models import (
+    AnnotatedQuery,
+    BenchmarkResult,
+    EmbeddingModelName,
+    Jurisdiction,
+    RetrievalResult,
+    StrategyName,
+)
+from scaffolder.reporting.json_export import export_json_string
+
+
+def test_metric_version_survives_roundtrip_and_legacy_is_not_relabelled() -> None:
+    query = AnnotatedQuery("control", "question", ["doc"], Jurisdiction.UK, (), "control")
+    retrieval = RetrievalResult(query, StrategyName.LEXICHUNK, EmbeddingModelName.MINILM, (), 0, 0)
+    metrics = compute_retrieval_metrics(retrieval)
+    result = BenchmarkResult("test", retrieval_metrics=[metrics])
+    data = json.loads(export_json_string(result))
+    assert data["retrieval_metrics"][0]["ndcg_metric"] == "evidence_assignment_ndcg_v1"
+    restored = _reconstruct_benchmark_result(data)
+    assert restored.retrieval_metrics[0].ndcg_metric == "evidence_assignment_ndcg_v1"
+    del data["retrieval_metrics"][0]["ndcg_metric"]
+    legacy = _reconstruct_benchmark_result(data)
+    assert legacy.retrieval_metrics[0].ndcg_metric == "legacy_unversioned"

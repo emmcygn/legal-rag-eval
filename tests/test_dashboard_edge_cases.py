@@ -8,12 +8,15 @@ import pytest
 
 st = pytest.importorskip("streamlit")
 
+from scaffolder.dashboard.components import _highlight_terms  # noqa: E402
 from scaffolder.dashboard.page_compare import (  # noqa: E402
     MAX_UPLOAD_SIZE_BYTES,
     MIN_DOCUMENT_CHARS,
     _validate_document,
     _validate_upload,
 )
+from scaffolder.dashboard.page_metrics import _validate_report  # noqa: E402
+from scaffolder.dashboard.page_retrieval import _render_hit  # noqa: E402
 from scaffolder.models import Document, DocumentType, Jurisdiction  # noqa: E402
 
 
@@ -130,3 +133,45 @@ class TestDocumentValidation:
         doc = _make_document("x" * (MIN_DOCUMENT_CHARS - 1))
         error = _validate_document(doc)
         assert error is not None
+
+
+def test_highlight_terms_accepts_backslash_sequences() -> None:
+    rendered = _highlight_terms(r"Term \\1 applies", [r"\\1"])
+
+    assert "<strong" in rendered
+
+
+def test_legacy_retrieval_hit_escapes_untrusted_clause_type(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    markdown = MagicMock()
+    monkeypatch.setattr(st, "markdown", markdown)
+    monkeypatch.setattr(st, "expander", MagicMock())
+    monkeypatch.setattr(st, "text", MagicMock())
+
+    _render_hit(
+        {
+            "clause_type": '<img src=x onerror="alert(1)">',
+            "rank": 4,
+            "score": 0.5,
+            "chunk_id": "chunk",
+            "text": "body",
+        },
+        False,
+    )
+
+    rendered = markdown.call_args.args[0]
+    assert "<img" not in rendered
+    assert "&lt;img" in rendered
+
+
+def test_dashboard_accepts_only_current_evidence_reports() -> None:
+    report = {
+        "report_version": "evidence_benchmark_report_v1",
+        "aggregates": {},
+        "results": {},
+    }
+
+    assert _validate_report(report) is report
+    with pytest.raises(ValueError, match="report_version"):
+        _validate_report({"report_version": "legacy", "aggregates": {}, "results": {}})

@@ -150,7 +150,7 @@ targets its predecessor did not (0.350 vs 0.139). See
 
 <!-- BEGIN GENERATED RESULTS -->
 
-_Generated 2026-09-06T17:21:12.376208+00:00 — LexiChunk `0.9.0` (commit `36fcca9`); embedding model(s): all-MiniLM-L6-v2, bge-base-en-v1.5; seed `42`; 5 documents; 30 queries. Strategy parameters: `{"fixed_size": {"chunk_size": 512}, "lexichunk": {}, "lexichunk_contextual": {}, "rcts_1024": {"chunk_overlap": 100, "chunk_size": 1024}, "rcts_512": {"chunk_overlap": 50, "chunk_size": 512}, "sentence_split": {"min_chunk_chars": 100}}`._
+_Generated 2026-09-06T18:01:54.095994+00:00 — LexiChunk `0.9.0` (commit `0346a12`); embedding model(s): all-MiniLM-L6-v2, bge-base-en-v1.5; seed `0`; 5 documents; 30 queries. Strategy parameters: `{"fixed_size": {"chunk_size": 512}, "lexichunk": {}, "lexichunk_contextual": {}, "rcts_1024": {"chunk_overlap": 100, "chunk_size": 1024}, "rcts_512": {"chunk_overlap": 50, "chunk_size": 512}, "sentence_split": {"min_chunk_chars": 100}}`._
 
 ### Structural quality
 
@@ -159,8 +159,8 @@ Macro-averaged over documents (n = 5). Ground truth is hand-checked span annotat
 | Strategy | Located | Leaf Frag ↓ | Over-merge ↓ | Sub-clause Grp | Head R | Head P | Def Attach ↑ | XRef R | XRef P | Size CV | Avg Chars | Chunks |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | fixed_size | 100.000% | 0.357 | 0.154 | 0.143 | n/a | n/a | 0.033 | n/a | n/a | 0.149 | 496 | 39 |
-| lexichunk | 100.000% | 0.064 | 0.236 | 0.472 | 0.180 | 0.368 | 0.098 | 0.350 | 0.312 | 0.544 | 906 | 26 |
-| lexichunk_contextual | 93.419% | 0.106 | 0.236 | 0.485 | 0.173 | 0.379 | 0.101 | 0.327 | 0.313 | 0.452 | 1105 | 26 |
+| lexichunk | 100.000% | 0.030 | 0.020 | 0.279 | 0.453 | 0.875 | 0.082 | 0.774 | 0.459 | 0.494 | 552 | 38 |
+| lexichunk_contextual | 87.002% | 0.089 | 0.025 | 0.300 | 0.443 | 0.922 | 0.087 | 0.744 | 0.463 | 0.375 | 755 | 38 |
 | rcts_1024 | 100.000% | 0.008 | 0.159 | 0.629 | n/a | n/a | 0.088 | n/a | n/a | 0.212 | 826 | 24 |
 | rcts_512 | 100.000% | 0.127 | 0.025 | 0.140 | n/a | n/a | 0.041 | n/a | n/a | 0.347 | 357 | 55 |
 | sentence_split | 99.363% | 0.275 | 0.000 | 0.016 | n/a | n/a | 0.034 | n/a | n/a | 0.560 | 264 | 80 |
@@ -172,8 +172,8 @@ Macro-averaged over documents (n = 5). Ground truth is hand-checked span annotat
 | Strategy | P@1 | P@3 | P@5 | P@10 | R@1 | R@3 | R@5 | R@10 | MRR | NDCG@10 | DRM rate |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | fixed_size | 0.500 | 0.267 | 0.213 | 0.140 | 0.467 | 0.650 | 0.750 | 0.872 | 0.640 | 0.663 | 0.343 |
-| lexichunk | 0.567 | 0.278 | 0.213 | 0.117 | 0.517 | 0.683 | 0.833 | 0.917 | 0.679 | 0.697 | 0.367 |
-| lexichunk_contextual | 0.500 | 0.267 | 0.180 | 0.110 | 0.433 | 0.667 | 0.750 | 0.878 | 0.631 | 0.662 | 0.350 |
+| lexichunk | 0.533 | 0.289 | 0.200 | 0.120 | 0.461 | 0.706 | 0.789 | 0.889 | 0.666 | 0.656 | 0.337 |
+| lexichunk_contextual | 0.433 | 0.289 | 0.187 | 0.110 | 0.367 | 0.689 | 0.756 | 0.872 | 0.617 | 0.633 | 0.343 |
 | rcts_1024 | 0.533 | 0.300 | 0.227 | 0.127 | 0.483 | 0.744 | 0.906 | 0.956 | 0.724 | 0.731 | 0.397 |
 | rcts_512 | 0.567 | 0.289 | 0.193 | 0.113 | 0.461 | 0.678 | 0.744 | 0.839 | 0.686 | 0.665 | 0.310 |
 | sentence_split | 0.500 | 0.322 | 0.200 | 0.120 | 0.417 | 0.672 | 0.689 | 0.806 | 0.650 | 0.625 | 0.340 |
@@ -183,8 +183,8 @@ Macro-averaged over documents (n = 5). Ground truth is hand-checked span annotat
 | Strategy | P@1 | P@3 | P@5 | P@10 | R@1 | R@3 | R@5 | R@10 | MRR | NDCG@10 | DRM rate |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | fixed_size | 0.600 | 0.322 | 0.240 | 0.137 | 0.528 | 0.778 | 0.839 | 0.872 | 0.734 | 0.726 | 0.347 |
-| lexichunk | 0.733 | 0.333 | 0.233 | 0.123 | 0.611 | 0.794 | 0.922 | 0.950 | 0.812 | 0.768 | 0.323 |
-| lexichunk_contextual | 0.533 | 0.311 | 0.213 | 0.127 | 0.444 | 0.761 | 0.856 | 0.933 | 0.706 | 0.712 | 0.307 |
+| lexichunk | 0.567 | 0.333 | 0.213 | 0.120 | 0.517 | 0.806 | 0.822 | 0.906 | 0.737 | 0.728 | 0.317 |
+| lexichunk_contextual | 0.467 | 0.278 | 0.180 | 0.110 | 0.411 | 0.711 | 0.739 | 0.856 | 0.655 | 0.665 | 0.287 |
 | rcts_1024 | 0.633 | 0.344 | 0.240 | 0.123 | 0.544 | 0.839 | 0.956 | 0.972 | 0.794 | 0.790 | 0.357 |
 | rcts_512 | 0.667 | 0.333 | 0.227 | 0.127 | 0.561 | 0.767 | 0.850 | 0.867 | 0.786 | 0.734 | 0.317 |
 | sentence_split | 0.567 | 0.300 | 0.213 | 0.113 | 0.511 | 0.694 | 0.772 | 0.806 | 0.698 | 0.675 | 0.340 |
@@ -197,131 +197,131 @@ The absolute delta and its bootstrap 95% CI are the headline figures — never a
 
 | Metric | A | B | n | Δ | 95% CI | p (Holm) | p (Wilcoxon) | Effect size (d) | LODO range |
 |---|---|---|---|---|---|---|---|---|---|
-| mrr | lexichunk | fixed_size | 30 | +0.040 | [-0.134, +0.211] | 1.000 | 0.647 | 0.082 | [-0.005, +0.067] |
-| mrr | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.045 | [-0.207, +0.115] | 1.000 | 0.588 | -0.098 | [-0.105, +0.013] |
-| mrr | lexichunk | rcts_512 | 30 | -0.007 | [-0.157, +0.131] | 1.000 | 0.917 | -0.017 | [-0.040, +0.007] |
-| mrr | lexichunk | sentence_split | 30 | +0.029 | [-0.087, +0.152] | 1.000 | 0.649 | 0.087 | [-0.018, +0.078] |
-| mrr | lexichunk_contextual | fixed_size | 30 | -0.009 | [-0.189, +0.174] | 1.000 | 1.000 | -0.017 | [-0.042, +0.021] |
-| mrr | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.094 | [-0.244, +0.052] | 1.000 | 0.244 | -0.223 | [-0.148, -0.031] |
-| mrr | lexichunk_contextual | rcts_512 | 30 | -0.056 | [-0.194, +0.087] | 1.000 | 0.421 | -0.140 | [-0.114, +0.007] |
-| mrr | lexichunk_contextual | sentence_split | 30 | -0.019 | [-0.164, +0.137] | 1.000 | 0.670 | -0.045 | [-0.090, +0.034] |
-| ndcg_at_10 | lexichunk | fixed_size | 30 | +0.034 | [-0.100, +0.166] | 1.000 | 0.601 | 0.091 | [+0.008, +0.049] |
-| ndcg_at_10 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.034 | [-0.159, +0.089] | 1.000 | 0.629 | -0.096 | [-0.083, +0.020] |
-| ndcg_at_10 | lexichunk | rcts_512 | 30 | +0.032 | [-0.085, +0.149] | 1.000 | 0.629 | 0.097 | [-0.000, +0.049] |
-| ndcg_at_10 | lexichunk | sentence_split | 30 | +0.072 | [-0.034, +0.186] | 1.000 | 0.327 | 0.230 | [+0.038, +0.102] |
-| ndcg_at_10 | lexichunk_contextual | fixed_size | 30 | -0.001 | [-0.136, +0.135] | 1.000 | 0.968 | -0.001 | [-0.021, +0.025] |
-| ndcg_at_10 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.068 | [-0.193, +0.048] | 1.000 | 0.306 | -0.200 | [-0.107, -0.016] |
-| ndcg_at_10 | lexichunk_contextual | rcts_512 | 30 | -0.002 | [-0.107, +0.107] | 1.000 | 0.968 | -0.008 | [-0.045, +0.043] |
-| ndcg_at_10 | lexichunk_contextual | sentence_split | 30 | +0.037 | [-0.069, +0.156] | 1.000 | 0.981 | 0.116 | [-0.008, +0.066] |
-| precision_at_1 | lexichunk | fixed_size | 30 | +0.067 | [-0.167, +0.300] | 1.000 | 0.564 | 0.104 | [+0.000, +0.125] |
-| precision_at_1 | lexichunk | **rcts_1024 (size-matched control)** | 30 | +0.033 | [-0.167, +0.267] | 1.000 | 0.763 | 0.054 | [-0.042, +0.125] |
-| precision_at_1 | lexichunk | rcts_512 | 30 | +0.000 | [-0.200, +0.167] | 1.000 | 1.000 | 0.000 | [-0.042, +0.042] |
-| precision_at_1 | lexichunk | sentence_split | 30 | +0.067 | [-0.067, +0.200] | 1.000 | 0.317 | 0.183 | [+0.000, +0.125] |
-| precision_at_1 | lexichunk_contextual | fixed_size | 30 | +0.000 | [-0.233, +0.233] | 1.000 | 1.000 | 0.000 | [-0.042, +0.042] |
-| precision_at_1 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.033 | [-0.233, +0.167] | 1.000 | 0.739 | -0.060 | [-0.125, +0.042] |
-| precision_at_1 | lexichunk_contextual | rcts_512 | 30 | -0.067 | [-0.267, +0.100] | 1.000 | 0.480 | -0.128 | [-0.125, +0.000] |
-| precision_at_1 | lexichunk_contextual | sentence_split | 30 | +0.000 | [-0.200, +0.200] | 1.000 | 1.000 | 0.000 | [-0.083, +0.042] |
-| precision_at_10 | lexichunk | fixed_size | 30 | -0.023 | [-0.050, +0.003] | 1.000 | 0.131 | -0.321 | [-0.025, -0.021] |
-| precision_at_10 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.010 | [-0.027, +0.003] | 1.000 | 0.357 | -0.208 | [-0.017, -0.004] |
-| precision_at_10 | lexichunk | rcts_512 | 30 | +0.003 | [-0.020, +0.027] | 1.000 | 0.792 | 0.050 | [-0.004, +0.008] |
-| precision_at_10 | lexichunk | sentence_split | 30 | -0.003 | [-0.027, +0.020] | 1.000 | 0.931 | -0.050 | [-0.008, +0.004] |
-| precision_at_10 | lexichunk_contextual | fixed_size | 30 | -0.030 | [-0.057, -0.003] | 1.000 | 0.055 | -0.400 | [-0.037, -0.025] |
+| mrr | lexichunk | fixed_size | 30 | +0.026 | [-0.126, +0.179] | 1.000 | 0.670 | 0.059 | [+0.001, +0.045] |
+| mrr | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.059 | [-0.212, +0.097] | 1.000 | 0.498 | -0.134 | [-0.099, -0.014] |
+| mrr | lexichunk | rcts_512 | 30 | -0.021 | [-0.150, +0.104] | 1.000 | 0.795 | -0.057 | [-0.067, +0.012] |
+| mrr | lexichunk | sentence_split | 30 | +0.016 | [-0.095, +0.134] | 1.000 | 0.955 | 0.047 | [-0.015, +0.053] |
+| mrr | lexichunk_contextual | fixed_size | 30 | -0.023 | [-0.193, +0.144] | 1.000 | 0.808 | -0.047 | [-0.032, -0.010] |
+| mrr | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.107 | [-0.243, +0.023] | 1.000 | 0.147 | -0.281 | [-0.144, -0.069] |
+| mrr | lexichunk_contextual | rcts_512 | 30 | -0.069 | [-0.193, +0.050] | 1.000 | 0.325 | -0.199 | [-0.137, +0.000] |
+| mrr | lexichunk_contextual | sentence_split | 30 | -0.033 | [-0.152, +0.084] | 1.000 | 0.448 | -0.098 | [-0.073, -0.019] |
+| ndcg_at_10 | lexichunk | fixed_size | 30 | -0.007 | [-0.118, +0.105] | 1.000 | 0.913 | -0.024 | [-0.029, +0.012] |
+| ndcg_at_10 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.075 | [-0.189, +0.035] | 1.000 | 0.205 | -0.235 | [-0.119, -0.016] |
+| ndcg_at_10 | lexichunk | rcts_512 | 30 | -0.009 | [-0.108, +0.088] | 1.000 | 0.970 | -0.033 | [-0.036, +0.013] |
+| ndcg_at_10 | lexichunk | sentence_split | 30 | +0.030 | [-0.077, +0.145] | 1.000 | 0.962 | 0.096 | [-0.005, +0.067] |
+| ndcg_at_10 | lexichunk_contextual | fixed_size | 30 | -0.030 | [-0.154, +0.092] | 1.000 | 0.575 | -0.087 | [-0.037, -0.025] |
+| ndcg_at_10 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.098 | [-0.204, +0.005] | 1.000 | 0.064 | -0.329 | [-0.129, -0.056] |
+| ndcg_at_10 | lexichunk_contextual | rcts_512 | 30 | -0.032 | [-0.127, +0.059] | 1.000 | 0.695 | -0.119 | [-0.076, +0.014] |
+| ndcg_at_10 | lexichunk_contextual | sentence_split | 30 | +0.007 | [-0.096, +0.114] | 1.000 | 0.765 | 0.026 | [-0.016, +0.028] |
+| precision_at_1 | lexichunk | fixed_size | 30 | +0.033 | [-0.167, +0.233] | 1.000 | 0.739 | 0.060 | [+0.000, +0.042] |
+| precision_at_1 | lexichunk | **rcts_1024 (size-matched control)** | 30 | +0.000 | [-0.200, +0.200] | 1.000 | 1.000 | 0.000 | [-0.042, +0.042] |
+| precision_at_1 | lexichunk | rcts_512 | 30 | -0.033 | [-0.233, +0.167] | 1.000 | 0.739 | -0.060 | [-0.125, +0.000] |
+| precision_at_1 | lexichunk | sentence_split | 30 | +0.033 | [-0.100, +0.167] | 1.000 | 0.655 | 0.081 | [+0.000, +0.083] |
+| precision_at_1 | lexichunk_contextual | fixed_size | 30 | -0.067 | [-0.300, +0.167] | 1.000 | 0.564 | -0.104 | [-0.083, -0.042] |
+| precision_at_1 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.100 | [-0.267, +0.067] | 1.000 | 0.257 | -0.208 | [-0.125, -0.042] |
+| precision_at_1 | lexichunk_contextual | rcts_512 | 30 | -0.133 | [-0.300, +0.033] | 1.000 | 0.157 | -0.263 | [-0.250, -0.083] |
+| precision_at_1 | lexichunk_contextual | sentence_split | 30 | -0.067 | [-0.233, +0.100] | 1.000 | 0.414 | -0.148 | [-0.083, -0.042] |
+| precision_at_10 | lexichunk | fixed_size | 30 | -0.020 | [-0.047, +0.007] | 1.000 | 0.192 | -0.280 | [-0.025, -0.017] |
+| precision_at_10 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.007 | [-0.027, +0.010] | 1.000 | 0.680 | -0.128 | [-0.013, +0.000] |
+| precision_at_10 | lexichunk | rcts_512 | 30 | +0.007 | [-0.007, +0.020] | 1.000 | 0.317 | 0.183 | [+0.004, +0.008] |
+| precision_at_10 | lexichunk | sentence_split | 30 | +0.000 | [-0.020, +0.020] | 1.000 | 0.861 | 0.000 | [-0.008, +0.008] |
+| precision_at_10 | lexichunk_contextual | fixed_size | 30 | -0.030 | [-0.053, -0.007] | 1.000 | 0.029 | -0.461 | [-0.037, -0.025] |
 | precision_at_10 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.017 | [-0.033, -0.003] | 1.000 | 0.059 | -0.361 | [-0.021, -0.013] |
-| precision_at_10 | lexichunk_contextual | rcts_512 | 30 | -0.003 | [-0.027, +0.020] | 1.000 | 0.792 | -0.050 | [-0.013, +0.004] |
-| precision_at_10 | lexichunk_contextual | sentence_split | 30 | -0.010 | [-0.037, +0.017] | 1.000 | 0.493 | -0.140 | [-0.017, -0.004] |
-| precision_at_5 | lexichunk | fixed_size | 30 | +0.000 | [-0.053, +0.053] | 1.000 | 1.000 | 0.000 | [-0.008, +0.017] |
-| precision_at_5 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.013 | [-0.053, +0.027] | 1.000 | 0.527 | -0.114 | [-0.025, +0.000] |
-| precision_at_5 | lexichunk | rcts_512 | 30 | +0.020 | [-0.027, +0.067] | 1.000 | 0.405 | 0.151 | [+0.008, +0.033] |
-| precision_at_5 | lexichunk | sentence_split | 30 | +0.013 | [-0.040, +0.067] | 1.000 | 0.644 | 0.085 | [+0.008, +0.017] |
-| precision_at_5 | lexichunk_contextual | fixed_size | 30 | -0.033 | [-0.093, +0.027] | 1.000 | 0.302 | -0.191 | [-0.050, -0.008] |
-| precision_at_5 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.047 | [-0.087, -0.007] | 1.000 | 0.035 | -0.411 | [-0.058, -0.033] |
-| precision_at_5 | lexichunk_contextual | rcts_512 | 30 | -0.013 | [-0.060, +0.033] | 1.000 | 0.589 | -0.104 | [-0.033, +0.008] |
-| precision_at_5 | lexichunk_contextual | sentence_split | 30 | -0.020 | [-0.080, +0.040] | 1.000 | 0.509 | -0.118 | [-0.033, -0.008] |
-| recall_at_10 | lexichunk | fixed_size | 30 | +0.044 | [-0.044, +0.133] | 1.000 | 0.461 | 0.174 | [+0.014, +0.056] |
-| recall_at_10 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.039 | [-0.128, +0.033] | 1.000 | 0.285 | -0.163 | [-0.069, -0.007] |
-| recall_at_10 | lexichunk | rcts_512 | 30 | +0.078 | [-0.056, +0.211] | 1.000 | 0.393 | 0.203 | [+0.014, +0.118] |
-| recall_at_10 | lexichunk | sentence_split | 30 | +0.111 | [+0.006, +0.233] | 1.000 | 0.121 | 0.341 | [+0.076, +0.139] |
-| recall_at_10 | lexichunk_contextual | fixed_size | 30 | +0.006 | [-0.106, +0.117] | 1.000 | 0.832 | 0.018 | [-0.035, +0.069] |
-| recall_at_10 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.078 | [-0.178, +0.000] | 1.000 | 0.102 | -0.302 | [-0.097, -0.056] |
-| recall_at_10 | lexichunk_contextual | rcts_512 | 30 | +0.039 | [-0.100, +0.183] | 1.000 | 0.569 | 0.095 | [-0.035, +0.090] |
-| recall_at_10 | lexichunk_contextual | sentence_split | 30 | +0.072 | [-0.039, +0.200] | 1.000 | 0.196 | 0.217 | [+0.049, +0.090] |
-| recall_at_5 | lexichunk | fixed_size | 30 | +0.083 | [-0.083, +0.250] | 1.000 | 0.374 | 0.183 | [+0.062, +0.104] |
-| recall_at_5 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.072 | [-0.217, +0.067] | 1.000 | 0.281 | -0.183 | [-0.111, -0.049] |
-| recall_at_5 | lexichunk | rcts_512 | 30 | +0.089 | [-0.067, +0.250] | 1.000 | 0.275 | 0.198 | [+0.042, +0.132] |
-| recall_at_5 | lexichunk | sentence_split | 30 | +0.144 | [-0.039, +0.328] | 1.000 | 0.198 | 0.278 | [+0.083, +0.181] |
-| recall_at_5 | lexichunk_contextual | fixed_size | 30 | +0.000 | [-0.167, +0.167] | 1.000 | 1.000 | 0.000 | [-0.042, +0.062] |
-| recall_at_5 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.156 | [-0.311, -0.006] | 1.000 | 0.084 | -0.367 | [-0.194, -0.090] |
-| recall_at_5 | lexichunk_contextual | rcts_512 | 30 | +0.006 | [-0.122, +0.139] | 1.000 | 0.864 | 0.015 | [-0.062, +0.069] |
-| recall_at_5 | lexichunk_contextual | sentence_split | 30 | +0.061 | [-0.128, +0.250] | 1.000 | 0.409 | 0.116 | [-0.021, +0.139] |
+| precision_at_10 | lexichunk_contextual | rcts_512 | 30 | -0.003 | [-0.023, +0.013] | 1.000 | 0.705 | -0.068 | [-0.008, +0.004] |
+| precision_at_10 | lexichunk_contextual | sentence_split | 30 | -0.010 | [-0.033, +0.010] | 1.000 | 0.366 | -0.165 | [-0.017, -0.004] |
+| precision_at_5 | lexichunk | fixed_size | 30 | -0.013 | [-0.073, +0.047] | 1.000 | 0.660 | -0.081 | [-0.025, +0.008] |
+| precision_at_5 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.027 | [-0.067, +0.013] | 1.000 | 0.206 | -0.233 | [-0.042, -0.008] |
+| precision_at_5 | lexichunk | rcts_512 | 30 | +0.007 | [-0.020, +0.033] | 1.000 | 0.655 | 0.081 | [+0.000, +0.017] |
+| precision_at_5 | lexichunk | sentence_split | 30 | -0.000 | [-0.040, +0.040] | 1.000 | 1.000 | 0.000 | [-0.017, +0.008] |
+| precision_at_5 | lexichunk_contextual | fixed_size | 30 | -0.027 | [-0.087, +0.033] | 1.000 | 0.396 | -0.155 | [-0.042, -0.008] |
+| precision_at_5 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.040 | [-0.080, -0.007] | 1.000 | 0.058 | -0.363 | [-0.050, -0.033] |
+| precision_at_5 | lexichunk_contextual | rcts_512 | 30 | -0.007 | [-0.047, +0.027] | 1.000 | 0.705 | -0.068 | [-0.025, +0.017] |
+| precision_at_5 | lexichunk_contextual | sentence_split | 30 | -0.013 | [-0.060, +0.027] | 1.000 | 0.564 | -0.104 | [-0.025, +0.000] |
+| recall_at_10 | lexichunk | fixed_size | 30 | +0.017 | [-0.083, +0.117] | 1.000 | 0.785 | 0.060 | [-0.021, +0.042] |
+| recall_at_10 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.067 | [-0.167, +0.017] | 1.000 | 0.194 | -0.233 | [-0.104, -0.021] |
+| recall_at_10 | lexichunk | rcts_512 | 30 | +0.050 | [+0.000, +0.100] | 1.000 | 0.083 | 0.328 | [+0.042, +0.062] |
+| recall_at_10 | lexichunk | sentence_split | 30 | +0.083 | [-0.033, +0.200] | 1.000 | 0.238 | 0.238 | [+0.042, +0.125] |
+| recall_at_10 | lexichunk_contextual | fixed_size | 30 | +0.000 | [-0.100, +0.100] | 1.000 | 1.000 | 0.000 | [-0.042, +0.062] |
+| recall_at_10 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.083 | [-0.167, -0.017] | 1.000 | 0.059 | -0.361 | [-0.104, -0.062] |
+| recall_at_10 | lexichunk_contextual | rcts_512 | 30 | +0.033 | [-0.067, +0.133] | 1.000 | 0.577 | 0.114 | [+0.000, +0.083] |
+| recall_at_10 | lexichunk_contextual | sentence_split | 30 | +0.067 | [-0.033, +0.183] | 1.000 | 0.234 | 0.212 | [+0.021, +0.083] |
+| recall_at_5 | lexichunk | fixed_size | 30 | +0.039 | [-0.133, +0.211] | 1.000 | 0.754 | 0.078 | [-0.014, +0.090] |
+| recall_at_5 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.117 | [-0.267, +0.033] | 1.000 | 0.149 | -0.272 | [-0.167, -0.062] |
+| recall_at_5 | lexichunk | rcts_512 | 30 | +0.044 | [-0.061, +0.150] | 1.000 | 0.414 | 0.150 | [-0.007, +0.076] |
+| recall_at_5 | lexichunk | sentence_split | 30 | +0.100 | [-0.067, +0.267] | 1.000 | 0.305 | 0.216 | [+0.021, +0.167] |
+| recall_at_5 | lexichunk_contextual | fixed_size | 30 | +0.006 | [-0.161, +0.167] | 1.000 | 0.952 | 0.012 | [-0.021, +0.049] |
+| recall_at_5 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.150 | [-0.300, +0.000] | 1.000 | 0.083 | -0.359 | [-0.188, -0.104] |
+| recall_at_5 | lexichunk_contextual | rcts_512 | 30 | +0.011 | [-0.100, +0.117] | 1.000 | 0.892 | 0.037 | [-0.042, +0.076] |
+| recall_at_5 | lexichunk_contextual | sentence_split | 30 | +0.067 | [-0.100, +0.233] | 1.000 | 0.420 | 0.142 | [+0.000, +0.125] |
 
 **bge-base-en-v1.5** (56 tests, n = 30 queries each)
 
 | Metric | A | B | n | Δ | 95% CI | p (Holm) | p (Wilcoxon) | Effect size (d) | LODO range |
 |---|---|---|---|---|---|---|---|---|---|
-| mrr | lexichunk | fixed_size | 30 | +0.079 | [-0.066, +0.220] | 1.000 | 0.343 | 0.192 | [+0.029, +0.109] |
-| mrr | lexichunk | **rcts_1024 (size-matched control)** | 30 | +0.018 | [-0.136, +0.164] | 1.000 | 0.840 | 0.042 | [-0.072, +0.081] |
-| mrr | lexichunk | rcts_512 | 30 | +0.026 | [-0.084, +0.136] | 1.000 | 0.667 | 0.083 | [-0.009, +0.053] |
-| mrr | lexichunk | sentence_split | 30 | +0.114 | [-0.033, +0.262] | 1.000 | 0.152 | 0.272 | [+0.017, +0.149] |
-| mrr | lexichunk_contextual | fixed_size | 30 | -0.028 | [-0.159, +0.099] | 1.000 | 0.664 | -0.077 | [-0.047, -0.000] |
-| mrr | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.089 | [-0.220, +0.034] | 1.000 | 0.205 | -0.243 | [-0.139, -0.049] |
-| mrr | lexichunk_contextual | rcts_512 | 30 | -0.081 | [-0.183, +0.022] | 1.000 | 0.169 | -0.276 | [-0.103, -0.038] |
-| mrr | lexichunk_contextual | sentence_split | 30 | +0.007 | [-0.089, +0.104] | 1.000 | 0.971 | 0.026 | [-0.012, +0.030] |
-| ndcg_at_10 | lexichunk | fixed_size | 30 | +0.042 | [-0.063, +0.139] | 1.000 | 0.617 | 0.142 | [-0.007, +0.074] |
-| ndcg_at_10 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.022 | [-0.132, +0.081] | 1.000 | 0.678 | -0.074 | [-0.084, +0.037] |
-| ndcg_at_10 | lexichunk | rcts_512 | 30 | +0.033 | [-0.055, +0.124] | 1.000 | 0.410 | 0.131 | [+0.008, +0.060] |
-| ndcg_at_10 | lexichunk | sentence_split | 30 | +0.093 | [-0.022, +0.213] | 1.000 | 0.147 | 0.282 | [+0.027, +0.131] |
-| ndcg_at_10 | lexichunk_contextual | fixed_size | 30 | -0.015 | [-0.110, +0.076] | 1.000 | 0.807 | -0.055 | [-0.024, -0.001] |
-| ndcg_at_10 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.079 | [-0.168, +0.007] | 1.000 | 0.088 | -0.321 | [-0.112, -0.050] |
-| ndcg_at_10 | lexichunk_contextual | rcts_512 | 30 | -0.023 | [-0.116, +0.070] | 1.000 | 0.536 | -0.087 | [-0.057, +0.007] |
-| ndcg_at_10 | lexichunk_contextual | sentence_split | 30 | +0.037 | [-0.046, +0.124] | 1.000 | 0.468 | 0.151 | [+0.020, +0.052] |
-| precision_at_1 | lexichunk | fixed_size | 30 | +0.133 | [-0.100, +0.333] | 1.000 | 0.248 | 0.212 | [+0.042, +0.208] |
-| precision_at_1 | lexichunk | **rcts_1024 (size-matched control)** | 30 | +0.100 | [-0.133, +0.333] | 1.000 | 0.405 | 0.151 | [-0.042, +0.167] |
-| precision_at_1 | lexichunk | rcts_512 | 30 | +0.067 | [-0.100, +0.233] | 1.000 | 0.414 | 0.148 | [+0.000, +0.083] |
-| precision_at_1 | lexichunk | sentence_split | 30 | +0.167 | [-0.033, +0.367] | 1.000 | 0.132 | 0.281 | [+0.042, +0.208] |
-| precision_at_1 | lexichunk_contextual | fixed_size | 30 | -0.067 | [-0.267, +0.100] | 1.000 | 0.480 | -0.128 | [-0.125, +0.000] |
-| precision_at_1 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.100 | [-0.300, +0.100] | 1.000 | 0.317 | -0.183 | [-0.167, +0.000] |
-| precision_at_1 | lexichunk_contextual | rcts_512 | 30 | -0.133 | [-0.300, +0.033] | 1.000 | 0.157 | -0.263 | [-0.208, -0.083] |
-| precision_at_1 | lexichunk_contextual | sentence_split | 30 | -0.033 | [-0.200, +0.133] | 1.000 | 0.705 | -0.068 | [-0.083, +0.042] |
-| precision_at_10 | lexichunk | fixed_size | 30 | -0.013 | [-0.037, +0.010] | 1.000 | 0.344 | -0.196 | [-0.021, -0.004] |
-| precision_at_10 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.000 | [-0.010, +0.010] | 1.000 | 0.655 | -0.000 | [-0.004, +0.004] |
-| precision_at_10 | lexichunk | rcts_512 | 30 | -0.003 | [-0.030, +0.023] | 1.000 | 0.803 | -0.046 | [-0.004, +0.000] |
-| precision_at_10 | lexichunk | sentence_split | 30 | +0.010 | [-0.013, +0.033] | 1.000 | 0.553 | 0.151 | [+0.004, +0.017] |
-| precision_at_10 | lexichunk_contextual | fixed_size | 30 | -0.010 | [-0.037, +0.017] | 1.000 | 0.765 | -0.132 | [-0.021, +0.000] |
-| precision_at_10 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | +0.003 | [-0.013, +0.023] | 1.000 | 0.705 | 0.068 | [-0.004, +0.013] |
-| precision_at_10 | lexichunk_contextual | rcts_512 | 30 | +0.000 | [-0.023, +0.023] | 1.000 | 0.832 | 0.000 | [-0.004, +0.008] |
-| precision_at_10 | lexichunk_contextual | sentence_split | 30 | +0.013 | [-0.010, +0.040] | 1.000 | 0.305 | 0.183 | [+0.008, +0.017] |
-| precision_at_5 | lexichunk | fixed_size | 30 | -0.007 | [-0.047, +0.040] | 1.000 | 0.763 | -0.054 | [-0.017, +0.000] |
-| precision_at_5 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.007 | [-0.027, +0.013] | 1.000 | 0.564 | -0.104 | [-0.017, +0.008] |
-| precision_at_5 | lexichunk | rcts_512 | 30 | +0.007 | [-0.033, +0.053] | 1.000 | 0.783 | 0.054 | [+0.000, +0.017] |
-| precision_at_5 | lexichunk | sentence_split | 30 | +0.020 | [-0.020, +0.067] | 1.000 | 0.366 | 0.165 | [+0.008, +0.025] |
-| precision_at_5 | lexichunk_contextual | fixed_size | 30 | -0.027 | [-0.067, +0.020] | 1.000 | 0.248 | -0.212 | [-0.042, -0.017] |
-| precision_at_5 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.027 | [-0.053, -0.007] | 1.000 | 0.046 | -0.386 | [-0.033, -0.017] |
-| precision_at_5 | lexichunk_contextual | rcts_512 | 30 | -0.013 | [-0.053, +0.027] | 1.000 | 0.577 | -0.114 | [-0.017, -0.008] |
-| precision_at_5 | lexichunk_contextual | sentence_split | 30 | +0.000 | [-0.040, +0.047] | 1.000 | 1.000 | 0.000 | [+0.000, +0.000] |
-| recall_at_10 | lexichunk | fixed_size | 30 | +0.078 | [+0.011, +0.161] | 1.000 | 0.066 | 0.350 | [+0.042, +0.097] |
-| recall_at_10 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.022 | [-0.100, +0.033] | 1.000 | 0.655 | -0.114 | [-0.042, +0.014] |
-| recall_at_10 | lexichunk | rcts_512 | 30 | +0.083 | [+0.000, +0.183] | 1.000 | 0.096 | 0.314 | [+0.062, +0.104] |
-| recall_at_10 | lexichunk | sentence_split | 30 | +0.144 | [+0.028, +0.278] | 1.000 | 0.039 | 0.417 | [+0.097, +0.181] |
-| recall_at_10 | lexichunk_contextual | fixed_size | 30 | +0.061 | [-0.056, +0.183] | 1.000 | 0.336 | 0.183 | [+0.014, +0.118] |
-| recall_at_10 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.039 | [-0.122, +0.022] | 1.000 | 0.285 | -0.183 | [-0.062, +0.014] |
-| recall_at_10 | lexichunk_contextual | rcts_512 | 30 | +0.067 | [-0.050, +0.183] | 1.000 | 0.279 | 0.212 | [+0.042, +0.125] |
-| recall_at_10 | lexichunk_contextual | sentence_split | 30 | +0.128 | [+0.028, +0.244] | 1.000 | 0.044 | 0.406 | [+0.104, +0.160] |
-| recall_at_5 | lexichunk | fixed_size | 30 | +0.083 | [+0.017, +0.167] | 1.000 | 0.059 | 0.361 | [+0.062, +0.104] |
-| recall_at_5 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.033 | [-0.117, +0.033] | 1.000 | 0.414 | -0.148 | [-0.062, +0.021] |
-| recall_at_5 | lexichunk | rcts_512 | 30 | +0.072 | [-0.022, +0.172] | 1.000 | 0.114 | 0.262 | [+0.049, +0.111] |
-| recall_at_5 | lexichunk | sentence_split | 30 | +0.150 | [+0.033, +0.283] | 1.000 | 0.037 | 0.400 | [+0.104, +0.188] |
-| recall_at_5 | lexichunk_contextual | fixed_size | 30 | +0.017 | [-0.083, +0.117] | 1.000 | 0.785 | 0.060 | [-0.021, +0.062] |
-| recall_at_5 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.100 | [-0.200, -0.017] | 1.000 | 0.063 | -0.363 | [-0.125, -0.062] |
-| recall_at_5 | lexichunk_contextual | rcts_512 | 30 | +0.006 | [-0.078, +0.100] | 1.000 | 0.891 | 0.022 | [-0.021, +0.028] |
-| recall_at_5 | lexichunk_contextual | sentence_split | 30 | +0.083 | [-0.033, +0.217] | 1.000 | 0.163 | 0.238 | [+0.062, +0.104] |
+| mrr | lexichunk | fixed_size | 30 | +0.003 | [-0.091, +0.098] | 1.000 | 0.886 | 0.012 | [-0.044, +0.042] |
+| mrr | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.057 | [-0.181, +0.069] | 1.000 | 0.546 | -0.161 | [-0.145, +0.007] |
+| mrr | lexichunk | rcts_512 | 30 | -0.049 | [-0.138, +0.029] | 1.000 | 0.356 | -0.204 | [-0.082, -0.024] |
+| mrr | lexichunk | sentence_split | 30 | +0.039 | [-0.081, +0.168] | 1.000 | 0.704 | 0.108 | [-0.056, +0.086] |
+| mrr | lexichunk_contextual | fixed_size | 30 | -0.079 | [-0.175, -0.001] | 1.000 | 0.138 | -0.314 | [-0.099, -0.043] |
+| mrr | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.140 | [-0.270, -0.015] | 1.000 | 0.041 | -0.387 | [-0.202, -0.116] |
+| mrr | lexichunk_contextual | rcts_512 | 30 | -0.131 | [-0.248, -0.022] | 1.000 | 0.036 | -0.414 | [-0.149, -0.081] |
+| mrr | lexichunk_contextual | sentence_split | 30 | -0.044 | [-0.144, +0.048] | 1.000 | 0.530 | -0.160 | [-0.055, -0.020] |
+| ndcg_at_10 | lexichunk | fixed_size | 30 | +0.002 | [-0.067, +0.071] | 1.000 | 0.909 | 0.009 | [-0.048, +0.024] |
+| ndcg_at_10 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.062 | [-0.154, +0.032] | 1.000 | 0.211 | -0.235 | [-0.125, -0.012] |
+| ndcg_at_10 | lexichunk | rcts_512 | 30 | -0.007 | [-0.071, +0.057] | 1.000 | 1.000 | -0.036 | [-0.032, +0.010] |
+| ndcg_at_10 | lexichunk | sentence_split | 30 | +0.053 | [-0.041, +0.158] | 1.000 | 0.469 | 0.186 | [-0.013, +0.081] |
+| ndcg_at_10 | lexichunk_contextual | fixed_size | 30 | -0.061 | [-0.134, -0.001] | 1.000 | 0.117 | -0.320 | [-0.076, -0.053] |
+| ndcg_at_10 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.125 | [-0.222, -0.030] | 1.000 | 0.020 | -0.458 | [-0.170, -0.103] |
+| ndcg_at_10 | lexichunk_contextual | rcts_512 | 30 | -0.069 | [-0.144, +0.002] | 1.000 | 0.129 | -0.331 | [-0.088, -0.038] |
+| ndcg_at_10 | lexichunk_contextual | sentence_split | 30 | -0.010 | [-0.072, +0.056] | 1.000 | 0.649 | -0.053 | [-0.019, -0.001] |
+| precision_at_1 | lexichunk | fixed_size | 30 | -0.033 | [-0.200, +0.133] | 1.000 | 0.705 | -0.068 | [-0.125, +0.042] |
+| precision_at_1 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.067 | [-0.267, +0.133] | 1.000 | 0.527 | -0.114 | [-0.208, +0.042] |
+| precision_at_1 | lexichunk | rcts_512 | 30 | -0.100 | [-0.233, +0.033] | 1.000 | 0.180 | -0.248 | [-0.167, -0.042] |
+| precision_at_1 | lexichunk | sentence_split | 30 | +0.000 | [-0.167, +0.167] | 1.000 | 1.000 | 0.000 | [-0.125, +0.083] |
+| precision_at_1 | lexichunk_contextual | fixed_size | 30 | -0.133 | [-0.267, -0.033] | 1.000 | 0.046 | -0.386 | [-0.167, -0.083] |
+| precision_at_1 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.167 | [-0.333, +0.000] | 1.000 | 0.059 | -0.361 | [-0.250, -0.125] |
+| precision_at_1 | lexichunk_contextual | rcts_512 | 30 | -0.200 | [-0.367, -0.033] | 1.000 | 0.034 | -0.413 | [-0.250, -0.125] |
+| precision_at_1 | lexichunk_contextual | sentence_split | 30 | -0.100 | [-0.233, +0.033] | 1.000 | 0.180 | -0.248 | [-0.125, -0.083] |
+| precision_at_10 | lexichunk | fixed_size | 30 | -0.017 | [-0.043, +0.007] | 1.000 | 0.275 | -0.238 | [-0.021, -0.012] |
+| precision_at_10 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.003 | [-0.017, +0.010] | 1.000 | 0.655 | -0.081 | [-0.008, +0.000] |
+| precision_at_10 | lexichunk | rcts_512 | 30 | -0.007 | [-0.033, +0.013] | 1.000 | 0.739 | -0.096 | [-0.012, +0.000] |
+| precision_at_10 | lexichunk | sentence_split | 30 | +0.007 | [-0.010, +0.023] | 1.000 | 0.480 | 0.128 | [+0.000, +0.013] |
+| precision_at_10 | lexichunk_contextual | fixed_size | 30 | -0.027 | [-0.050, -0.003] | 1.000 | 0.066 | -0.386 | [-0.033, -0.017] |
+| precision_at_10 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.013 | [-0.030, +0.000] | 1.000 | 0.102 | -0.307 | [-0.021, -0.008] |
+| precision_at_10 | lexichunk_contextual | rcts_512 | 30 | -0.017 | [-0.043, +0.003] | 1.000 | 0.197 | -0.238 | [-0.021, -0.012] |
+| precision_at_10 | lexichunk_contextual | sentence_split | 30 | -0.003 | [-0.020, +0.013] | 1.000 | 0.705 | -0.068 | [-0.004, +0.000] |
+| precision_at_5 | lexichunk | fixed_size | 30 | -0.027 | [-0.067, +0.013] | 1.000 | 0.206 | -0.233 | [-0.033, -0.017] |
+| precision_at_5 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.027 | [-0.067, +0.007] | 1.000 | 0.157 | -0.263 | [-0.033, -0.017] |
+| precision_at_5 | lexichunk | rcts_512 | 30 | -0.013 | [-0.053, +0.020] | 1.000 | 0.480 | -0.128 | [-0.025, +0.000] |
+| precision_at_5 | lexichunk | sentence_split | 30 | +0.000 | [-0.033, +0.033] | 1.000 | 1.000 | 0.000 | [-0.017, +0.017] |
+| precision_at_5 | lexichunk_contextual | fixed_size | 30 | -0.060 | [-0.100, -0.020] | 0.515 | 0.007 | -0.561 | [-0.067, -0.050] |
+| precision_at_5 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.060 | [-0.107, -0.020] | 1.000 | 0.014 | -0.503 | [-0.075, -0.050] |
+| precision_at_5 | lexichunk_contextual | rcts_512 | 30 | -0.047 | [-0.087, -0.013] | 1.000 | 0.020 | -0.463 | [-0.058, -0.042] |
+| precision_at_5 | lexichunk_contextual | sentence_split | 30 | -0.033 | [-0.067, +0.000] | 1.000 | 0.059 | -0.361 | [-0.042, -0.025] |
+| recall_at_10 | lexichunk | fixed_size | 30 | +0.033 | [-0.033, +0.100] | 1.000 | 0.317 | 0.183 | [+0.021, +0.062] |
+| recall_at_10 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.067 | [-0.133, -0.017] | 1.000 | 0.046 | -0.386 | [-0.083, -0.042] |
+| recall_at_10 | lexichunk | rcts_512 | 30 | +0.039 | [-0.017, +0.100] | 1.000 | 0.131 | 0.232 | [+0.028, +0.049] |
+| recall_at_10 | lexichunk | sentence_split | 30 | +0.100 | [+0.017, +0.200] | 1.000 | 0.063 | 0.363 | [+0.042, +0.125] |
+| recall_at_10 | lexichunk_contextual | fixed_size | 30 | -0.017 | [-0.100, +0.067] | 1.000 | 0.705 | -0.068 | [-0.042, +0.021] |
+| recall_at_10 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.117 | [-0.217, -0.033] | 1.000 | 0.020 | -0.463 | [-0.146, -0.083] |
+| recall_at_10 | lexichunk_contextual | rcts_512 | 30 | -0.011 | [-0.100, +0.067] | 1.000 | 1.000 | -0.047 | [-0.035, +0.028] |
+| recall_at_10 | lexichunk_contextual | sentence_split | 30 | +0.050 | [-0.033, +0.133] | 1.000 | 0.257 | 0.208 | [+0.042, +0.062] |
+| recall_at_5 | lexichunk | fixed_size | 30 | -0.017 | [-0.133, +0.083] | 1.000 | 0.679 | -0.054 | [-0.042, +0.021] |
+| recall_at_5 | lexichunk | **rcts_1024 (size-matched control)** | 30 | -0.133 | [-0.250, -0.033] | 1.000 | 0.038 | -0.417 | [-0.167, -0.083] |
+| recall_at_5 | lexichunk | rcts_512 | 30 | -0.028 | [-0.144, +0.072] | 1.000 | 0.750 | -0.089 | [-0.076, +0.007] |
+| recall_at_5 | lexichunk | sentence_split | 30 | +0.050 | [-0.067, +0.167] | 1.000 | 0.450 | 0.151 | [-0.021, +0.083] |
+| recall_at_5 | lexichunk_contextual | fixed_size | 30 | -0.100 | [-0.233, +0.000] | 1.000 | 0.098 | -0.301 | [-0.125, -0.062] |
+| recall_at_5 | lexichunk_contextual | **rcts_1024 (size-matched control)** | 30 | -0.217 | [-0.367, -0.083] | 0.516 | 0.009 | -0.560 | [-0.271, -0.167] |
+| recall_at_5 | lexichunk_contextual | rcts_512 | 30 | -0.111 | [-0.206, -0.033] | 1.000 | 0.024 | -0.454 | [-0.139, -0.076] |
+| recall_at_5 | lexichunk_contextual | sentence_split | 30 | -0.033 | [-0.117, +0.067] | 1.000 | 0.480 | -0.128 | [-0.042, -0.021] |
 
 ### How to read this
 
 Mean chunk length by strategy — a retrieval comparison is only size-matched when these are close; otherwise an apparent win may just be a chunk-size effect:
 
 - `fixed_size`: 496 chars/chunk
-- `lexichunk`: 906 chars/chunk
-- `lexichunk_contextual`: 1105 chars/chunk
+- `lexichunk`: 552 chars/chunk
+- `lexichunk_contextual`: 755 chars/chunk
 - `rcts_1024`: 826 chars/chunk
 - `rcts_512`: 357 chars/chunk
 - `sentence_split`: 264 chars/chunk
@@ -332,37 +332,46 @@ Mean chunk length by strategy — a retrieval comparison is only size-matched wh
 
 A chunking benchmark that cannot tell two versions of the same chunker apart is not
 measuring the chunker. This is the check, run twice with everything except the LexiChunk
-build held fixed — same fixtures, same gold, same 30 queries, same seed (42), same two
+build held fixed — same fixtures, same gold, same 30 queries, same seed (0), same two
 embedding models. Both runs are committed: `results/lexichunk_baseline/`
-(`lexichunk_baseline@32078cd`, 0.8.0b1) and `results/lexichunk_fixed/`
-(`lexichunk_claude@36fcca9`, 0.9.0). Reproduce the table with `make compare-builds`.
+(`dev@32078cd`, 0.8.0b1) and `results/lexichunk_fixed/`
+(`release/0.9.0@0346a12`, 0.9.0). Reproduce the table with `make compare-builds`.
 
-| Measure (strategy `lexichunk`) | baseline `32078cd` | fixed `36fcca9` |
+| Measure (strategy `lexichunk`) | baseline — LexiChunk `0.8.0b1` `32078cd` | fixed — LexiChunk `0.9.0` `0346a12` |
 |---|---:|---:|
-| Chunks located in the source text (n = 5 documents) | 0.541 | 1.000 |
-| Leaf-clause fragmentation, lower is better (n = 5) | 0.677 | 0.064 |
-| Top-level over-merge, lower is better (n = 5) | 0.079 | 0.236 |
-| Heading attachment recall (n = 5) | 0.203 | 0.180 |
-| Definition attachment recall (n = 5) | 0.105 | 0.098 |
-| Cross-reference target recall (n = 5) | 0.139 | 0.350 |
-| Mean chunk length, chars (n = 5) | 802 | 906 |
-| P@1, all-MiniLM-L6-v2 (n = 30 queries) | 0.233 | 0.567 |
-| R@5, all-MiniLM-L6-v2 (n = 30 queries) | 0.267 | 0.833 |
-| MRR, all-MiniLM-L6-v2 (n = 30 queries) | 0.262 | 0.679 |
-| P@1, bge-base-en-v1.5 (n = 30 queries) | 0.200 | 0.733 |
-| R@5, bge-base-en-v1.5 (n = 30 queries) | 0.328 | 0.922 |
-| MRR, bge-base-en-v1.5 (n = 30 queries) | 0.276 | 0.812 |
-| _control_ `rcts_1024` MRR, all-MiniLM-L6-v2 | 0.724 | 0.724 |
-| _control_ `rcts_1024` MRR, bge-base-en-v1.5 | 0.794 | 0.794 |
+| Chunks located in the source text (n = 5 documents) | 0.686 | 1.000 |
+| Leaf-clause fragmentation (lower is better) (n = 5 documents) | 0.422 | 0.030 |
+| Top-level over-merge (lower is better) (n = 5 documents) | 0.040 | 0.020 |
+| Heading attachment recall (n = 5 documents) | 0.441 | 0.453 |
+| Definition attachment recall (n = 5 documents) | 0.092 | 0.082 |
+| Cross-reference target recall (n = 5 documents) | 0.139 | 0.774 |
+| Mean chunk length (chars) (n = 5 documents) | 514 | 552 |
+| P@1, all-MiniLM-L6-v2 (n = 30 queries) | 0.333 | 0.533 |
+| P@5, all-MiniLM-L6-v2 (n = 30 queries) | 0.107 | 0.200 |
+| R@5, all-MiniLM-L6-v2 (n = 30 queries) | 0.467 | 0.789 |
+| MRR, all-MiniLM-L6-v2 (n = 30 queries) | 0.408 | 0.666 |
+| NDCG@10, all-MiniLM-L6-v2 (n = 30 queries) | 0.421 | 0.656 |
+| P@1, bge-base-en-v1.5 (n = 30 queries) | 0.467 | 0.567 |
+| P@5, bge-base-en-v1.5 (n = 30 queries) | 0.120 | 0.213 |
+| R@5, bge-base-en-v1.5 (n = 30 queries) | 0.517 | 0.822 |
+| MRR, bge-base-en-v1.5 (n = 30 queries) | 0.542 | 0.737 |
+| NDCG@10, bge-base-en-v1.5 (n = 30 queries) | 0.525 | 0.728 |
+| _control_: `rcts_1024` MRR, all-MiniLM-L6-v2 | 0.724 | 0.724 |
+| _control_: `rcts_1024` MRR, bge-base-en-v1.5 | 0.794 | 0.794 |
 | Anchored-evidence recall (n = 12 answerable) | 0.892 | 0.976 |
 | Anchored-evidence precision (n = 12 answerable) | 0.164 | 0.255 |
 
-**The harness discriminates between LexiChunk builds.** In the baseline run every one of the
-112 statistical comparisons is significant after Holm correction; in the fixed run none is.
-The control rows are the reason to believe the difference is the dependency and not the
-harness: `rcts_1024` never touches LexiChunk, and its numbers are identical to three decimal
-places across the two runs. The anchored-evidence benchmark moves in the same direction on
-its own separate ground truth, which is a second, independent confirmation.
+**The harness discriminates between LexiChunk builds, but not uniformly.** In the baseline
+run 61 of the 112 statistical comparisons are significant after Holm correction; in the fixed
+run none is. The control rows are the reason to believe part of the remaining difference is
+the dependency and not the harness: `rcts_1024` never touches LexiChunk, and its numbers are
+identical to three decimal places across the two runs. The anchored-evidence benchmark moves
+in the same direction on its own separate ground truth, which is a second, independent
+confirmation — but see the retrieval caveat above: against the size-matched `rcts_1024`/
+`rcts_512` controls, the *fixed* build's own MRR delta is negative under both embedding
+models and every interval contains zero (Holm p = 1.000 throughout), so this table shows the
+fixed build is a large, mostly-significant improvement over the baseline build, not that
+LexiChunk beats a size-matched splitter.
 
 That last row only exists because of a change made during reconciliation: the
 anchored-evidence benchmark previously called `LegalChunker.sanitize()` unconditionally, a
@@ -372,12 +381,21 @@ run against the build you want to compare against reports nothing at all.
 
 **What is actually being measured here.** Most of the gap is one thing: the baseline build
 emitted chunk text that is not a contiguous substring of the source, because it prepended a
-normalised heading breadcrumb to continuation chunks. Only 54% of its chunks could be located
+normalised heading breadcrumb to continuation chunks. Only 69% of its chunks could be located
 in the document at all, and a chunk with no span can never overlap a gold clause's span, so
 it can never be judged relevant. That is a real defect and this harness is the right
 instrument for catching it — but it is a *localisation* failure, not evidence that the fixed
 build retrieves better in a way a user would feel. The comparison that speaks to user-visible
 retrieval quality is the one against the size-matched control above, and that one is null.
+
+The cross-reference target recall row (0.139 -> 0.774) additionally mixes two different
+things: a chunker version change *and* a harness scoring fix landed in this same branch (the
+gold identifier normaliser now folds a roman-numeral article/section number to its arabic
+form, and the strategy adapter now emits a cross-reference's label together with its
+identifier — see the commit fixing `scaffolder.metrics.gold.normalize_identifier` and
+`scaffolder.chunking.strategies._xref_target_string`). Some of this row's movement is a real
+LexiChunk improvement and some is the harness no longer mis-scoring a correct answer as
+wrong; this run does not separate the two.
 
 `localization_rate` is the metric to watch when comparing chunker versions. It is the only
 one in the structural table that moved by more than a rounding error between these two
@@ -592,7 +610,7 @@ are written to build-named directories instead, so a local run never overwrites 
 behind the tables above:
 
 ```bash
-SCAFFOLDER_LEXICHUNK_COMMIT=$(git -C /path/to/lexichunk rev-parse --short HEAD)   python -m scaffolder benchmark-embed --json --seed 42   --models all-MiniLM-L6-v2,bge-base-en-v1.5   --output-dir results/lexichunk_fixed
+SCAFFOLDER_LEXICHUNK_COMMIT=$(git -C /path/to/lexichunk rev-parse --short HEAD)   python -m scaffolder benchmark-embed --json --seed 0   --models all-MiniLM-L6-v2,bge-base-en-v1.5   --output-dir results/lexichunk_fixed
 ```
 
 Select a different embedding model or strategy set without editing source:

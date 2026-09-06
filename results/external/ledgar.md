@@ -6,9 +6,9 @@ Dataset `coastalcph/lex_glue` (config `ledgar`) at revision `c23fdff1a6bf74e0e1a
 
 | System                    | Accuracy (95% CI)  | Macro-F1 (95% CI)  | Seconds |
 | ------------------------- | ------------------ | ------------------ | ------- |
-| lexichunk-keyword         | 39.6% [38.0, 41.2] | 42.5% [40.7, 44.1] | 0.7     |
+| lexichunk-keyword         | 39.6% [38.0, 41.2] | 42.5% [40.7, 44.1] | 0.4     |
 | majority (boilerplate)    | 21.6% [20.3, 22.8] | 1.9% [1.8, 2.0]    | 0.0     |
-| tfidf+logreg (supervised) | 90.8% [89.9, 91.7] | 89.9% [88.5, 91.0] | 21.5    |
+| tfidf+logreg (supervised) | 90.8% [89.9, 91.7] | 89.9% [88.5, 91.0] | 18.5    |
 
 ### Per-class scores — lexichunk-keyword
 

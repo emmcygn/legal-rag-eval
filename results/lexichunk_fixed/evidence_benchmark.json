@@ -105,18 +105,18 @@
     "title": "Synthetic contract evidence challenge"
   },
   "evaluator": {
-    "package_tree_sha256": "7f630301b57e66551311192b008c3a073c0bcdb0e1d28470c618ee7f50d2521f",
+    "package_tree_sha256": "7b26af7e7a2cb1dbc9c758d760df2d2227faf94c0f242f4dd465fedb755b1927",
     "version": "1.0.0"
   },
   "lexichunk": {
-    "package_tree_sha256": "b8b98f4df465f5a8b6ee6903f28177a4d0072ee18aa6d3b6c29a4166db9ff8c4",
+    "package_tree_sha256": "4ebec80f3d7fe396f398b8743ee76c2ad0cb767e676e4e1d81a4df86541355de",
     "version": "0.9.0"
   },
   "metric_versions": {
     "evidence_coverage": "source_span_coverage_v1",
     "lexical_ranker": "cosine_term_frequency_v1"
   },
-  "payload_sha256": "c5aa6118ec282f239619d9f15f4696915b3f7cdb2cd29bcb61b7eed33c704633",
+  "payload_sha256": "20d872777c12676064c5591f02a2ac3ccd4c95569e57b26c6b9930fd65306544",
   "report_version": "evidence_benchmark_report_v1",
   "results": {
     "lexichunk": [

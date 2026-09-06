@@ -18,8 +18,8 @@ their raw output to `results/external/`.
 | How accurate is the keyword clause classifier? | **39.6%** accuracy, **42.5%** macro-F1 on 3,955 LEDGAR test provisions |
 | Is that good? | Roughly double the 21.6% majority-class floor, and less than half the 90.8% a TF-IDF + logistic regression baseline reaches on the same items |
 | Does higher confidence mean higher accuracy? | Directionally yes (Spearman 0.375), but the curve is not monotonic and the model is badly under-confident; ECE 0.113 |
-| Do LexiChunk's boundaries preserve gold answer spans? | **83.7%** vs **72.1%** for `RecursiveCharacterTextSplitter` at the same mean chunk length — a genuine +11.6pp |
-| Does LexiChunk find contract structure on real filings? | Only sometimes: 14% of CUAD contracts yield >= 5 top-level clauses under the `us` profile; 48% get no usable hierarchy at all |
+| Do LexiChunk's boundaries preserve gold answer spans? | **81.2%** vs **72.1%** for `RecursiveCharacterTextSplitter` at the same mean chunk length — a genuine +9.1pp |
+| Does LexiChunk find contract structure on real filings? | Better than before under `us`, still partial: 45% of CUAD contracts yield >= 5 top-level clauses (up from 13% on 0.8.0b1, re-run fresh — the 0.9.0 bare-decimal heading fix); 31% still get no usable hierarchy at all. The `uk` profile moved too, in the other direction: 31% now vs 42% on 0.8.0b1 |
 | Does it crash on real filings? | No. Zero exceptions across 150 real SEC contracts |
 
 ## Results
@@ -34,9 +34,9 @@ classes.
 
 | System | Accuracy (95% CI) | Macro-F1 (95% CI) | Seconds |
 | --- | --- | --- | --- |
-| **lexichunk-keyword** | **39.6% [38.0, 41.2]** | **42.5% [40.7, 44.1]** | 0.5 |
+| **lexichunk-keyword** | **39.6% [38.0, 41.2]** | **42.5% [40.7, 44.1]** | 0.4 |
 | majority (`boilerplate`) | 21.6% [20.3, 22.8] | 1.9% [1.8, 2.0] | 0.0 |
-| tfidf+logreg (supervised) | 90.8% [89.9, 91.7] | 89.9% [88.5, 91.0] | 30.4 |
+| tfidf+logreg (supervised) | 90.8% [89.9, 91.7] | 89.9% [88.5, 91.0] | 18.5 |
 
 The keyword classifier is unambiguously doing real work — 39.6% is 18 points
 clear of the majority floor, and 42.5% macro-F1 against the majority
@@ -111,42 +111,60 @@ chars.
 
 | Strategy | Containment (95% CI) | Mean chunk chars | Chunks/contract | Length-matched grid | Lift | s/contract |
 | --- | --- | --- | --- | --- | --- | --- |
-| lexichunk-512tok | 98.1% [97.5, 98.6] | 1,306 | 36.3 | 81.8% | +16.3pp | 0.714 |
-| lexichunk-1024tok | 98.9% [98.5, 99.3] | 2,044 | 23.2 | 88.2% | +10.7pp | 0.670 |
-| **lexichunk-128tok** | **83.7% [82.2, 85.2]** | 346 | 137.1 | 47.0% | **+36.7pp** | 0.656 |
-| **rcts-512** | **72.1% [70.2, 74.0]** | 382 | 123.0 | 49.9% | +22.2pp | 0.007 |
-| rcts-1024 | 89.3% [88.1, 90.6] | 744 | 63.4 | 69.5% | +19.9pp | 0.005 |
+| lexichunk-512tok | 98.3% [97.7, 98.7] | 993 | 47.8 | 76.4% | +21.8pp | 0.073 |
+| lexichunk-1024tok | 99.0% [98.6, 99.4] | 1,231 | 38.5 | 80.7% | +18.3pp | 0.067 |
+| **lexichunk-128tok** | **81.2% [79.6, 82.8]** | 306 | 155.2 | 43.7% | **+37.5pp** | 0.077 |
+| **rcts-512** | **72.1% [70.2, 74.0]** | 382 | 123.0 | 49.9% | +22.2pp | 0.006 |
+| rcts-1024 | 89.3% [88.1, 90.6] | 744 | 63.4 | 69.5% | +19.9pp | 0.004 |
 | sentence-window-3 | 98.9% [98.5, 99.3] | 647 | 109.3 | 65.6% | +33.3pp | 0.001 |
 
 **How many chunks a gold span is split across:**
 
 | Strategy | 1 | 2 | 3 | 4+ | Mean |
 | --- | --- | --- | --- | --- | --- |
-| lexichunk-512tok | 98.1% | 1.6% | 0.2% | 0.0% | 1.02 |
-| lexichunk-1024tok | 98.9% | 0.9% | 0.1% | 0.0% | 1.01 |
-| lexichunk-128tok | 83.7% | 12.0% | 2.4% | 2.0% | 1.25 |
+| lexichunk-512tok | 98.3% | 1.5% | 0.2% | 0.0% | 1.02 |
+| lexichunk-1024tok | 99.0% | 0.8% | 0.2% | 0.0% | 1.01 |
+| lexichunk-128tok | 81.2% | 13.6% | 2.8% | 2.4% | 1.30 |
 | rcts-512 | 72.1% | 24.4% | 2.6% | 0.9% | 1.33 |
 | rcts-1024 | 89.3% | 10.0% | 0.4% | 0.2% | 1.12 |
 | sentence-window-3 | 54.7% | 44.4% | 0.8% | 0.1% | 1.47 |
+
+Chunks per contract rose and mean chunk length shrank for every `lexichunk-*`
+row relative to a **fresh, same-harness 0.8.0b1 run** (`lexichunk-512tok`:
+2,106 -> 993 mean chars, 33.8 -> 47.8 chunks/contract; `lexichunk-1024tok`:
+3,091 -> 1,231; `lexichunk-128tok`: 737 -> 306). This follows from the
+jurisdiction/structure fix below: on the 46% of these filings where 0.8.0b1
+found no usable structure, it produced chunks sized against the raw
+`max_chunk_size` token ceiling regardless of clause boundaries — the largest
+chunks it can legally emit; 0.9.0 recognises far more of the real heading
+structure and stops chunks at clause boundaries below that ceiling, so its
+chunks are consistently smaller. Per-contract latency did **not** meaningfully
+change (0.8.0b1: 0.075/0.071/0.105s for 512/1024/128tok; 0.9.0: 0.073/0.067/
+0.077s) — this correction supersedes an earlier draft of this document that
+compared 0.9.0's fresh latency against a stale 0.66–0.71s figure from a
+much older harness snapshot and reported a false ~10x speedup; see the
+"One version, mostly" note under Threats to validity. Containment and lift
+move only slightly because both are dominated by chunk *length*, and larger
+0.8.0b1 chunks trivially contain more (see the artefact discussion below).
 
 ### CUAD — structure recall and cost
 
 | Metric | Value |
 | --- | --- |
-| Contracts with >= 5 **top-level** clauses | 14 (14.0%) |
-| Contracts with >= 5 nodes at **any** level | 52 (52.0%) |
-| Fell back to flat text | 48 (48.0%) |
-| Mean / median top-level nodes | 2.8 / 1 |
-| Mean / median total nodes | 22.8 / 6 |
-| Contracts yielding a single chunk | 5 |
+| Contracts with >= 5 **top-level** clauses | 45 (45.0%) |
+| Contracts with >= 5 nodes at **any** level | 69 (69.0%) |
+| Fell back to flat text | 31 (31.0%) |
+| Mean / median top-level nodes | 7.6 / 3 |
+| Mean / median total nodes | 54.1 / 12 |
+| Contracts yielding a single chunk | 4 |
 | **Exceptions during parsing** | **0** |
 
 Same contracts, both jurisdiction profiles:
 
 | Measure | `us` | `uk` |
 | --- | --- | --- |
-| Parse rate (>= 5 top-level clauses) | 14.0% | **31.0%** |
-| Mean top-level nodes | 2.8 | **4.8** |
+| Parse rate (>= 5 top-level clauses) | **45.0%** | 31.0% |
+| Mean top-level nodes | **7.6** | 4.8 |
 
 ## Interpretation
 
@@ -212,54 +230,90 @@ calibration claim.
 ### What containment does and does not show
 
 **It shows** that LexiChunk's boundaries are better placed than a character
-splitter's. At matched mean chunk length (~350–380 chars), LexiChunk contains
-83.7% of gold spans against RecursiveCharacterTextSplitter's 72.1% — a 11.6pp
+splitter's. At matched mean chunk length (~310–380 chars), LexiChunk contains
+81.2% of gold spans against RecursiveCharacterTextSplitter's 72.1% — a 9.1pp
 gap with non-overlapping confidence intervals. Fragmentation tells the same
-story: 24.4% of gold spans are split across two `rcts-512` chunks versus 12.0%
-for the length-matched LexiChunk. That is a real, defensible win.
+story: 24.4% of gold spans are split across two `rcts-512` chunks versus 13.6%
+for the length-matched LexiChunk. That is a real, defensible win, though
+narrower than the 11.6pp gap measured against 0.8.0b1.
 
 **It does not show** that LexiChunk is the best chunker here, and the headline
-98.1% number is largely an artefact.
+98.3% number is largely an artefact.
 
 * *The length confound is severe.* `max_chunk_size` is in **tokens**, so
-  `lexichunk-512tok` produces chunks averaging 1,306 characters — 3.4x
-  `rcts-512`. A length-matched fixed grid alone would score 81.8% on those
-  spans. Comparing "LexiChunk at 512" with "RCTS at 512" is comparing 1,306
+  `lexichunk-512tok` produces chunks averaging 993 characters — 2.6x
+  `rcts-512`. A length-matched fixed grid alone would score 76.4% on those
+  spans. Comparing "LexiChunk at 512" with "RCTS at 512" is comparing 993
   characters with 382 and is not a meaningful comparison.
 * *Lift ranks the strategies differently from raw containment.* By raw
-  containment, `lexichunk-1024tok` (98.9%) beats `lexichunk-128tok` (83.7%). By
-  lift over a length-matched grid, the ordering reverses: +10.7pp against
-  +36.7pp. The 1024-token configuration is mostly winning by being long.
+  containment, `lexichunk-1024tok` (99.0%) beats `lexichunk-128tok` (81.2%). By
+  lift over a length-matched grid, the ordering reverses: +18.3pp against
+  +37.5pp. The 1024-token configuration is mostly winning by being long.
 * *Overlapping windows game the metric outright.* `sentence-window-3` ties for
   the best raw containment (98.9%) with chunks averaging 647 characters, purely
   because overlapping windows give every span multiple chances to land inside
   one. Its fragmentation column gives it away: only 54.7% of spans sit in a
-  single chunk, against 98.1% for `lexichunk-512tok`. Containment and
+  single chunk, against 98.3% for `lexichunk-512tok`. Containment and
   fragmentation must be read together, and neither alone is a retrieval result.
 * *Containment is necessary, not sufficient.* A chunk that contains a gold span
   can still fail to retrieve it — that depends on embeddings, chunk length, and
   what else is in the chunk. Containment is a ceiling on retrieval quality, not
   a measurement of it.
 
-### Structure recall is the weak point
+### Structure recall improved under `us`, but is still the weak point
 
-This is the most actionable finding. On real US SEC filings, LexiChunk's `us`
-jurisdiction profile recovers five or more top-level clauses in only **14%** of
-contracts, and 48% get no usable hierarchy at all (fewer than five nodes at any
-depth). A structure-aware chunker that cannot find the structure has quietly
-degraded to a slow fixed-size splitter — and it will not tell you that it has.
+**This run is against LexiChunk 0.9.0, which fixed one bug this section
+originally reported against 0.8.0b1** (issue 1 in
+[`results/external/lexichunk_issues.md`](../results/external/lexichunk_issues.md),
+a snapshot of the original 0.8.0b1 finding and not itself rewritten): the `us`
+jurisdiction profile required a literal `Section N` / `ARTICLE N` marker and
+missed the bare decimal heading style (`1. Definitions.` / `1.1 ...`) that
+dominates US commercial drafting.
 
-The `uk` profile more than doubles the top-level parse rate on the *same US
-contracts* (31.0% vs 14.0%). The bare decimal heading style that dominates US
-commercial drafting (`1. Definitions.` / `1.1 ...`) is recognised by the `uk`
-profile and missed by `us`, which appears to require a literal `Section N` or
-`ARTICLE N` marker. Following the obvious advice — "it's a US contract, pass
-`us`" — makes results worse. This is filed as issue 1 in
-[`results/external/lexichunk_issues.md`](../results/external/lexichunk_issues.md).
+To measure the fix's actual effect, this document's `us`/`uk` figures for
+0.8.0b1 were **re-run fresh against the current harness** rather than quoted
+from the original (older) `lexichunk_issues.md` snapshot, because the harness's
+own CUAD eval code has changed since that snapshot was written (see the
+sampling/latency note below) — comparing a fresh 0.9.0 run against a
+never-re-run 0.8.0b1 number would confound the LexiChunk fix with unrelated
+harness changes. On that fresh, same-harness baseline: `us` recovered five or
+more top-level clauses in **13.0%** of contracts (mean 2.9 top-level nodes),
+against **42.0%** for `uk` on the *same* filings (mean 8.7) — the profile
+named for the jurisdiction was the worse choice for it, and both figures are
+close to but not identical to the original snapshot's 14.0%/31.0% (a
+difference in the harness, not in LexiChunk 0.8.0b1 itself, which was not
+recompiled between the two measurements).
 
-Cost is the other consideration: LexiChunk averages 0.66–0.71 s per contract
-against 0.005–0.007 s for `RecursiveCharacterTextSplitter`, roughly 100x, with
-a worst case of 20.6 s on one 292k-character filing.
+0.9.0 now recognises bare-decimal headings under `us` too: on the same 100
+CUAD contracts, `us` recovers five or more top-level clauses in **45.0%** of
+contracts — a 3.5x improvement over the fresh 13.0% baseline — and now
+*exceeds* `uk`. Only 31% fall back to flat text entirely, down from 46%. But
+**the `uk` profile itself got *worse* on these same US filings between the two
+builds** — 42.0% (0.8.0b1) down to 31.0% (0.9.0) — which this document does
+not have an explanation for; it is filed as a new, second finding rather than
+folded into the `us` story, and is worth a follow-up before treating "try `uk`
+as a fallback" (below) as safe advice against 0.9.0 specifically. A
+structure-aware chunker that cannot find the structure has quietly degraded to
+a slow fixed-size splitter on the remaining fraction, and it will not tell you
+that it has; the `us` improvement is real progress, not a closed issue.
+
+**Cost did not meaningfully change.** 0.9.0 averages 0.067–0.077 s per
+contract on these strategies; a fresh, same-harness 0.8.0b1 run averages
+0.071–0.105 s — comparable, not the ~10x gap an earlier draft of this document
+reported from comparing 0.9.0's fresh timing against a stale 0.66–0.71 s
+figure carried over from the original, much older harness snapshot. That
+comparison was wrong and has been corrected here. The historical 100x-slower,
+20.6s-worst-case comparison against `RecursiveCharacterTextSplitter` in
+`lexichunk_issues.md` is from that same older snapshot and was not re-run for
+`RecursiveCharacterTextSplitter` in this pass either; treat it as stale until
+both sides are re-measured together.
+
+Mean chunk length also moved for `lexichunk-*` alone between the two builds —
+0.8.0b1's `lexichunk-512tok` averages 2,106 characters against 0.9.0's 993 —
+because on contracts where 0.8.0b1 finds no usable structure it still emits
+chunks sized up against the raw `max_chunk_size` token ceiling, while 0.9.0
+increasingly stops at real clause boundaries below that ceiling. See the
+containment section above for how this feeds into the raw containment number.
 
 ### Robustness
 
@@ -299,7 +353,24 @@ adjusting the offsets. Full list, with reproducers, in
 * **Sampling.** 100 of 510 CUAD contracts and 5,000 of 10,000 LEDGAR test rows,
   both seeded at 0. Confidence intervals reflect that sampling; they do not
   reflect the choice of dataset or mapping.
-* **One version.** All numbers are LexiChunk `0.8.0b1`.
+* **One version for the headline numbers; a fresh, same-harness comparison run
+  for the CUAD structure-recall claim only.** The headline LEDGAR and CUAD
+  tables above are LexiChunk `0.9.0` (commit `0346a12`). The CUAD
+  structure-recall section additionally reports a **freshly re-run** 0.8.0b1
+  (`32078cd`) comparison — not the numbers this document originally
+  published — because the harness's own CUAD eval code changed since that
+  original run, so quoting its old numbers against a fresh 0.9.0 run would
+  have confounded the LexiChunk fix with unrelated harness drift.
+* **LEDGAR cannot be run against the 0.8.0b1 baseline at all.**
+  `evals/ledgar_label_map.yaml` maps onto LexiChunk's current 31-value
+  `ClauseType` enum (including e.g. `insurance`); 0.8.0b1 has a 27-value enum
+  that predates several of those labels, so `python -m scaffolder.evals
+  ledgar` against a `.venv` pointed at 0.8.0b1 fails outright with
+  `ValueError: ... maps to 'insurance', which is not a LexiChunk ClauseType`.
+  The LEDGAR numbers above are therefore not a "both builds, unchanged"
+  result — they are the only version they can be computed against. The
+  historical `RecursiveCharacterTextSplitter` cost comparison in the
+  structure-recall section was not re-run and is labelled stale there.
 
 ## Paragraph for LexiChunk's README
 
@@ -324,21 +395,24 @@ README. Every number is from this document.
 > the curve is not monotonic.
 >
 > **Boundary quality (CUAD).** On 100 CUAD contracts (2,458 expert-annotated
-> answer spans), comparing chunkers at matched mean chunk length (~350 chars),
-> **83.7% of gold spans fall wholly inside a single LexiChunk chunk versus
-> 72.1% for `RecursiveCharacterTextSplitter`**, and LexiChunk splits half as
-> many spans across two chunks (12.0% vs 24.4%). Note that raw containment
-> rewards longer chunks: `max_chunk_size` is measured in tokens, so
-> `max_chunk_size=512` yields ~1,300-character chunks and a correspondingly
-> higher 98.1% containment.
+> answer spans), comparing chunkers at matched mean chunk length (~310–380
+> chars), **81.2% of gold spans fall wholly inside a single LexiChunk chunk
+> versus 72.1% for `RecursiveCharacterTextSplitter`**, and LexiChunk splits
+> roughly half as many spans across two chunks (13.6% vs 24.4%). Note that raw
+> containment rewards longer chunks: `max_chunk_size` is measured in tokens, so
+> `max_chunk_size=512` yields ~1,000-character chunks and a correspondingly
+> higher 98.3% containment.
 >
 > **Robustness.** Zero exceptions across 150 real SEC contract filings.
 >
-> **Known limitation.** Structure detection on real US filings is weaker than
-> the rest: only 14% of CUAD contracts yield five or more top-level clauses
-> under `jurisdiction="us"`, and the `uk` profile does better on the same US
-> documents (31%) because it recognises the bare `1. / 1.1` heading style. If
-> your contracts use that style, try both profiles.
+> **Known limitation.** Structure detection on real US filings is improved in
+> 0.9.0 under `jurisdiction="us"` but still partial: 45% of CUAD contracts
+> yield five or more top-level clauses (up from 13% on a fresh 0.8.0b1 run),
+> and 31% still fall back to flat text. The `uk` profile moved the other way
+> on the same documents (31% now vs 42% on 0.8.0b1) and is no longer clearly a
+> better fallback than it was — if your contracts are not parsing well under
+> `us`, try `uk` too, but verify on your own documents rather than assuming
+> it still wins by the old margin.
 >
 > Full methodology, per-class numbers and reproduction commands:
 > `docs/external_evals.md` (this file).
@@ -458,6 +532,10 @@ byte for byte.
 
 ---
 
-*Generated by `scaffolder.evals` against LexiChunk 0.8.0b1. Raw output:
+*Generated by `scaffolder.evals` (`--seed 0`) against LexiChunk 0.9.0, commit
+`0346a12`. The CUAD structure-recall section's 0.8.0b1 (`32078cd`) comparison
+numbers come from a fresh same-harness re-run kept only in this document's
+prose, not committed under `results/external/`. Raw output for the headline
+0.9.0 tables:
 [`results/external/ledgar.json`](../results/external/ledgar.json),
 [`results/external/cuad.json`](../results/external/cuad.json).*

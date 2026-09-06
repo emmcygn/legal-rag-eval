@@ -270,7 +270,7 @@ def train_tfidf_baseline(
     start = time.perf_counter()
     pipeline = make_pipeline(
         TfidfVectorizer(sublinear_tf=True, ngram_range=(1, 2), min_df=2, max_features=200_000),
-        LogisticRegression(max_iter=1000, random_state=seed, n_jobs=1),
+        LogisticRegression(max_iter=1000, random_state=seed),
     )
     pipeline.fit([i.text for i in train_items], [i.gold for i in train_items])
     preds = [str(p) for p in pipeline.predict([i.text for i in test_items])]

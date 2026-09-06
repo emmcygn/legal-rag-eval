@@ -154,26 +154,34 @@ class StructureResult:
     parse_rate: float
     fell_back: int
     fallback_rate: float
+    parsed_any_level: int
+    parse_rate_any_level: float
     mean_top_level_nodes: float
     median_top_level_nodes: float
     mean_total_nodes: float
+    median_total_nodes: float
     single_chunk_contracts: int
     exceptions: int
+    jurisdiction_comparison: dict[str, float] | None = None
 
     def as_dict(self) -> dict[str, Any]:
         """Return a JSON-friendly mapping."""
         return {
             "min_clauses": self.min_clauses,
             "contracts": self.contracts,
-            "parsed": self.parsed,
-            "parse_rate": self.parse_rate,
+            "parsed_top_level": self.parsed,
+            "parse_rate_top_level": self.parse_rate,
             "fell_back": self.fell_back,
             "fallback_rate": self.fallback_rate,
+            "parsed_any_level": self.parsed_any_level,
+            "parse_rate_any_level": self.parse_rate_any_level,
             "mean_top_level_nodes": self.mean_top_level_nodes,
             "median_top_level_nodes": self.median_top_level_nodes,
             "mean_total_nodes": self.mean_total_nodes,
+            "median_total_nodes": self.median_total_nodes,
             "single_chunk_contracts": self.single_chunk_contracts,
             "exceptions": self.exceptions,
+            "jurisdiction_comparison": self.jurisdiction_comparison,
         }
 
 
@@ -417,17 +425,34 @@ def evaluate_structure(
 ) -> StructureResult:
     """Measure how often LexiChunk recovers real clause structure on CUAD.
 
-    A contract counts as *parsed* when ``parse_structure`` returns at least
-    ``min_clauses`` top-level (level 0) nodes; anything less means the parser
-    effectively fell back to treating the filing as flat text, which is the
-    failure mode that matters for a structure-aware chunker.
+    Two thresholds are reported, because the strict one alone would overstate
+    the failure:
+
+    * *top level* — at least ``min_clauses`` level-0 nodes, i.e. the parser
+      identified the contract's numbered sections as sections;
+    * *any level* — at least ``min_clauses`` nodes at any depth, i.e. it found
+      *some* hierarchy even if it never anchored a top level.
+
+    A contract below the "any level" bar has effectively been treated as flat
+    text, which is the failure mode that matters for a structure-aware chunker.
+
+    ``jurisdiction_comparison`` re-runs the parser under the alternative
+    jurisdiction profile, because a large gap between the two means the
+    numbering styles in the corpus are recognised by one profile and not the
+    other rather than being genuinely unstructured.
     """
     from lexichunk import LegalChunker
 
     chunker = LegalChunker(jurisdiction=jurisdiction, max_chunk_size=512)
+    alternative = "uk" if jurisdiction == "us" else "us"
+    other = LegalChunker(jurisdiction=alternative, max_chunk_size=512)
+
     top_counts: list[float] = []
     total_counts: list[float] = []
+    other_top_counts: list[float] = []
     parsed = 0
+    parsed_any = 0
+    other_parsed = 0
     single_chunk = 0
     exceptions = 0
 
@@ -445,22 +470,44 @@ def evaluate_structure(
         total_counts.append(float(len(nodes)))
         if top >= min_clauses:
             parsed += 1
+        if len(nodes) >= min_clauses:
+            parsed_any += 1
         if len(chunks) <= 1:
             single_chunk += 1
 
+        with suppress(Exception):
+            other_nodes = other.parse_structure(contract.text)
+            other_top = sum(1 for n in other_nodes if getattr(n, "level", -1) == 0)
+            other_top_counts.append(float(other_top))
+            if other_top >= min_clauses:
+                other_parsed += 1
+
     scored = len(top_counts)
+    comparison = None
+    if other_top_counts:
+        comparison = {
+            f"{jurisdiction}_parse_rate_top_level": parsed / scored if scored else 0.0,
+            f"{alternative}_parse_rate_top_level": other_parsed / len(other_top_counts),
+            f"{jurisdiction}_mean_top_level_nodes": mean(top_counts),
+            f"{alternative}_mean_top_level_nodes": mean(other_top_counts),
+        }
+
     return StructureResult(
         min_clauses=min_clauses,
         contracts=len(contracts),
         parsed=parsed,
         parse_rate=parsed / scored if scored else 0.0,
-        fell_back=scored - parsed,
-        fallback_rate=(scored - parsed) / scored if scored else 0.0,
+        fell_back=scored - parsed_any,
+        fallback_rate=(scored - parsed_any) / scored if scored else 0.0,
+        parsed_any_level=parsed_any,
+        parse_rate_any_level=parsed_any / scored if scored else 0.0,
         mean_top_level_nodes=mean(top_counts),
         median_top_level_nodes=_median(top_counts),
         mean_total_nodes=mean(total_counts),
+        median_total_nodes=_median(total_counts),
         single_chunk_contracts=single_chunk,
         exceptions=exceptions,
+        jurisdiction_comparison=comparison,
     )
 
 
@@ -596,17 +643,40 @@ def render_markdown(result: CuadResult) -> str:
             markdown_table(
                 ["Metric", "Value"],
                 [
-                    [f"Contracts with >= {st.min_clauses} top-level clauses", f"{st.parsed}"],
-                    ["Parse rate", f"{st.parse_rate * 100:.1f}%"],
+                    [
+                        f"Contracts with >= {st.min_clauses} TOP-LEVEL clauses",
+                        f"{st.parsed} ({st.parse_rate * 100:.1f}%)",
+                    ],
+                    [
+                        f"Contracts with >= {st.min_clauses} nodes at ANY level",
+                        f"{st.parsed_any_level} ({st.parse_rate_any_level * 100:.1f}%)",
+                    ],
                     ["Fell back to flat text", f"{st.fell_back} ({st.fallback_rate * 100:.1f}%)"],
-                    ["Mean top-level nodes", f"{st.mean_top_level_nodes:.1f}"],
-                    ["Median top-level nodes", f"{st.median_top_level_nodes:.0f}"],
-                    ["Mean total nodes", f"{st.mean_total_nodes:.1f}"],
+                    ["Mean / median top-level nodes",
+                     f"{st.mean_top_level_nodes:.1f} / {st.median_top_level_nodes:.0f}"],
+                    ["Mean / median total nodes",
+                     f"{st.mean_total_nodes:.1f} / {st.median_total_nodes:.0f}"],
                     ["Contracts yielding a single chunk", f"{st.single_chunk_contracts}"],
                     ["Exceptions during parsing", f"{st.exceptions}"],
                 ],
             )
         )
+        if st.jurisdiction_comparison:
+            lines += [
+                "",
+                "Same contracts, both jurisdiction profiles (a gap means the corpus's "
+                "numbering style is recognised by one profile and not the other):",
+                "",
+            ]
+            lines.append(
+                markdown_table(
+                    ["Measure", "Value"],
+                    [
+                        [k, f"{v * 100:.1f}%" if "rate" in k else f"{v:.1f}"]
+                        for k, v in st.jurisdiction_comparison.items()
+                    ],
+                )
+            )
 
     lines += ["", "### Failures", ""]
     if result.failures:

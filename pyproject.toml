@@ -53,6 +53,12 @@ voyage = [
 dashboard = [
     "streamlit>=1.30",
 ]
+# External, public-dataset evaluations (scaffolder.evals). Kept optional so the
+# core benchmark does not drag in Hugging Face `datasets` or scikit-learn.
+evals = [
+    "datasets>=2.18",
+    "scikit-learn>=1.3",
+]
 dev = [
     "ruff>=0.4",
     "mypy>=1.10",
@@ -61,7 +67,7 @@ dev = [
     "types-PyYAML>=6.0",
 ]
 all = [
-    "scaffolder[embeddings,voyage,dashboard,dev]",
+    "scaffolder[embeddings,voyage,dashboard,evals,dev]",
 ]
 
 [project.scripts]
@@ -93,6 +99,8 @@ module = [
     "voyageai.*",
     "streamlit.*",
     "plotly.*",
+    "datasets.*",
+    "sklearn.*",
 ]
 ignore_missing_imports = true
 

@@ -55,3 +55,8 @@ CLAUDE.md
 # OS
 .DS_Store
 Thumbs.db
+
+# External evaluations (work package A4): results/ is ignored above, but the
+# published external-eval artefacts are committed deliverables.
+!results/external/
+!results/external/**

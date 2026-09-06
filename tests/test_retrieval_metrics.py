@@ -8,7 +8,7 @@ rewritten concurrently) so relevance is entirely determined by the
 
 from __future__ import annotations
 
-from scaffolder.metrics.retrieval import (
+from legal_rag_eval.metrics.retrieval import (
     DEFAULT_MIN_OVERLAP_CHARS,
     compute_retrieval_metrics,
     drm_rate,
@@ -20,7 +20,7 @@ from scaffolder.metrics.retrieval import (
     recall_at_k,
     relevance_grade,
 )
-from scaffolder.models import (
+from legal_rag_eval.models import (
     AnnotatedQuery,
     Chunk,
     EmbeddingModelName,

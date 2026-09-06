@@ -1,19 +1,19 @@
 """Tests for the legacy, LexiChunk-derived structural metrics.
 
-``scaffolder.metrics.structural`` is superseded: every metric here scores a chunk set
+``legal_rag_eval.metrics.structural`` is superseded: every metric here scores a chunk set
 against ground truth extracted by running LexiChunk's own ``LegalChunker`` over the same
 text, which grades LexiChunk against itself and moves the yardstick for every baseline
 whenever LexiChunk's parser changes. These tests exist only to pin the legacy behaviour
 for provenance (old result JSON still deserializes into ``LegacyStructuralMetrics``).
 
 The metrics actually reported — scored against hand-checked gold annotations instead of
-a chunker's own output — live in ``scaffolder.metrics.gold`` and are tested in
+a chunker's own output — live in ``legal_rag_eval.metrics.gold`` and are tested in
 ``test_gold_metrics.py``.
 """
 
 from __future__ import annotations
 
-from scaffolder.metrics.structural import (
+from legal_rag_eval.metrics.structural import (
     _gt_cache,
     compute_legacy_structural_metrics,
     get_ground_truth,
@@ -23,7 +23,7 @@ from scaffolder.metrics.structural import (
     legacy_definition_preservation_rate,
     legacy_hierarchy_depth_retained,
 )
-from scaffolder.models import (
+from legal_rag_eval.models import (
     Chunk,
     ChunkSet,
     Document,

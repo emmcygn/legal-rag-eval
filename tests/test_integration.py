@@ -2,16 +2,16 @@
 
 from __future__ import annotations
 
-from scaffolder.chunking import ChunkingPipeline, get_all_strategies, get_strategy
-from scaffolder.chunking.pipeline import attach_spans
-from scaffolder.fixtures import FixtureManager
-from scaffolder.gold import load_gold
-from scaffolder.metrics.gold import compute_gold_structural_metrics
-from scaffolder.metrics.structural import compute_legacy_structural_metrics
-from scaffolder.models import StrategyName
+from legal_rag_eval.chunking import ChunkingPipeline, get_all_strategies, get_strategy
+from legal_rag_eval.chunking.pipeline import attach_spans
+from legal_rag_eval.fixtures import FixtureManager
+from legal_rag_eval.gold import load_gold
+from legal_rag_eval.metrics.gold import compute_gold_structural_metrics
+from legal_rag_eval.metrics.structural import compute_legacy_structural_metrics
+from legal_rag_eval.models import StrategyName
 
 # Strategies that emit verbatim substrings of the document: every chunk should be
-# exactly locatable by scaffolder.gold.locate_chunks.
+# exactly locatable by legal_rag_eval.gold.locate_chunks.
 _EXACT_LOCALIZATION_STRATEGIES = (
     StrategyName.RCTS_512,
     StrategyName.RCTS_1024,
@@ -73,7 +73,7 @@ class TestFullStructuralPipeline:
 
     def test_baseline_chunks_are_fully_located(self) -> None:
         """Baselines emit verbatim substrings of the sanitised document, so
-        ChunkingPipeline.run's attach_spans (scaffolder.chunking.pipeline) must locate
+        ChunkingPipeline.run's attach_spans (legal_rag_eval.chunking.pipeline) must locate
         every one of their chunks: char_start/char_end are never None for rcts_512,
         rcts_1024, or fixed_size on the real fixtures.
         """
@@ -118,8 +118,8 @@ class TestUSDocumentGoldStructuralMetrics:
     ``heading_recall`` and ``xref_target_recall`` score exactly 0.0 for LexiChunk on
     both US fixtures (``us_msa``, ``us_terms_of_service``).
 
-    Root causes (both fixed together, see ``scaffolder.chunking.strategies`` and
-    ``scaffolder.metrics.gold.normalize_identifier``):
+    Root causes (both fixed together, see ``legal_rag_eval.chunking.strategies`` and
+    ``legal_rag_eval.metrics.gold.normalize_identifier``):
 
     1. ``LexiChunkStrategy``/``LexiChunkContextualStrategy`` built one ``LegalChunker``
        per strategy instance, shared across every fixture document, so it was always

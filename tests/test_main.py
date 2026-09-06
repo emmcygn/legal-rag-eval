@@ -1,7 +1,7 @@
-"""Tests for benchmark result reconstruction used by `scaffolder.__main__`'s `report` command.
+"""Tests for benchmark result reconstruction used by `legal_rag_eval.__main__`'s `report` command.
 
-`reconstruct_benchmark_result` used to live in `scaffolder.__main__` as a private function; it
-now lives in `scaffolder.reporting.json_export` (the reporting package owns JSON round-tripping,
+`reconstruct_benchmark_result` used to live in `legal_rag_eval.__main__` as a private function; it
+now lives in `legal_rag_eval.reporting.json_export` (the reporting package owns JSON round-tripping,
 and `__main__` just calls it) — see that module for the implementation and its docstring for
 what is (and, for `comparisons`, deliberately is not) reconstructed.
 """
@@ -13,8 +13,8 @@ import subprocess
 import sys
 from typing import TYPE_CHECKING
 
-from scaffolder.models import StrategyName
-from scaffolder.reporting.json_export import reconstruct_benchmark_result
+from legal_rag_eval.models import StrategyName
+from legal_rag_eval.reporting.json_export import reconstruct_benchmark_result
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -133,8 +133,8 @@ class TestReconstructBenchmarkResult:
 
     def test_roundtrip_via_json(self, tmp_path: Path) -> None:
         """Export a result to JSON, then reconstruct it."""
-        from scaffolder.models import BenchmarkResult, GoldStructuralMetrics
-        from scaffolder.reporting.json_export import export_json, load_json
+        from legal_rag_eval.models import BenchmarkResult, GoldStructuralMetrics
+        from legal_rag_eval.reporting.json_export import export_json, load_json
 
         original = BenchmarkResult(
             timestamp="2026-03-18T00:00:00",
@@ -182,7 +182,7 @@ def test_primary_cli_runs_offline_anchored_benchmark(tmp_path: Path) -> None:
         [
             sys.executable,
             "-m",
-            "scaffolder",
+            "legal_rag_eval",
             "benchmark",
             "--output",
             str(output_path),

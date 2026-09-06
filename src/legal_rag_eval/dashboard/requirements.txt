@@ -1,0 +1,15 @@
+# Dashboard dependencies for hosts that require a requirements file (Streamlit Cloud and
+# similar). It installs this package with its `dashboard` extra rather than restating the
+# dependency list, so pyproject.toml stays the single place the dashboard's dependencies
+# are declared. The previous top-level requirements-dashboard.txt duplicated that list
+# and drifted: it still pinned LexiChunk to a git commit after pyproject had moved to the
+# PyPI release.
+#
+# pip resolves a relative path in a requirements file against the working directory, not
+# against this file, so run it from the repository root:
+#
+#     pip install -r src/legal_rag_eval/dashboard/requirements.txt
+#
+# From a checkout, `pip install -e ".[dashboard]"` and then `make dashboard` is the
+# supported entry point and this file is not needed.
+-e .[dashboard]

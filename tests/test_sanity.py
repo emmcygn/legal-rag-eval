@@ -5,7 +5,7 @@ that all metric values are within expected ranges and satisfy known
 invariants (e.g., recall monotonicity, precision trends).
 
 The structural metrics exercised here are the legacy, LexiChunk-derived ones
-(``scaffolder.metrics.structural``) -- retained for provenance. They are stored on
+(``legal_rag_eval.metrics.structural``) -- retained for provenance. They are stored on
 ``BenchmarkResult.legacy_structural_metrics``, not ``.structural_metrics`` (which now
 holds the gold-scored ``GoldStructuralMetrics``, tested in ``test_gold_metrics.py``).
 """
@@ -14,10 +14,10 @@ from __future__ import annotations
 
 import datetime
 
-from scaffolder.chunking import ChunkingPipeline, get_all_strategies
-from scaffolder.fixtures import FixtureManager
-from scaffolder.metrics.structural import compute_legacy_structural_metrics
-from scaffolder.models import BenchmarkResult, StrategyName, StructuralMetrics
+from legal_rag_eval.chunking import ChunkingPipeline, get_all_strategies
+from legal_rag_eval.fixtures import FixtureManager
+from legal_rag_eval.metrics.structural import compute_legacy_structural_metrics
+from legal_rag_eval.models import BenchmarkResult, StrategyName, StructuralMetrics
 
 
 def _build_structural_result() -> BenchmarkResult:
@@ -134,7 +134,7 @@ class TestCompositeScores:
 
 class TestChunkLocalization:
     """Every chunk carries a span attached uniformly by the pipeline
-    (see ``attach_spans`` in ``scaffolder.chunking.pipeline``), located by matching its
+    (see ``attach_spans`` in ``legal_rag_eval.chunking.pipeline``), located by matching its
     text against the sanitised document -- never by trusting a chunker's own offsets.
     """
 

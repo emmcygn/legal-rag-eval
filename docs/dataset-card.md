@@ -31,7 +31,7 @@ benchmark. Read it alongside the other two rather than instead of them:
 |---|---|---|---|
 | `synthetic-contracts-v1` (this card) | AI, unreviewed | 3 docs, 12 evidence spans, 15 queries | `benchmark` |
 | [`gold/`](../gold/) | regex seed over each document's own numbering, then hand-corrected ([`gold/CHANGES.md`](../gold/CHANGES.md)) | 5 docs, 365 clause spans, 90 terms, 171 cross-refs, 30 queries | `benchmark-structural`, `benchmark-embed` |
-| LEDGAR + CUAD ([external_evals.md](external_evals.md)) | independent third parties (LexGLUE annotators; Atticus Project lawyers) | 100 labels; 2,458 verified spans over 100 real SEC contracts | `python -m scaffolder.evals` |
+| LEDGAR + CUAD ([external_evals.md](external_evals.md)) | independent third parties (LexGLUE annotators; Atticus Project lawyers) | 100 labels; 2,458 verified spans over 100 real SEC contracts | `python -m legal_rag_eval.evals` |
 
 Where a claim needs labels this project did not write, the external evaluations are the
 ones to cite.

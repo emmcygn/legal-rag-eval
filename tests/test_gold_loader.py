@@ -1,4 +1,4 @@
-"""Unit tests for scaffolder.gold: loading, validation, and chunk localisation.
+"""Unit tests for legal_rag_eval.gold: loading, validation, and chunk localisation.
 
 Pure unit tests -- no dependency on real gold/*.json files or on lexichunk.
 Synthetic documents and gold dicts are built inline and written to tmp_path.
@@ -15,7 +15,7 @@ import pytest
 if TYPE_CHECKING:
     from pathlib import Path
 
-from scaffolder.gold import (
+from legal_rag_eval.gold import (
     ChunkSpan,
     GoldAnnotation,
     GoldClause,

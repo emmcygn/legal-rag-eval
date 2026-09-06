@@ -1,10 +1,10 @@
-"""Shared pytest fixtures for scaffolder tests."""
+"""Shared pytest fixtures for legal_rag_eval tests."""
 
 from __future__ import annotations
 
 import pytest
 
-from scaffolder.config import BenchmarkConfig
+from legal_rag_eval.config import BenchmarkConfig
 
 
 @pytest.fixture

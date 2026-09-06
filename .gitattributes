@@ -1,2 +1,11 @@
-src/scaffolder/data/*.json text eol=lf
-src/scaffolder/data/documents/*.txt text eol=lf
+# The anchored-evidence dataset and its documents are hashed by SHA-256 in the dataset
+# file itself, so a CRLF checkout on Windows would invalidate every hash.
+src/legal_rag_eval/data/*.json text eol=lf
+src/legal_rag_eval/data/documents/*.txt text eol=lf
+
+# Committed benchmark runs. They are evidence, not source: several megabytes of
+# machine-generated JSON that would otherwise be most of the repository by byte count and
+# would make GitHub call this a JSON project. `linguist-generated` keeps them out of the
+# language statistics and collapses them by default in diffs; they are still tracked,
+# still diffable on request, and still what the README's tables are rendered from.
+results/**/*.json linguist-generated=true

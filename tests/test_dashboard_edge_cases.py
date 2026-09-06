@@ -8,16 +8,16 @@ import pytest
 
 st = pytest.importorskip("streamlit")
 
-from scaffolder.dashboard.components import _highlight_terms  # noqa: E402
-from scaffolder.dashboard.page_compare import (  # noqa: E402
+from legal_rag_eval.dashboard.components import _highlight_terms  # noqa: E402
+from legal_rag_eval.dashboard.page_compare import (  # noqa: E402
     MAX_UPLOAD_SIZE_BYTES,
     MIN_DOCUMENT_CHARS,
     _validate_document,
     _validate_upload,
 )
-from scaffolder.dashboard.page_metrics import _validate_report  # noqa: E402
-from scaffolder.dashboard.page_retrieval import _render_hit  # noqa: E402
-from scaffolder.models import Document, DocumentType, Jurisdiction  # noqa: E402
+from legal_rag_eval.dashboard.page_metrics import _validate_report  # noqa: E402
+from legal_rag_eval.dashboard.page_retrieval import _render_hit  # noqa: E402
+from legal_rag_eval.models import Document, DocumentType, Jurisdiction  # noqa: E402
 
 
 def _make_document(text: str) -> Document:

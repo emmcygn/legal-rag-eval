@@ -13,8 +13,8 @@ from typing import TYPE_CHECKING
 import numpy as np
 import yaml
 
-from scaffolder.metrics.retrieval import is_relevant
-from scaffolder.models import (
+from legal_rag_eval.metrics.retrieval import is_relevant
+from legal_rag_eval.models import (
     AnnotatedQuery,
     Chunk,
     EmbeddingModelName,
@@ -23,8 +23,8 @@ from scaffolder.models import (
     RelevantSection,
     StrategyName,
 )
-from scaffolder.retrieval import IndexRegistry, RetrievalSimulator
-from scaffolder.retrieval.simulator import load_queries_from_yaml
+from legal_rag_eval.retrieval import IndexRegistry, RetrievalSimulator
+from legal_rag_eval.retrieval.simulator import load_queries_from_yaml
 
 if TYPE_CHECKING:
     from pathlib import Path

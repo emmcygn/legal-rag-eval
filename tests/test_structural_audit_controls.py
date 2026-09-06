@@ -8,8 +8,8 @@ from typing import TYPE_CHECKING
 import lexichunk
 import pytest
 
-import scaffolder.metrics.structural as structural
-from scaffolder.models import (
+import legal_rag_eval.metrics.structural as structural
+from legal_rag_eval.models import (
     Chunk,
     ChunkSet,
     Document,

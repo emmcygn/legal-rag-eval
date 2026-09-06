@@ -1,6 +1,6 @@
 {
   "document_id": "us_terms_of_service",
-  "source_file": "src/scaffolder/fixtures/documents/us_terms_of_service.txt",
+  "source_file": "src/legal_rag_eval/fixtures/documents/us_terms_of_service.txt",
   "text_sha256": "ef6b36ea2bf8d647a946b141ca6c3d690aad566e0dc2067c9951e03503c1df62",
   "n_chars": 25743,
   "numbering_style": "us_section_decimal",

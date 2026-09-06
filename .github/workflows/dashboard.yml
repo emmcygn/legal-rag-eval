@@ -4,21 +4,17 @@ on:
   push:
     branches: [master, main]
     paths:
-      - "src/scaffolder/dashboard/**"
-      - "src/scaffolder/evidence/**"
-      - "src/scaffolder/data/**"
+      - "src/legal_rag_eval/dashboard/**"
+      - "src/legal_rag_eval/evidence/**"
+      - "src/legal_rag_eval/data/**"
       - "pyproject.toml"
-      - "streamlit_app.py"
-      - "requirements-dashboard.txt"
   pull_request:
     branches: [master, main]
     paths:
-      - "src/scaffolder/dashboard/**"
-      - "src/scaffolder/evidence/**"
-      - "src/scaffolder/data/**"
+      - "src/legal_rag_eval/dashboard/**"
+      - "src/legal_rag_eval/evidence/**"
+      - "src/legal_rag_eval/data/**"
       - "pyproject.toml"
-      - "streamlit_app.py"
-      - "requirements-dashboard.txt"
 
 jobs:
   smoke-test:
@@ -35,16 +31,16 @@ jobs:
 
       - name: Import check
         run: |
-          python -c "from scaffolder.dashboard.app import main; print('app OK')"
-          python -c "from scaffolder.dashboard.page_compare import render_page; print('compare OK')"
-          python -c "from scaffolder.dashboard.page_retrieval import render_page; print('retrieval OK')"
-          python -c "from scaffolder.dashboard.page_metrics import render_page; print('metrics OK')"
-          python -c "from scaffolder.dashboard.components import render_chunk_card; print('components OK')"
-          python -c "from scaffolder.dashboard.compat import get_available_features; print('compat OK')"
+          python -c "from legal_rag_eval.dashboard.app import main; print('app OK')"
+          python -c "from legal_rag_eval.dashboard.page_compare import render_page; print('compare OK')"
+          python -c "from legal_rag_eval.dashboard.page_retrieval import render_page; print('retrieval OK')"
+          python -c "from legal_rag_eval.dashboard.page_metrics import render_page; print('metrics OK')"
+          python -c "from legal_rag_eval.dashboard.components import render_chunk_card; print('components OK')"
+          python -c "from legal_rag_eval.dashboard.compat import get_available_features; print('compat OK')"
 
       - name: Streamlit health check
         run: |
-          timeout 15 streamlit run streamlit_app.py --server.headless true --server.port 8501 &
+          timeout 15 streamlit run src/legal_rag_eval/dashboard/streamlit_app.py \n            --server.headless true --server.port 8501 &
           sleep 5
           curl -f http://localhost:8501/_stcore/health || exit 1
           echo "Dashboard health check passed"

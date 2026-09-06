@@ -1,8 +1,8 @@
-"""Unit tests for scaffolder.metrics.gold.
+"""Unit tests for legal_rag_eval.metrics.gold.
 
 Entirely synthetic: no dependency on real gold/*.json files or on lexichunk being
 installed. A small fake contract, a hand-built GoldAnnotation, and hand-built ChunkSets
-(with char_start/char_end already attached, as scaffolder.chunking.pipeline.attach_spans
+(with char_start/char_end already attached, as legal_rag_eval.chunking.pipeline.attach_spans
 would do) exercise every metric via character-span overlap only.
 """
 
@@ -12,14 +12,14 @@ import hashlib
 
 import pytest
 
-from scaffolder.gold import (
+from legal_rag_eval.gold import (
     GoldAnnotation,
     GoldClause,
     GoldCrossReference,
     GoldDefinedTerm,
     sanitize,
 )
-from scaffolder.metrics.gold import (
+from legal_rag_eval.metrics.gold import (
     aggregate_gold_metrics,
     chunk_size_cv,
     clause_fragmentation_rate,
@@ -31,7 +31,7 @@ from scaffolder.metrics.gold import (
     sub_clause_grouping_rate,
     top_level_over_merge_rate,
 )
-from scaffolder.models import (
+from legal_rag_eval.models import (
     Chunk,
     ChunkSet,
     Document,

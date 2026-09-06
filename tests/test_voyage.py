@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from scaffolder.embedding.voyage import VoyageEmbedder, VoyageEmbedderError
+from legal_rag_eval.embedding.voyage import VoyageEmbedder, VoyageEmbedderError
 
 
 class TestVoyageEmbedderInit:
@@ -105,7 +105,7 @@ class TestVoyageEmbedderEmbed:
         ]
         embedder._client = mock_client
 
-        with patch("scaffolder.embedding.voyage.time.sleep"):
+        with patch("legal_rag_eval.embedding.voyage.time.sleep"):
             result = embedder.embed(["test"])
         assert len(result) == 1
         assert mock_client.embed.call_count == 2
@@ -117,7 +117,7 @@ class TestVoyageEmbedderEmbed:
         embedder._client = mock_client
 
         with (
-            patch("scaffolder.embedding.voyage.time.sleep"),
+            patch("legal_rag_eval.embedding.voyage.time.sleep"),
             pytest.raises(VoyageEmbedderError, match="failed after"),
         ):
             embedder.embed(["test"])

@@ -1,6 +1,6 @@
 {
   "document_id": "eu_gdpr_excerpt",
-  "source_file": "src/scaffolder/fixtures/documents/eu_gdpr_excerpt.txt",
+  "source_file": "src/legal_rag_eval/fixtures/documents/eu_gdpr_excerpt.txt",
   "text_sha256": "06d5053c3304215343fd2b6ee943981fe280aa1b6004a37b90b07047b376ad9e",
   "n_chars": 5141,
   "numbering_style": "eu_regulation",

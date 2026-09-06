@@ -3,7 +3,7 @@ requires = ["setuptools>=77.0", "setuptools-scm>=8.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "scaffolder"
+name = "legal-rag-eval"
 version = "1.0.0"
 description = "Evaluation harness for legal-document chunking: anchored-evidence retrieval, gold-scored structural fidelity, and external LEDGAR/CUAD evaluations"
 readme = "README.md"
@@ -11,7 +11,7 @@ license = "MIT"
 license-files = ["LICENSE"]
 requires-python = ">=3.10"
 authors = [
-    {name = "SDK Scaffolder Team"}
+    {name = "Emmanuel Cuyugan"}
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -24,27 +24,32 @@ classifiers = [
 ]
 
 dependencies = [
-    # LexiChunk is not published on PyPI. Installing it by version specifier
-    # ("lexichunk>=0.1.0,<1.0") fails with 404, which breaks `pip install -e .`
-    # and every CI job, so pull it from source. Pinned to an exact commit rather
-    # than a branch so a clean clone resolves to the build these results were
-    # produced against. To develop against a local checkout, install the direct
-    # reference first and the editable one LAST -- installing the extras after the
-    # editable silently replaces it with the pinned wheel:
+    # LexiChunk is published on PyPI as of 0.9.0, so it is a normal version
+    # specifier again. It used to be a pinned git reference, because installing it
+    # by version resolved to a PyPI 404 and broke `pip install -e .` and every CI
+    # job. The floor is the release the committed runs in results/ were produced
+    # against; the ceiling stops a minor release from silently changing the
+    # chunker under a published number. Every result file also records the
+    # `lexichunk_version` that produced it, so provenance does not rely on this
+    # line alone.
+    #
+    # To compare a local LexiChunk checkout against the released build, install the
+    # extras FIRST and the editable checkout LAST -- installing the extras after the
+    # editable silently replaces it with the released wheel:
     #     pip install -e ".[dev]" && pip install -e ../lexichunk
-    "lexichunk @ git+https://github.com/emmcygn/lexichunk.git@397274a289e31eeb420a9c65d1e98c70db978d34",
+    "lexichunk>=0.9.0,<0.10",
     "langchain-text-splitters>=1.1.2,<2",
     "rich>=13.0,<14.0",
     "pyyaml>=6.0,<7.0",
     "numpy>=1.24,<2.0",
     "scipy>=1.10,<2.0",
     "jinja2>=3.1,<4.0",
-    # scaffolder.reporting.html imports plotly at module scope and `scaffolder
+    # legal_rag_eval.reporting.html imports plotly at module scope and `legal_rag_eval
     # report` is a documented command, so plotly is a core dependency, not a
     # dashboard-only one.
     "plotly>=5.18,<8",
-    # scaffolder.retrieval.index imports faiss at module scope, and
-    # scaffolder.retrieval.simulator (which every query-annotation check goes
+    # legal_rag_eval.retrieval.index imports faiss at module scope, and
+    # legal_rag_eval.retrieval.simulator (which every query-annotation check goes
     # through) imports that. Listing it under the `embeddings` extra meant
     # `pip install -e ".[dev]" && make test` -- the documented developer setup and
     # what CI runs -- could not even collect three test modules. FAISS is the
@@ -62,7 +67,7 @@ voyage = [
 dashboard = [
     "streamlit>=1.30",
 ]
-# External, public-dataset evaluations (scaffolder.evals). Kept optional so the
+# External, public-dataset evaluations (legal_rag_eval.evals). Kept optional so the
 # core benchmark does not drag in Hugging Face `datasets` or scikit-learn.
 evals = [
     "datasets>=2.18",
@@ -78,17 +83,19 @@ dev = [
     "types-PyYAML>=6.0",
 ]
 all = [
-    "scaffolder[embeddings,voyage,dashboard,evals,dev]",
+    "legal-rag-eval[embeddings,voyage,dashboard,evals,dev]",
 ]
 
 [project.scripts]
-scaffolder = "scaffolder.__main__:main"
+# The console script is the hyphenated distribution name; `python -m
+# legal_rag_eval` reaches the same entry point and stays supported.
+legal-rag-eval = "legal_rag_eval.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-scaffolder = [
+legal_rag_eval = [
     "data/*.json",
     "data/documents/*.txt",
     "fixtures/documents/*.txt",
@@ -99,9 +106,9 @@ scaffolder = [
 # The gold annotations and the queries anchored to them are data a consumer of an
 # installed wheel needs in order to reproduce a published number, so they ship
 # alongside the package rather than living only in the repo.
-"share/scaffolder/queries" = ["queries/*.yaml", "queries/schema.md"]
-"share/scaffolder/gold" = ["gold/*.json", "gold/SCHEMA.md", "gold/README.md"]
-"share/scaffolder/evals" = ["evals/*.yaml"]
+"share/legal-rag-eval/queries" = ["queries/*.yaml", "queries/schema.md"]
+"share/legal-rag-eval/gold" = ["gold/*.json", "gold/SCHEMA.md", "gold/README.md"]
+"share/legal-rag-eval/evals" = ["evals/*.yaml"]
 
 [tool.ruff]
 target-version = "py310"
@@ -149,10 +156,10 @@ implicit_reexport = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--cov=scaffolder --cov-report=term-missing --cov-fail-under=80"
+addopts = "--cov=legal_rag_eval --cov-report=term-missing --cov-fail-under=80"
 
 [tool.coverage.run]
-source = ["src/scaffolder"]
+source = ["src/legal_rag_eval"]
 # The Streamlit dashboard is excluded: it is UI glue exercised only by the dashboard
 # smoke workflow, and including it would flatter the coverage figure by ~1,700 statements.
-omit = ["src/scaffolder/dashboard/*"]
+omit = ["src/legal_rag_eval/dashboard/*"]

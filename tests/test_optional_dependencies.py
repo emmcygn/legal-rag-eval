@@ -10,7 +10,7 @@ PROJECT_ROOT = Path(__file__).parents[1]
 
 def test_plotly_is_a_core_dependency() -> None:
     """The standard HTML report must be installable without the dashboard extra."""
-    dependencies = requires("scaffolder") or []
+    dependencies = requires("legal_rag_eval") or []
 
     assert any(
         dependency.startswith("plotly") and "extra ==" not in dependency
@@ -21,7 +21,7 @@ def test_plotly_is_a_core_dependency() -> None:
 def test_reporting_package_imports_without_dashboard_dependency() -> None:
     """Importing reporting must not require Streamlit or other dashboard packages."""
     result = subprocess.run(
-        [sys.executable, "-c", "import scaffolder.reporting"],
+        [sys.executable, "-c", "import legal_rag_eval.reporting"],
         cwd=PROJECT_ROOT,
         capture_output=True,
         text=True,

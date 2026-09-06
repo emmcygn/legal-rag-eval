@@ -4,7 +4,7 @@ import math
 
 import pytest
 
-from scaffolder.evidence.lexical import SpanCandidate, rank_lexical, tokenize
+from legal_rag_eval.evidence.lexical import SpanCandidate, rank_lexical, tokenize
 
 
 def _candidate(

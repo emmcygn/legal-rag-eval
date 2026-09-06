@@ -5,12 +5,12 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from scaffolder.models import (
+from legal_rag_eval.models import (
     Chunk,
     EmbeddingModelName,
     StrategyName,
 )
-from scaffolder.retrieval import IndexRegistry, VectorIndex
+from legal_rag_eval.retrieval import IndexRegistry, VectorIndex
 
 
 def _random_embeddings(n: int, dim: int) -> np.ndarray:

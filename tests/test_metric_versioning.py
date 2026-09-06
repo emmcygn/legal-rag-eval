@@ -2,8 +2,8 @@
 
 import json
 
-from scaffolder.metrics.retrieval import compute_retrieval_metrics
-from scaffolder.models import (
+from legal_rag_eval.metrics.retrieval import compute_retrieval_metrics
+from legal_rag_eval.models import (
     AnnotatedQuery,
     BenchmarkResult,
     EmbeddingModelName,
@@ -11,7 +11,7 @@ from scaffolder.models import (
     RetrievalResult,
     StrategyName,
 )
-from scaffolder.reporting.json_export import export_json_string, reconstruct_benchmark_result
+from legal_rag_eval.reporting.json_export import export_json_string, reconstruct_benchmark_result
 
 
 def test_metric_version_survives_roundtrip_and_legacy_is_not_relabelled() -> None:

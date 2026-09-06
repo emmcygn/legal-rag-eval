@@ -35,11 +35,11 @@ differ, so they are listed separately.
 - With n = 30 queries, no retrieval comparison in the published run survives Holm
   correction in either direction.
 
-## External evaluations (`python -m scaffolder.evals`)
+## External evaluations (`make evals`, `python -m legal_rag_eval.evals`)
 
 - LEDGAR and CUAD carry independent human labels, which is their point, but neither was
   designed to evaluate chunking. LEDGAR provisions arrive isolated with no document
-  position, so position-derived clause types cannot be scored at all; 34 of its 100 labels
+  position, so position-derived clause types cannot be scored at all; 33 of its 100 labels
   are out of scope for the mapping and are reported as coverage rather than forced.
   The LEDGAR label mapping is itself a judgement call, documented per entry.
 - CUAD span containment rewards long chunks mechanically. It is reported against a

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from scaffolder.metrics.statistical import ComparisonResult
-from scaffolder.models import (
+from legal_rag_eval.metrics.statistical import ComparisonResult
+from legal_rag_eval.models import (
     BenchmarkResult,
     EmbeddingModelName,
     GoldStructuralMetrics,
@@ -13,7 +13,7 @@ from scaffolder.models import (
     RetrievalMetrics,
     StrategyName,
 )
-from scaffolder.reporting.html import render_html_report
+from legal_rag_eval.reporting.html import render_html_report
 
 if TYPE_CHECKING:
     from pathlib import Path

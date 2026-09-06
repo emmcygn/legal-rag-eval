@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 from rich.console import Console
 
-from scaffolder.models import (
+from legal_rag_eval.models import (
     BenchmarkResult,
     EmbeddingModelName,
     GoldStructuralMetrics,
@@ -17,14 +17,14 @@ from scaffolder.models import (
     SignificanceResult,
     StrategyName,
 )
-from scaffolder.reporting.cli import (
+from legal_rag_eval.reporting.cli import (
     render_benchmark,
     render_legacy_structural_table,
     render_significance_section,
     render_structural_table,
     render_summary_header,
 )
-from scaffolder.reporting.json_export import (
+from legal_rag_eval.reporting.json_export import (
     export_json,
     export_json_string,
     load_json,

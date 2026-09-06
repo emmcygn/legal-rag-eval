@@ -13,14 +13,14 @@ from pathlib import Path
 
 import pytest
 
-from scaffolder.gold import load_all_gold
-from scaffolder.queries import load_queries
-from scaffolder.retrieval.simulator import load_queries_from_yaml
+from legal_rag_eval.gold import load_all_gold
+from legal_rag_eval.queries import load_queries
+from legal_rag_eval.retrieval.simulator import load_queries_from_yaml
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 GOLD_DIR = REPO_ROOT / "gold"
 QUERY_DIR = REPO_ROOT / "queries"
-FIXTURE_DIR = REPO_ROOT / "src" / "scaffolder" / "fixtures" / "documents"
+FIXTURE_DIR = REPO_ROOT / "src" / "legal_rag_eval" / "fixtures" / "documents"
 
 MIN_QUERIES = 30
 MIN_QUERIES_PER_DOCUMENT = 6

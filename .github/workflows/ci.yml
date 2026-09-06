@@ -19,9 +19,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      # lexichunk is not on PyPI; pyproject pins it as a direct git reference, so pip
-      # clones it here. This is what makes `pip install -e ".[dev]"` work on a clean
-      # runner at all -- the previous version specifier resolved to a PyPI 404.
+      # lexichunk installs from PyPI (>=0.9.0,<0.10). It used to be a pinned git
+      # reference because a version specifier resolved to a PyPI 404, which meant a
+      # clean runner could not `pip install -e ".[dev]"` at all.
       - run: pip install -e ".[dev]"
       - run: make lint
 
@@ -88,18 +88,18 @@ jobs:
           import pathlib
           import sys
 
-          package = importlib.resources.files("scaffolder")
+          package = importlib.resources.files("legal_rag_eval")
           assert package.joinpath("data/synthetic_contracts_v1.json").is_file()
           assert package.joinpath("data/documents/synthetic_supply_agreement.txt").is_file()
           assert package.joinpath("fixtures/documents/uk_service_agreement.txt").is_file()
           assert package.joinpath("reporting/templates/report.html.j2").is_file()
-          assert (pathlib.Path(sys.prefix) / "share/scaffolder/queries/schema.md").is_file()
-          assert (pathlib.Path(sys.prefix) / "share/scaffolder/gold/us_msa.json").is_file()
+          assert (pathlib.Path(sys.prefix) / "share/legal-rag-eval/queries/schema.md").is_file()
+          assert (pathlib.Path(sys.prefix) / "share/legal-rag-eval/gold/us_msa.json").is_file()
           PY
       - name: Run installed wheel benchmark offline
         run: |
           cd "$RUNNER_TEMP"
-          "$GITHUB_WORKSPACE/wheel-venv/bin/python" -m scaffolder benchmark --output evidence.json
+          "$GITHUB_WORKSPACE/wheel-venv/bin/python" -m legal_rag_eval benchmark --output evidence.json
           "$GITHUB_WORKSPACE/wheel-venv/bin/python" -c "import json; data=json.load(open('evidence.json')); assert data['report_version']=='evidence_benchmark_report_v1'"
 
   benchmark-smoke:
@@ -146,7 +146,7 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install -e ".[dev]"
       - run: python -m pytest tests/test_evidence_schema.py tests/test_gold_annotations.py --no-cov
-      - run: python -m scaffolder benchmark --output results/evidence-benchmark.json
+      - run: python -m legal_rag_eval benchmark --output results/evidence-benchmark.json
 
   benchmark-retrieval:
     # Manual only: downloads embedding model weights (hundreds of MB) and takes minutes.
@@ -160,7 +160,7 @@ jobs:
           python-version: "3.11"
       - run: pip install -e ".[embeddings,dev]"
       - name: Full retrieval benchmark
-        run: python -m scaffolder benchmark-embed --json --seed 42
+        run: python -m legal_rag_eval benchmark-embed --json --seed 42
       - uses: actions/upload-artifact@v4
         with:
           name: retrieval-benchmark

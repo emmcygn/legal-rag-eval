@@ -6,7 +6,7 @@ import math
 
 import pytest
 
-from scaffolder.evals.classification import (
+from legal_rag_eval.evals.classification import (
     accuracy,
     calibration_curve,
     confusion_pairs,
@@ -14,7 +14,7 @@ from scaffolder.evals.classification import (
     per_class_scores,
     spearman,
 )
-from scaffolder.evals.common import (
+from legal_rag_eval.evals.common import (
     Interval,
     bootstrap_ci,
     deterministic_sample,

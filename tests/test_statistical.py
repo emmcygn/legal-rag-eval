@@ -6,7 +6,7 @@ import math
 
 import pytest
 
-from scaffolder.metrics.statistical import (
+from legal_rag_eval.metrics.statistical import (
     SIGNIFICANCE_METRICS,
     ComparisonResult,
     cohens_d_paired,
@@ -20,7 +20,7 @@ from scaffolder.metrics.statistical import (
     rank_biserial_correlation,
     wilcoxon_signed_rank,
 )
-from scaffolder.models import (
+from legal_rag_eval.models import (
     EmbeddingModelName,
     RetrievalMetrics,
     StrategyName,

@@ -3,7 +3,7 @@
 One JSON file per fixture document: `gold/<document_id>.json`.
 
 Annotations are **independent of LexiChunk**. They are derived from the document's own
-numbering by `scripts/build_gold.py` (a regex seeder) and then corrected by hand against the
+numbering by `tools/build_gold.py` (a regex seeder) and then corrected by hand against the
 document text. No LexiChunk output is consulted at any point. Corrections are logged in
 `gold/CHANGES.md`.
 
@@ -16,7 +16,7 @@ All `char_start` / `char_end` offsets index into the **sanitised** document text
 3. replace `\r\n` and lone `\r` with `\n`,
 4. apply Unicode NFC normalisation.
 
-This matches `LegalChunker._sanitize_input`. `scaffolder.gold.sanitize()` is the single
+This matches `LegalChunker._sanitize_input`. `legal_rag_eval.gold.sanitize()` is the single
 implementation used by the seeder, the loader, the validator and every metric.
 
 Offsets are Python slice semantics: `text[char_start:char_end]` is the annotated span, so
@@ -27,7 +27,7 @@ Offsets are Python slice semantics: `text[char_start:char_end]` is the annotated
 ```json
 {
   "document_id": "uk_service_agreement",
-  "source_file": "src/scaffolder/fixtures/documents/uk_service_agreement.txt",
+  "source_file": "src/legal_rag_eval/fixtures/documents/uk_service_agreement.txt",
   "text_sha256": "<sha256 of the sanitised text, hex>",
   "n_chars": 25681,
   "numbering_style": "uk_decimal",

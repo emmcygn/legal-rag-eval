@@ -11,12 +11,12 @@ if TYPE_CHECKING:
     from pathlib import Path
 import pytest
 
-from scaffolder.embedding import (
+from legal_rag_eval.embedding import (
     EmbeddingCache,
     EmbeddingPipeline,
     SentenceTransformerAdapter,
 )
-from scaffolder.models import Chunk, EmbeddingModelName, StrategyName
+from legal_rag_eval.models import Chunk, EmbeddingModelName, StrategyName
 
 # sentence-transformers is the ``[embeddings]`` extra, and these tests load a real model.
 # The CI test job installs ``[dev]`` only, so they skip there; the retrieval benchmark job
@@ -132,7 +132,7 @@ class TestEmbeddingPipeline:
 
     def test_voyage_without_key_raises(self) -> None:
         """Voyage model requires API key, so it raises without one."""
-        from scaffolder.embedding.voyage import VoyageEmbedderError
+        from legal_rag_eval.embedding.voyage import VoyageEmbedderError
 
         pipeline = EmbeddingPipeline(use_cache=False)
         with pytest.raises(VoyageEmbedderError):

@@ -44,14 +44,19 @@ coverage.xml
 # The contents are excluded rather than the directory itself, because git does not descend
 # into an excluded directory and the negations below would never be reached.
 results/*
+!results/README.md
 !results/*/
 results/*/*
 !results/*/*.json
 !results/external/*.md
+# `make evals-smoke` writes synthetic runs beside the real ones, into a directory the
+# negations above track. The numbers are meaningless by design, so keep them out.
+results/external/*_smoke.json
+results/external/*_smoke.md
 .cache/
 *.faiss
 requirements.lock
-scaffolder.yaml
+legal-rag-eval.yaml
 
 # Internal build artifacts (agent plans, research, task tracking)
 plans/

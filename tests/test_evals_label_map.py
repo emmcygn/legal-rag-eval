@@ -14,7 +14,7 @@ from typing import TYPE_CHECKING
 import pytest
 import yaml
 
-from scaffolder.evals.label_map import (
+from legal_rag_eval.evals.label_map import (
     DEFAULT_MAP_PATH,
     OUT_OF_SCOPE,
     load_label_map,

@@ -6,13 +6,13 @@ from io import StringIO
 
 from rich.console import Console
 
-from scaffolder.models import (
+from legal_rag_eval.models import (
     EmbeddingModelName,
     RetrievalMetrics,
     SignificanceResult,
     StrategyName,
 )
-from scaffolder.reporting.cli import render_retrieval_table
+from legal_rag_eval.reporting.cli import render_retrieval_table
 
 
 def _make_retrieval_metrics(

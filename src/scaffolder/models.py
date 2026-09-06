@@ -266,6 +266,7 @@ class BenchmarkResult:
     significance_results: list[SignificanceResult] = field(default_factory=list)
     strategy_results: list[StrategyResult] = field(default_factory=list)
     config: dict[str, object] = field(default_factory=dict)
+    seed: int | None = None  # random seed pinned for this run, recorded for reproducibility
 
 
 # -- Protocols --------------------------------------------------------------

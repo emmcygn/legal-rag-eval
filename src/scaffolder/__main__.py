@@ -71,6 +71,12 @@ def main() -> None:
         help="Skip embedding evaluation (structural only)",
     )
     parser.add_argument(
+        "--seed",
+        type=int,
+        default=SEED,
+        help=f"Random seed pinned before the run (default: {SEED})",
+    )
+    parser.add_argument(
         "-v",
         "--verbose",
         action="store_true",
@@ -93,7 +99,8 @@ def main() -> None:
 
 def run_structural_benchmark(args: argparse.Namespace) -> None:
     """Run structural-only benchmark (no embeddings)."""
-    _pin_seeds()
+    seed = getattr(args, "seed", SEED)
+    _pin_seeds(seed)
     fm = FixtureManager()
     documents = fm.load_all()
 
@@ -106,6 +113,7 @@ def run_structural_benchmark(args: argparse.Namespace) -> None:
         strategies=[sr.strategy for sr in strategy_results],
         documents=[d.id for d in documents],
         strategy_results=strategy_results,
+        seed=seed,
     )
 
     # Compute structural metrics for each (strategy, document) pair
@@ -144,7 +152,8 @@ def _get_available_models() -> list[EmbeddingModelName]:
 
 def run_retrieval_benchmark(args: argparse.Namespace) -> None:
     """Run full benchmark including embeddings and retrieval."""
-    _pin_seeds()
+    seed = getattr(args, "seed", SEED)
+    _pin_seeds(seed)
     from scaffolder.embedding import EmbeddingPipeline
     from scaffolder.metrics.retrieval import compute_retrieval_metrics
     from scaffolder.metrics.statistical import compute_all_significance
@@ -166,6 +175,7 @@ def run_retrieval_benchmark(args: argparse.Namespace) -> None:
         documents=[d.id for d in documents],
         models=models,
         strategy_results=strategy_results,
+        seed=seed,
     )
 
     # Phase 2: Structural metrics

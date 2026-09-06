@@ -1,84 +1,81 @@
 document_id: us_msa
 queries:
   - id: us_msa_q1
-    text: "What intellectual property rights does each party retain?"
-    failure_mode: clause_fragmentation
-    relevant_sections:
-      - section_id: "clause_ip_ownership"
+    text: "How is a party's 'Affiliate' defined in this agreement?"
+    category: definition_lookup
+    relevant_clauses:
+      - identifier: "section_1.01(a)"
         relevance: 3
-        description: "IP ownership and rights retention clause"
-      - section_id: "clause_ip_license"
-        relevance: 2
-        description: "License grants related to IP"
-      - section_id: "clause_work_product"
-        relevance: 2
-        description: "Work product ownership and assignment"
+        description: "Section 1.01(a) — 'Affiliate' is defined by reference to direct or indirect control, meaning ownership of more than 50% of voting securities or the power to direct management."
     notes: >
-      Tests clause fragmentation. IP clauses in MSAs often span multiple
-      sub-sections covering ownership, licensing, and work product. Fragmenting
-      these gives an incomplete picture of IP rights.
+      Unlike the two UK fixtures, this MSA numbers each definition as its own
+      sub-clause, so 'Affiliate' resolves to a tight leaf identifier rather than a
+      single block covering every defined term.
 
   - id: us_msa_q2
-    text: "How is a Force Majeure Event defined and what are its consequences?"
-    failure_mode: lost_definitions
-    relevant_sections:
-      - section_id: "definition_force_majeure"
+    text: "Is Provider allowed to hand off parts of the work to a subcontractor, or must it do everything itself?"
+    category: clause_lookup
+    relevant_clauses:
+      - identifier: "section_2.05"
         relevance: 3
-        description: "Definition of Force Majeure Event"
-      - section_id: "clause_force_majeure"
-        relevance: 3
-        description: "Force majeure clause with notice and consequences"
+        description: "Section 2.05 (Subcontractors) — Provider may engage subcontractors but remains responsible for their performance."
     notes: >
-      Tests lost definitions. The query requires both the definition of
-      "Force Majeure Event" and the operative clause describing consequences.
-      Baseline chunkers often place these in separate chunks without linkage.
+      Section 2.05: "Provider may engage subcontractors to perform portions of the
+      Services, provided that Provider shall remain responsible for all Services
+      performed by its subcontractors".
 
   - id: us_msa_q3
-    text: "What governing law applies and how are disputes resolved?"
-    failure_mode: orphaned_cross_refs
-    relevant_sections:
-      - section_id: "clause_governing_law"
+    text: "How many days does a party get to fix a breach before the other side can end the agreement for cause?"
+    category: numeric_lookup
+    relevant_clauses:
+      - identifier: "section_8.03"
         relevance: 3
-        description: "Governing law clause"
-      - section_id: "clause_dispute_resolution"
-        relevance: 3
-        description: "Dispute resolution mechanism (arbitration/litigation)"
-      - section_id: "clause_jurisdiction"
-        relevance: 2
-        description: "Jurisdiction and venue"
+        description: "Section 8.03 (Termination for Cause) — a party has thirty (30) days to cure a material breach after written notice."
     notes: >
-      Tests orphaned cross-references. Governing law and dispute resolution
-      clauses frequently cross-reference each other. The dispute resolution
-      clause may say "governed by the laws specified in Section X."
+      Section 8.03(a): "fails to cure such breach within thirty (30) days after
+      receiving written notice thereof". The insolvency ground in the same clause
+      (60-day dismissal window) is a plausible distractor for a sloppy retriever.
 
   - id: us_msa_q4
-    text: "What are the payment terms under Schedule A?"
-    failure_mode: destroyed_hierarchy
-    relevant_sections:
-      - section_id: "clause_fees"
+    text: "If Customer falls behind on its invoices, can Provider pause the work?"
+    category: conditional
+    relevant_clauses:
+      - identifier: "section_3.03"
         relevance: 3
-        description: "Fees and payment terms in the main body"
-      - section_id: "schedule_a"
-        relevance: 3
-        description: "Schedule A with pricing details"
-      - section_id: "clause_invoicing"
-        relevance: 2
-        description: "Invoice and payment procedure"
+        description: "Section 3.03 (Late Payments) — Provider may suspend the Services on 15 days' notice if payment is more than 30 days past due."
     notes: >
-      Tests destroyed hierarchy. Payment terms often span the main body
-      clause plus a schedule. Baseline chunkers treat schedules as separate
-      flat text, losing the relationship between the main clause and its
-      schedule.
+      Section 3.03: "Provider reserves the right to suspend the Services upon
+      fifteen (15) days' prior written notice if any undisputed payment is more than
+      thirty (30) days past due."
 
   - id: us_msa_q5
-    text: "What data protection obligations does the service provider have?"
-    failure_mode: cross_doc_contamination
-    relevant_sections:
-      - section_id: "clause_data_protection"
+    text: "If this agreement ends, does Customer lose its right to keep using Provider's software right away, and does the duty to keep the other side's secrets end at the same time?"
+    category: multi_clause
+    relevant_clauses:
+      - identifier: "section_8.04"
         relevance: 3
-        description: "US MSA data protection provisions"
+        description: "Section 8.04 (Effect of Termination) — all licenses granted under the Agreement terminate immediately."
+      - identifier: "section_4.03"
+        relevance: 2
+        description: "Section 4.03 (Survival) — confidentiality obligations survive termination for five (5) years, not ending at the same time as the license."
     notes: >
-      Tests cross-document contamination. Both UK/EU and US documents
-      address data protection, but under different legal frameworks
-      (GDPR vs US state privacy laws). The retriever should surface
-      the US-specific clause for this US document query.
+      Section 8.04(a) ends the license immediately ("all licenses granted hereunder
+      ... shall immediately terminate"), but Article IV's confidentiality duties
+      persist under 4.03 for five years — the opposite of "ending at the same time".
+      The two clauses sit in different, non-adjacent Articles (VIII and IV) and
+      together produce an answer neither supplies alone.
+
+  - id: us_msa_q6
+    text: "The overall cap on damages says it doesn't apply in every situation — what kinds of claims fall outside that cap?"
+    category: cross_reference
+    relevant_clauses:
+      - identifier: "section_6.02"
+        relevance: 3
+        description: "Section 6.02 (Exceptions to Limitations) — lists the claims the liability cap does not apply to: indemnification, confidentiality breach, unpaid Fees, gross negligence/willful misconduct, and non-excludable liability."
+      - identifier: "section_6.01(b)"
+        relevance: 2
+        description: "Section 6.01(b) (Cap on Liability) — states the cap itself as 'SUBJECT TO SECTION 6.02', the cross-reference the query is asking about."
+    notes: >
+      Section 6.01(b) opens "SUBJECT TO SECTION 6.02" (an explicit internal
+      cross-reference matching gold's annotation at char 14346), but the actual list
+      of carve-outs is only in 6.02.

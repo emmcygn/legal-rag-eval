@@ -1,4 +1,9 @@
-"""Tests for edge cases: empty docs, single clause, no definitions, etc."""
+"""Tests for edge cases: empty docs, single clause, no definitions, etc.
+
+Exercises the legacy structural metrics (``scaffolder.metrics.structural``) against
+degenerate documents and chunk sets. See ``test_structural_metrics.py`` for why these
+are legacy; the reported metrics are covered separately in ``test_gold_metrics.py``.
+"""
 
 from __future__ import annotations
 
@@ -10,12 +15,12 @@ from scaffolder.chunking.strategies import (
     SentenceSplitStrategy,
 )
 from scaffolder.metrics.structural import (
-    chunk_size_cv,
-    clause_fragmentation_rate,
-    compute_structural_metrics,
-    cross_ref_resolution_rate,
-    definition_preservation_rate,
-    hierarchy_depth_retained,
+    compute_legacy_structural_metrics,
+    legacy_chunk_size_cv,
+    legacy_clause_fragmentation_rate,
+    legacy_cross_ref_resolution_rate,
+    legacy_definition_preservation_rate,
+    legacy_hierarchy_depth_retained,
 )
 from scaffolder.models import (
     Chunk,
@@ -132,7 +137,7 @@ class TestSingleClause:
             SINGLE_CLAUSE_DOC.text,
             doc_id=SINGLE_CLAUSE_DOC.id,
         )
-        rate = clause_fragmentation_rate(cs, SINGLE_CLAUSE_DOC)
+        rate = legacy_clause_fragmentation_rate(cs, SINGLE_CLAUSE_DOC)
         assert rate == 0.0
 
 
@@ -140,7 +145,7 @@ class TestNoDefinitions:
     def test_preservation_is_one(self) -> None:
         strategy = FixedSizeStrategy(chunk_size=500)
         cs = strategy.chunk(NO_DEFS_DOC)
-        sm = compute_structural_metrics(cs, NO_DEFS_DOC)
+        sm = compute_legacy_structural_metrics(cs, NO_DEFS_DOC)
         assert sm.definition_preservation_rate == 1.0
 
 
@@ -154,7 +159,7 @@ class TestNoCrossReferences:
             source="no_refs.txt",
         )
         cs = _make_chunk_set(doc.text, doc_id=doc.id)
-        rate = cross_ref_resolution_rate(cs, doc)
+        rate = legacy_cross_ref_resolution_rate(cs, doc)
         assert rate == 1.0
 
 
@@ -168,18 +173,18 @@ class TestFlatDocument:
             source="flat.txt",
         )
         cs = _make_chunk_set(doc.text, doc_id=doc.id)
-        depth = hierarchy_depth_retained(cs, doc)
+        depth = legacy_hierarchy_depth_retained(cs, doc)
         assert depth == 1.0
 
 
 class TestChunkSizeCV:
     def test_single_chunk_cv_zero(self) -> None:
         cs = _make_chunk_set("some text")
-        assert chunk_size_cv(cs) == 0.0
+        assert legacy_chunk_size_cv(cs) == 0.0
 
     def test_empty_chunks_cv_zero(self) -> None:
         cs = _make_empty_chunk_set()
-        assert chunk_size_cv(cs) == 0.0
+        assert legacy_chunk_size_cv(cs) == 0.0
 
     def test_uniform_chunks_cv_zero(self) -> None:
         chunks = tuple(
@@ -198,22 +203,22 @@ class TestChunkSizeCV:
             chunks=chunks,
             elapsed_seconds=0.0,
         )
-        assert chunk_size_cv(cs) == 0.0
+        assert legacy_chunk_size_cv(cs) == 0.0
 
 
 class TestEmptyChunkSetMetrics:
     def test_fragmentation_empty(self) -> None:
         cs = _make_empty_chunk_set(doc_id=SINGLE_CLAUSE_DOC.id)
-        rate = clause_fragmentation_rate(cs, SINGLE_CLAUSE_DOC)
+        rate = legacy_clause_fragmentation_rate(cs, SINGLE_CLAUSE_DOC)
         assert rate == 0.0
 
     def test_definition_preservation_empty(self) -> None:
         cs = _make_empty_chunk_set(doc_id=NO_DEFS_DOC.id)
-        rate = definition_preservation_rate(cs, NO_DEFS_DOC)
+        rate = legacy_definition_preservation_rate(cs, NO_DEFS_DOC)
         assert rate == 1.0
 
     def test_hierarchy_empty(self) -> None:
         cs = _make_empty_chunk_set(doc_id=SINGLE_CLAUSE_DOC.id)
-        depth = hierarchy_depth_retained(cs, SINGLE_CLAUSE_DOC)
+        depth = legacy_hierarchy_depth_retained(cs, SINGLE_CLAUSE_DOC)
         # With no chunks, we consider it as 0 chunk depth vs doc depth
         assert isinstance(depth, float)

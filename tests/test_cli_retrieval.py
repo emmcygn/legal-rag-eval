@@ -22,6 +22,7 @@ def _make_retrieval_metrics(
     mrr: float = 1.0,
     ndcg: float = 0.85,
     drm: bool = False,
+    drm_rate: float = 0.0,
 ) -> RetrievalMetrics:
     return RetrievalMetrics(
         query_id=query_id,
@@ -38,6 +39,7 @@ def _make_retrieval_metrics(
         mrr=mrr,
         ndcg_at_10=ndcg,
         drm_hit=drm,
+        drm_rate=drm_rate,
     )
 
 
@@ -106,10 +108,23 @@ class TestRenderRetrievalTable:
         assert "all-MiniLM-L6-v2" in output
         assert "bge-base-en-v1.5" in output
 
-    def test_drm_displayed(self) -> None:
+    def test_shows_n_queries_in_title(self) -> None:
         console = Console(file=StringIO())
         metrics = [
-            _make_retrieval_metrics(strategy=StrategyName.LEXICHUNK, drm=False),
-            _make_retrieval_metrics(strategy=StrategyName.RCTS, drm=True),
+            _make_retrieval_metrics(query_id="q1"),
+            _make_retrieval_metrics(query_id="q2"),
         ]
         render_retrieval_table(metrics, console=console)
+        output = console.file.getvalue()  # type: ignore[union-attr]
+        assert "n=2 queries" in output
+
+    def test_drm_rate_displayed(self) -> None:
+        # Wide enough that the "DRM rate" header doesn't wrap onto two lines.
+        console = Console(file=StringIO(), width=150)
+        metrics = [
+            _make_retrieval_metrics(strategy=StrategyName.LEXICHUNK, drm=False, drm_rate=0.05),
+            _make_retrieval_metrics(strategy=StrategyName.RCTS, drm=True, drm_rate=0.4),
+        ]
+        render_retrieval_table(metrics, console=console)
+        output = console.file.getvalue()  # type: ignore[union-attr]
+        assert "DRM rate" in output

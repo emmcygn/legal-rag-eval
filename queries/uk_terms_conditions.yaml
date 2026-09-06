@@ -1,67 +1,85 @@
 document_id: uk_terms_conditions
 queries:
   - id: uk_tc_q1
-    text: "What are the consumer's rights to cancel or return products?"
-    failure_mode: clause_fragmentation
-    relevant_sections:
-      - section_id: "clause_cancellation"
+    text: "How does this agreement define 'Customer Data'?"
+    category: definition_lookup
+    relevant_clauses:
+      - identifier: "1.1"
         relevance: 3
-        description: "Cancellation rights and cooling-off period"
-      - section_id: "clause_returns"
-        relevance: 3
-        description: "Returns policy and procedure"
-      - section_id: "clause_refunds"
-        relevance: 2
-        description: "Refund conditions and timelines"
+        description: "Clause 1.1 — the definitions clause, defining 'Customer Data' as any data, content or information uploaded or transmitted by the Customer to the Platform."
     notes: >
-      Tests clause fragmentation. Consumer cancellation rights in UK T&Cs
-      typically span cancellation, returns, and refund sub-clauses that
-      must be read together for a complete understanding.
+      All defined terms sit inside the single undivided definitions clause 1.1
+      ("'Customer Data' means any data, content, or information uploaded, submitted,
+      or otherwise transmitted by the Customer or its Authorised Users to the
+      Platform").
 
   - id: uk_tc_q2
-    text: "How is personal data processed under this agreement?"
-    failure_mode: orphaned_cross_refs
-    relevant_sections:
-      - section_id: "clause_data_protection"
+    text: "Can CloudVault use data about how I use the platform to improve its own product, even without asking me each time?"
+    category: clause_lookup
+    relevant_clauses:
+      - identifier: "6.3"
         relevance: 3
-        description: "Data protection and privacy clause"
-      - section_id: "clause_privacy_policy_ref"
-        relevance: 2
-        description: "Reference to separate privacy policy"
+        description: "Clause 6.3 — CloudVault may use aggregated, anonymised and de-identified data derived from the Customer's use of the Platform to improve it and generate analytics."
     notes: >
-      Tests orphaned cross-references. Data protection clauses in UK T&Cs
-      frequently reference a separate privacy policy or GDPR compliance
-      section. Baseline chunkers lose these references.
+      Clause 6.3 permits this use "provided that such data cannot reasonably be used
+      to identify the Customer or any individual" — a good test of whether a
+      retriever surfaces the IP clause rather than the data-protection clause 4,
+      which governs a different kind of data use.
 
   - id: uk_tc_q3
-    text: "What does 'Service' mean as defined in the terms?"
-    failure_mode: lost_definitions
-    relevant_sections:
-      - section_id: "definition_service"
+    text: "How many days' notice does CloudVault have to give before it can suspend my access over a missed payment?"
+    category: numeric_lookup
+    relevant_clauses:
+      - identifier: "5.3"
         relevance: 3
-        description: "Definition of Service"
-      - section_id: "clause_service_description"
-        relevance: 2
-        description: "Detailed service description"
+        description: "Clause 5.3 — CloudVault may suspend access on five (5) Business Days' prior written notice for a missed payment, with 8% interest accruing."
     notes: >
-      Tests lost definitions. Queries for defined terms should surface
-      both the formal definition and the operative clauses that give
-      the term practical meaning.
+      Clause 5.3: "CloudVault may suspend the Customer's access to the Platform upon
+      five (5) Business Days' prior written notice". Distinguish from the general
+      termination notice periods in clause 8, which answer a different question.
 
   - id: uk_tc_q4
-    text: "Under what circumstances can the provider modify the terms?"
-    failure_mode: destroyed_hierarchy
-    relevant_sections:
-      - section_id: "clause_amendments"
+    text: "If my subscription ends, will CloudVault delete all my data straight away, or do I get a chance to export it first?"
+    category: conditional
+    relevant_clauses:
+      - identifier: "8.5(b)"
         relevance: 3
-        description: "Amendment and variation clause"
-      - section_id: "clause_amendments_notice"
-        relevance: 3
-        description: "Notice requirements for amendments"
-      - section_id: "clause_amendments_acceptance"
-        relevance: 2
-        description: "Deemed acceptance of modified terms"
+        description: "Clause 8.5(b) — on termination, the Customer has thirty (30) days to export Customer Data before CloudVault may permanently delete it."
     notes: >
-      Tests destroyed hierarchy. Amendment clauses have heading + multiple
-      sub-clauses covering notice, acceptance, and effective date. Losing
-      the parent heading makes sub-clauses meaningless.
+      Clause 8.5(b): "the Customer shall export any Customer Data it requires within
+      thirty (30) days of the date of termination, after which CloudVault may
+      permanently delete all Customer Data". Answers "export first, then deletion" —
+      not immediate deletion.
+
+  - id: uk_tc_q5
+    text: "Is CloudVault's power to temporarily cut off my access over a security concern the same as it ending the contract for a serious violation, or are those different things?"
+    category: multi_clause
+    relevant_clauses:
+      - identifier: "2.4"
+        relevance: 3
+        description: "Clause 2.4 — CloudVault may suspend access where it suspects a security breach, restoring it once resolved (a temporary measure)."
+      - identifier: "8.4"
+        relevance: 2
+        description: "Clause 8.4 — CloudVault may terminate the Terms immediately for a material breach of the Acceptable Use clause (a permanent measure)."
+    notes: >
+      Clause 2.4 (Access to the Platform) is explicitly temporary — "shall restore
+      access promptly once the issue has been resolved" — while clause 8.4 (Term and
+      termination) is a permanent termination right for breach of clause 3. The two
+      clauses live in different, non-adjacent parts of the document and must be
+      contrasted to answer the question correctly.
+
+  - id: uk_tc_q6
+    text: "If CloudVault changes the terms in a way that hurts my rights and I don't accept the change, what am I entitled to do about it?"
+    category: cross_reference
+    relevant_clauses:
+      - identifier: "10.5"
+        relevance: 3
+        description: "Clause 10.5 — if the Customer does not accept a Terms update, it may terminate under clause 8.3(a), treated as a material breach if the change prejudices its rights."
+      - identifier: "8.3(a)"
+        relevance: 2
+        description: "Clause 8.3(a) — the material-breach termination mechanism that clause 10.5 points the reader to."
+    notes: >
+      Clause 10.5 says the Customer "may terminate in accordance with clause 8.3(a),
+      treating the change as a material breach" — an explicit internal cross-reference
+      (matches gold cross-reference at char 16507, target identifier "8.3(a)"). The
+      full termination mechanics live in 8.3(a), not in 10.5 itself.

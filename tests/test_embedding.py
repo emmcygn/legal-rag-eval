@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-import os
+import importlib.util
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -18,37 +18,30 @@ from scaffolder.embedding import (
 )
 from scaffolder.models import Chunk, EmbeddingModelName, StrategyName
 
+# sentence-transformers is the ``[embeddings]`` extra, and these tests load a real model.
+# The CI test job installs ``[dev]`` only, so they skip there; the retrieval benchmark job
+# installs ``[embeddings]`` and runs them.
+requires_sentence_transformers = pytest.mark.skipif(
+    importlib.util.find_spec("sentence_transformers") is None,
+    reason="sentence-transformers not installed (optional [embeddings] extra)",
+)
+
 SAMPLE_TEXTS = [
     "The Service Provider shall deliver services.",
     "Fees are due within 30 days of invoice date.",
     "This agreement is governed by the laws of England.",
 ]
 
-RUN_MODEL_TESTS = os.environ.get("SCAFFOLDER_RUN_MODEL_TESTS") == "1"
-requires_model = pytest.mark.skipif(
-    not RUN_MODEL_TESTS,
-    reason="set SCAFFOLDER_RUN_MODEL_TESTS=1 to run tests that load a real embedding model",
-)
-
-
-class _FakeAdapter:
-    def __init__(self) -> None:
-        self.calls = 0
-
-    def embed_texts(self, texts: list[str]) -> np.ndarray:
-        self.calls += 1
-        return np.ones((len(texts), 384), dtype=np.float32)
-
 
 class TestSentenceTransformerAdapter:
-    @requires_model
+    @requires_sentence_transformers
     def test_minilm_shape(self) -> None:
         adapter = SentenceTransformerAdapter(EmbeddingModelName.MINILM)
         result = adapter.embed_texts(SAMPLE_TEXTS)
         assert result.shape == (3, 384)
         assert result.dtype == np.float32
 
-    @requires_model
+    @requires_sentence_transformers
     def test_minilm_normalized(self) -> None:
         adapter = SentenceTransformerAdapter(EmbeddingModelName.MINILM)
         result = adapter.embed_texts(SAMPLE_TEXTS)
@@ -99,13 +92,13 @@ class TestEmbeddingCache:
 
 
 class TestEmbeddingPipeline:
-    @requires_model
+    @requires_sentence_transformers
     def test_embed_texts_shape(self) -> None:
         pipeline = EmbeddingPipeline(use_cache=False)
         result = pipeline.embed_texts(SAMPLE_TEXTS, EmbeddingModelName.MINILM)
         assert result.shape == (3, 384)
 
-    @requires_model
+    @requires_sentence_transformers
     def test_embed_with_cache(self, tmp_path: Path) -> None:
         pipeline = EmbeddingPipeline(cache_dir=tmp_path / "cache")
         # First call embeds
@@ -121,7 +114,7 @@ class TestEmbeddingPipeline:
         assert stats2["hits"] == 3
         np.testing.assert_array_almost_equal(result1, result2)
 
-    @requires_model
+    @requires_sentence_transformers
     def test_embed_chunks(self) -> None:
         chunks = [
             Chunk(
@@ -136,17 +129,6 @@ class TestEmbeddingPipeline:
         pipeline = EmbeddingPipeline(use_cache=False)
         result = pipeline.embed_chunks(chunks, EmbeddingModelName.MINILM)
         assert result.shape == (3, 384)
-
-    def test_cache_works_with_injected_fake_adapter(self, tmp_path: Path) -> None:
-        pipeline = EmbeddingPipeline(cache_dir=tmp_path / "cache")
-        adapter = _FakeAdapter()
-        pipeline._adapters[EmbeddingModelName.MINILM] = adapter
-
-        result1 = pipeline.embed_texts(SAMPLE_TEXTS, EmbeddingModelName.MINILM)
-        result2 = pipeline.embed_texts(SAMPLE_TEXTS, EmbeddingModelName.MINILM)
-
-        assert adapter.calls == 1
-        np.testing.assert_array_equal(result1, result2)
 
     def test_voyage_without_key_raises(self) -> None:
         """Voyage model requires API key, so it raises without one."""

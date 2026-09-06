@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "scaffolder"
 version = "1.0.0"
-description = "Deterministic source-anchored evidence evaluation for legal RAG chunking"
+description = "Evaluation harness for legal-document chunking: anchored-evidence retrieval, gold-scored structural fidelity, and external LEDGAR/CUAD evaluations"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -24,6 +24,14 @@ classifiers = [
 ]
 
 dependencies = [
+    # LexiChunk is not published on PyPI. Installing it by version specifier
+    # ("lexichunk>=0.1.0,<1.0") fails with 404, which breaks `pip install -e .`
+    # and every CI job, so pull it from source. Pinned to an exact commit rather
+    # than a branch so a clean clone resolves to the build these results were
+    # produced against. To develop against a local checkout, install the direct
+    # reference first and the editable one LAST -- installing the extras after the
+    # editable silently replaces it with the pinned wheel:
+    #     pip install -e ".[dev]" && pip install -e ../lexichunk
     "lexichunk @ git+https://github.com/emmcygn/lexichunk.git@397274a289e31eeb420a9c65d1e98c70db978d34",
     "langchain-text-splitters>=1.1.2,<2",
     "rich>=13.0,<14.0",
@@ -31,13 +39,22 @@ dependencies = [
     "numpy>=1.24,<2.0",
     "scipy>=1.10,<2.0",
     "jinja2>=3.1,<4.0",
+    # scaffolder.reporting.html imports plotly at module scope and `scaffolder
+    # report` is a documented command, so plotly is a core dependency, not a
+    # dashboard-only one.
     "plotly>=5.18,<8",
+    # scaffolder.retrieval.index imports faiss at module scope, and
+    # scaffolder.retrieval.simulator (which every query-annotation check goes
+    # through) imports that. Listing it under the `embeddings` extra meant
+    # `pip install -e ".[dev]" && make test` -- the documented developer setup and
+    # what CI runs -- could not even collect three test modules. FAISS is the
+    # harness's own index, not part of the model runtime.
+    "faiss-cpu>=1.7",
 ]
 
 [project.optional-dependencies]
 embeddings = [
     "sentence-transformers>=2.2",
-    "faiss-cpu>=1.7",
 ]
 voyage = [
     "voyageai>=0.2",
@@ -100,8 +117,20 @@ module = [
     "voyageai.*",
     "streamlit.*",
     "plotly.*",
+    # `_pin_seeds` imports torch opportunistically. It arrives with the
+    # `embeddings` extra, so on a CI runner that installs `[dev]` only, mypy
+    # would fail on an import the code already guards with try/except ImportError.
+    "torch.*",
 ]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# `strict` turns on no_implicit_reexport, which applies to third-party packages too:
+# `voyageai.Client` is re-exported from a submodule without `__all__`, so with voyageai
+# installed mypy rejects it while a runner without the `voyage` extra sees only `Any`.
+# The result was a typecheck that passed in CI and failed on a developer's machine.
+module = ["voyageai.*"]
+implicit_reexport = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -109,4 +138,6 @@ addopts = "--cov=scaffolder --cov-report=term-missing --cov-fail-under=80"
 
 [tool.coverage.run]
 source = ["src/scaffolder"]
+# The Streamlit dashboard is excluded: it is UI glue exercised only by the dashboard
+# smoke workflow, and including it would flatter the coverage figure by ~1,700 statements.
 omit = ["src/scaffolder/dashboard/*"]

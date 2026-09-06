@@ -1,45 +1,81 @@
-# Query Annotation Schema
+# Query annotation schema
 
-## File naming
-Each fixture document gets a corresponding YAML file:
-- `queries/uk_service_agreement.yaml`
-- `queries/us_msa.yaml`
-- `queries/uk_terms_conditions.yaml`
-- `queries/us_terms_of_service.yaml`
-- `queries/eu_gdpr_excerpt.yaml`
+Each fixture document has one query file, named after the document:
 
-## YAML structure
-
-```yaml
-document_id: <string>  # Must match the fixture filename (without .txt)
-queries:
-  - id: <string>        # Unique query ID, format: {jurisdiction}_{doc_abbrev}_q{N}
-    text: <string>       # The natural language query a user would ask
-    failure_mode: <enum> # One of the 5 failure modes this query tests
-    relevant_sections:
-      - section_id: <string>    # Identifier for the relevant section
-        relevance: <int>        # Graded relevance: 3=exact, 2=partial, 1=background
-        description: <string>   # Human-readable description of what this section contains
-    notes: <string>             # Explanation of what this query tests and why
+```
+queries/eu_gdpr_excerpt.yaml
+queries/uk_service_agreement.yaml
+queries/uk_terms_conditions.yaml
+queries/us_msa.yaml
+queries/us_terms_of_service.yaml
 ```
 
-## Failure modes
-1. **clause_fragmentation** — A chunker splits a single clause across multiple chunks, losing context. Query should target a clause that needs to be read as a whole.
-2. **orphaned_cross_refs** — A chunk references another section (e.g., "as defined in Section 3") but the chunker doesn't resolve or preserve the reference. Query should require understanding a cross-reference.
-3. **lost_definitions** — A chunk uses a defined term (e.g., "Confidential Information") but the definition was in a different chunk and not propagated. Query should require the definition to answer correctly.
-4. **destroyed_hierarchy** — A chunker loses the parent-child relationship between sections (e.g., sub-clause 3.1 separated from clause 3 heading). Query should need hierarchy context.
-5. **cross_doc_contamination** — A query could match sections from multiple documents, but the correct answer is document-specific. Tests jurisdiction-aware retrieval.
+There are 30 queries in total, 6 per document. `tests/test_query_annotations.py`
+validates every rule stated below, so a violation cannot be committed.
+
+## Structure
+
+```yaml
+document_id: <string>          # must match the fixture filename (without .txt)
+queries:
+  - id: <string>               # unique across all files
+    text: <string>             # the question, in a reader's words
+    category: <enum>           # see "Categories"
+    relevant_clauses:
+      - identifier: <string>   # must exist in gold/<document_id>.json
+        relevance: <1|2|3>     # graded relevance
+        description: <string>  # what that clause says, for a human reviewer
+    notes: <string>            # why this query is here and what it tests
+```
+
+`identifier` names a clause in the document's **gold annotation**, using the
+document's own printed numbering (`"3.6(a)"`, `"section_1.01(a)"`, `"article_5_1"`,
+`"recital_1"`). `scaffolder.queries.resolve_queries` turns each identifier into the
+character span of that clause's *subtree* — the clause plus its descendants — so
+naming a parent clause counts its sub-clauses' text too. Nothing here is derived from
+any chunker: the gold annotations were seeded from each document's numbering and then
+hand-checked (see `gold/CHANGES.md`), and a query that names an identifier which does
+not exist raises at load time rather than silently scoring zero for everyone.
+
+The loader also accepts the pre-migration keys `relevant_sections` / `section_id` /
+`failure_mode` as aliases, but no committed file uses them.
 
 ## Graded relevance
-- **3 (exact):** This section directly answers the query. The ideal chunk to retrieve.
-- **2 (partial):** This section is closely related — same parent clause, related sub-clause, or provides necessary context.
-- **1 (background):** This section provides background information that helps answer the query but isn't the primary answer.
 
-## Section identification
-Section IDs should match the structure of the document:
-- Use `clause_N` for top-level numbered clauses
-- Use `clause_N.M` for sub-clauses
-- Use `schedule_N` for schedules/appendices
-- Use `definition_TERM` for specific defined terms
-- Use `preamble` for introductory paragraphs
-- Use `recital_N` for recitals/whereas clauses
+- **3 (exact)** — this clause answers the question. Every query has at least one.
+- **2 (partial)** — needed to answer fully, or the clause the answer depends on.
+- **1 (background)** — helps, but is not part of the answer.
+
+## Categories
+
+`category` records the *kind of question*, not a chunker failure mode. The earlier
+schema labelled each query with one of five LexiChunk failure modes
+(`clause_fragmentation`, `orphaned_cross_refs`, `lost_definitions`,
+`destroyed_hierarchy`, `cross_doc_contamination`); an independent audit pointed out
+that those five map almost one-to-one onto the structural metrics the project uses to
+argue for LexiChunk, so the query set was labelled by the claims it was meant to
+support. These labels are neutral with respect to any chunker:
+
+| Category | What the query asks for |
+|---|---|
+| `definition_lookup` | the meaning the document assigns to a defined term |
+| `clause_lookup` | the substantive rule stated in one clause |
+| `numeric_lookup` | a specific number: a notice period, a cure period, a cap |
+| `conditional` | what happens in a stated situation ("if X, then?") |
+| `multi_clause` | an answer that needs two clauses, usually in different articles |
+| `cross_reference` | a clause reached through another clause's reference to it |
+
+The set is fixed; adding a category means changing `ALLOWED_CATEGORIES` in
+`tests/test_query_annotations.py` and saying why here.
+
+## Rules a query must satisfy
+
+1. **Answerable.** Every `identifier` exists in the target document's gold file, and
+   at least one has `relevance: 3`.
+2. **Not degenerate.** The union of a query's relevant subtree spans covers at most
+   25% of the document's characters, and its relevant clauses are at most 30% of the
+   document's gold clauses. A query that marks most of a document relevant is
+   satisfied by retrieving almost anything.
+3. **No leakage.** The query text does not contain the identifier of its own answer.
+4. **A reader's words.** Queries paraphrase; they avoid quoting the clause's own
+   distinctive wording, so a lexical match does not win by default.

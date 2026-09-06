@@ -172,13 +172,17 @@ class LexiChunkContextualStrategy:
 class RCTSStrategy:
     """Wrapper around LangChain's RecursiveCharacterTextSplitter.
 
-    Default: 512-char chunks with 50-char overlap, splitting on paragraph
-    and sentence boundaries.
+    The chunk size is part of the strategy's identity, not a hidden default: the same
+    splitter at 512 and at 1024 characters is two different baselines, and the second one
+    is the size-matched control for LexiChunk. Pass ``name`` to label the variant.
     """
 
-    name = StrategyName.RCTS
-
-    def __init__(self, chunk_size: int = 512, chunk_overlap: int = 50) -> None:
+    def __init__(
+        self,
+        chunk_size: int = 512,
+        chunk_overlap: int = 50,
+        name: StrategyName = StrategyName.RCTS_512,
+    ) -> None:
         from langchain_text_splitters import RecursiveCharacterTextSplitter
 
         self._splitter = RecursiveCharacterTextSplitter(
@@ -188,6 +192,8 @@ class RCTSStrategy:
             separators=["\n\n", "\n", ". ", " ", ""],
         )
         self._chunk_size = chunk_size
+        self._chunk_overlap = chunk_overlap
+        self.name = name
 
     def chunk(self, document: Document) -> ChunkSet:
         start = time.perf_counter()
@@ -196,12 +202,15 @@ class RCTSStrategy:
 
         chunks = tuple(
             Chunk(
-                id=f"rcts_{document.id}_{i}",
+                id=f"{self.name.value}_{document.id}_{i}",
                 text=t,
                 document_id=document.id,
                 strategy=self.name,
                 index=i,
-                metadata={"chunk_size_param": self._chunk_size},
+                metadata={
+                    "chunk_size_param": self._chunk_size,
+                    "chunk_overlap_param": self._chunk_overlap,
+                },
             )
             for i, t in enumerate(texts)
         )
@@ -283,7 +292,10 @@ class FixedSizeStrategy:
 
     name = StrategyName.FIXED_SIZE
 
-    def __init__(self, chunk_size: int = 512) -> None:
+    def __init__(self, chunk_size: int = 512, chunk_overlap: int = 0) -> None:
+        if chunk_overlap:
+            msg = "FixedSizeStrategy does not implement overlap; pass chunk_overlap=0."
+            raise ValueError(msg)
         self._chunk_size = chunk_size
 
     def chunk(self, document: Document) -> ChunkSet:

@@ -31,7 +31,17 @@ coverage.xml
 .ruff_cache/
 
 # Project-specific
-results/
+# Benchmark outputs. The published runs are committed: the README's results tables are
+# generated from them, so a reader has to be able to see the run behind a published
+# number. Those live in a subdirectory named after the LexiChunk build that produced them
+# (results/lexichunk_fixed/, results/lexichunk_baseline/). Ad-hoc runs land in results/
+# itself with the CLI's default filenames and are not committed, so `make
+# benchmark-structural` on a developer's machine never rewrites the evidence. Rendered
+# reports and caches are not committed either.
+results/*
+!results/*/
+results/*/*
+!results/*/*.json
 .cache/
 *.faiss
 requirements.lock

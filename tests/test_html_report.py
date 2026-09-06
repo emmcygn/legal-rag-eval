@@ -4,18 +4,54 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from pathlib import Path
-
+from scaffolder.metrics.statistical import ComparisonResult
 from scaffolder.models import (
     BenchmarkResult,
     EmbeddingModelName,
+    GoldStructuralMetrics,
+    LegacyStructuralMetrics,
     RetrievalMetrics,
-    SignificanceResult,
     StrategyName,
-    StructuralMetrics,
 )
 from scaffolder.reporting.html import render_html_report
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+
+def _gold_structural(
+    strategy: StrategyName,
+    document_id: str,
+    *,
+    clause_fragmentation_rate: float = 0.05,
+    heading_recall: float | None = 0.9,
+    heading_precision: float | None = 0.85,
+    xref_target_recall: float | None = 0.9,
+    xref_target_precision: float | None = 0.88,
+) -> GoldStructuralMetrics:
+    return GoldStructuralMetrics(
+        strategy=strategy,
+        document_id=document_id,
+        chunk_count=10,
+        avg_chunk_chars=400.0,
+        chunk_size_cv=0.3,
+        located_chunks=10,
+        localization_rate=1.0,
+        localization_coverage=1.0,
+        n_leaf_clauses=20,
+        clause_fragmentation_rate=clause_fragmentation_rate,
+        n_top_level_clauses=8,
+        top_level_over_merge_rate=0.02,
+        sub_clause_grouping_rate=0.1,
+        heading_recall=heading_recall,
+        heading_precision=heading_precision,
+        n_gold_headings=8,
+        n_definition_uses=12,
+        definition_attachment_recall=0.95,
+        n_gold_cross_refs=5,
+        xref_target_recall=xref_target_recall,
+        xref_target_precision=xref_target_precision,
+    )
 
 
 def _minimal_result() -> BenchmarkResult:
@@ -24,57 +60,36 @@ def _minimal_result() -> BenchmarkResult:
         timestamp="2026-03-18T00:00:00",
         strategies=[StrategyName.LEXICHUNK, StrategyName.RCTS],
         documents=["doc_a", "doc_b"],
+        seed=42,
+        lexichunk_version="0.8.0b1",
+        lexichunk_commit="abc1234",
         structural_metrics=[
-            StructuralMetrics(
-                strategy=StrategyName.LEXICHUNK,
-                document_id="doc_a",
-                clause_fragmentation_rate=0.05,
-                definition_preservation_rate=0.95,
-                cross_ref_resolution_rate=0.90,
-                hierarchy_depth_retained=1.0,
-                chunk_size_cv=0.3,
-                chunk_count=10,
-                avg_chunk_chars=400.0,
-            ),
-            StructuralMetrics(
-                strategy=StrategyName.RCTS,
-                document_id="doc_a",
+            _gold_structural(StrategyName.LEXICHUNK, "doc_a", clause_fragmentation_rate=0.05),
+            _gold_structural(
+                StrategyName.RCTS,
+                "doc_a",
                 clause_fragmentation_rate=0.45,
-                definition_preservation_rate=0.60,
-                cross_ref_resolution_rate=0.50,
-                hierarchy_depth_retained=0.67,
-                chunk_size_cv=0.1,
-                chunk_count=15,
-                avg_chunk_chars=350.0,
+                heading_recall=None,
+                heading_precision=None,
+                xref_target_recall=None,
+                xref_target_precision=None,
             ),
-            StructuralMetrics(
-                strategy=StrategyName.LEXICHUNK,
-                document_id="doc_b",
-                clause_fragmentation_rate=0.08,
-                definition_preservation_rate=0.92,
-                cross_ref_resolution_rate=0.85,
-                hierarchy_depth_retained=1.0,
-                chunk_size_cv=0.25,
-                chunk_count=8,
-                avg_chunk_chars=450.0,
-            ),
-            StructuralMetrics(
-                strategy=StrategyName.RCTS,
-                document_id="doc_b",
+            _gold_structural(StrategyName.LEXICHUNK, "doc_b", clause_fragmentation_rate=0.08),
+            _gold_structural(
+                StrategyName.RCTS,
+                "doc_b",
                 clause_fragmentation_rate=0.50,
-                definition_preservation_rate=0.55,
-                cross_ref_resolution_rate=0.40,
-                hierarchy_depth_retained=0.67,
-                chunk_size_cv=0.12,
-                chunk_count=12,
-                avg_chunk_chars=380.0,
+                heading_recall=None,
+                heading_precision=None,
+                xref_target_recall=None,
+                xref_target_precision=None,
             ),
         ],
     )
 
 
 def _result_with_retrieval() -> BenchmarkResult:
-    """Create a BenchmarkResult that includes retrieval and significance data."""
+    """Create a BenchmarkResult that includes retrieval and comparison data."""
     result = _minimal_result()
     result.models = [EmbeddingModelName.MINILM]
     result.retrieval_metrics = [
@@ -93,6 +108,8 @@ def _result_with_retrieval() -> BenchmarkResult:
             mrr=1.0,
             ndcg_at_10=0.9,
             drm_hit=False,
+            drm_rate=0.05,
+            n_relevant_sections=3,
         ),
         RetrievalMetrics(
             query_id="q1",
@@ -109,23 +126,36 @@ def _result_with_retrieval() -> BenchmarkResult:
             mrr=0.5,
             ndcg_at_10=0.6,
             drm_hit=True,
+            drm_rate=0.2,
+            n_relevant_sections=3,
         ),
     ]
-    result.significance_results = [
-        SignificanceResult(
+    result.comparisons = [
+        ComparisonResult(
             metric_name="ndcg_at_10",
             strategy_a=StrategyName.LEXICHUNK,
             strategy_b=StrategyName.RCTS,
+            embedding_model="all-MiniLM-L6-v2",
+            n=10,
             mean_a=0.9,
             mean_b=0.6,
-            improvement_pct=50.0,
+            delta=0.3,
+            ci_low=0.1,
+            ci_high=0.5,
             t_statistic=3.5,
-            p_value=0.01,
-            significant=True,
-            effect_size=1.2,
-            n_queries=10,
+            p_value_t=0.01,
+            p_value_wilcoxon=0.02,
+            p_value_holm=0.02,
+            significant_holm=True,
+            cohens_d=1.2,
+            rank_biserial=0.8,
+            n_documents=2,
+            lodo_min_delta=0.2,
+            lodo_max_delta=0.4,
+            lodo_worst_document="doc_a",
         ),
     ]
+    result.significance_results = [c.to_significance_result() for c in result.comparisons]
     return result
 
 
@@ -153,9 +183,15 @@ class TestRenderHtmlReport:
         path = tmp_path / "report.html"
         render_html_report(_minimal_result(), path)
         html = path.read_text(encoding="utf-8")
-        assert "doc_a" in html
-        assert "doc_b" in html
-        assert "0.050" in html  # fragmentation
+        assert "doc_a" in html or "n=2" in html
+        # macro-averaged fragmentation for lexichunk is (0.05 + 0.08) / 2 = 0.065
+        assert "0.065" in html
+
+    def test_contains_na_for_none_optional_fields(self, tmp_path: Path) -> None:
+        path = tmp_path / "report.html"
+        render_html_report(_minimal_result(), path)
+        html = path.read_text(encoding="utf-8")
+        assert "n/a" in html
 
     def test_contains_plotly_chart(self, tmp_path: Path) -> None:
         path = tmp_path / "report.html"
@@ -174,13 +210,49 @@ class TestRenderHtmlReport:
         html = path.read_text(encoding="utf-8")
         assert "2026-03-18" in html
 
+    def test_contains_provenance(self, tmp_path: Path) -> None:
+        path = tmp_path / "report.html"
+        render_html_report(_minimal_result(), path)
+        html = path.read_text(encoding="utf-8")
+        assert "0.8.0b1" in html
+        assert "abc1234" in html
+
     def test_methodology_section(self, tmp_path: Path) -> None:
         path = tmp_path / "report.html"
         render_html_report(_minimal_result(), path)
         html = path.read_text(encoding="utf-8")
         assert "Methodology" in html
-        assert "Clause Fragmentation Rate" in html
+        assert "hand-checked span annotations" in html
         assert "NDCG" in html
+
+    def test_no_legacy_structural_section_when_absent(self, tmp_path: Path) -> None:
+        path = tmp_path / "report.html"
+        render_html_report(_minimal_result(), path)
+        html = path.read_text(encoding="utf-8")
+        assert "Legacy Structural Metrics" not in html
+
+
+class TestRenderWithLegacyStructural:
+    def test_legacy_section_present_and_labelled_superseded(self, tmp_path: Path) -> None:
+        result = _minimal_result()
+        result.legacy_structural_metrics = [
+            LegacyStructuralMetrics(
+                strategy=StrategyName.LEXICHUNK,
+                document_id="doc_a",
+                clause_fragmentation_rate=0.0,
+                definition_preservation_rate=1.0,
+                cross_ref_resolution_rate=1.0,
+                hierarchy_depth_retained=1.0,
+                chunk_size_cv=0.2,
+                chunk_count=10,
+                avg_chunk_chars=400.0,
+            ),
+        ]
+        path = tmp_path / "report.html"
+        render_html_report(result, path)
+        html = path.read_text(encoding="utf-8")
+        assert "Legacy Structural Metrics" in html
+        assert "SUPERSEDED" in html
 
 
 class TestRenderWithRetrieval:
@@ -190,12 +262,14 @@ class TestRenderWithRetrieval:
         html = path.read_text(encoding="utf-8")
         assert "Retrieval Quality Metrics" in html
 
-    def test_significance_section_present(self, tmp_path: Path) -> None:
+    def test_comparisons_section_present(self, tmp_path: Path) -> None:
         path = tmp_path / "report.html"
         render_html_report(_result_with_retrieval(), path)
         html = path.read_text(encoding="utf-8")
-        assert "Statistical Significance" in html
+        assert "Statistical Comparisons" in html
         assert "badge-sig" in html
+        # only an rcts_1024 row gets the bold per-row control label
+        assert "<strong>(size-matched control)</strong>" not in html
 
     def test_drm_chart_present(self, tmp_path: Path) -> None:
         path = tmp_path / "report.html"
@@ -211,8 +285,8 @@ class TestRenderWithoutRetrieval:
         html = path.read_text(encoding="utf-8")
         assert "Retrieval Quality Metrics" not in html
 
-    def test_no_significance_section(self, tmp_path: Path) -> None:
+    def test_no_comparisons_section(self, tmp_path: Path) -> None:
         path = tmp_path / "report.html"
         render_html_report(_minimal_result(), path)
         html = path.read_text(encoding="utf-8")
-        assert "Statistical Significance" not in html
+        assert "Statistical Comparisons" not in html

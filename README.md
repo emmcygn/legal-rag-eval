@@ -563,8 +563,12 @@ make readme-check    # fail if the generated results block is stale
 ```
 
 `.github/workflows/ci.yml` runs lint, mypy, the test suite on Python 3.10/3.11/3.12, the
-gold and query annotation validators, and a structural-benchmark smoke run on every push.
-The retrieval benchmark downloads model weights, so it is `workflow_dispatch` only.
+gold and query annotation validators, a clean wheel install, and a structural-benchmark
+smoke run on every push. The retrieval benchmark downloads model weights, so it is
+`workflow_dispatch` only.
+
+Notable changes are recorded in [CHANGELOG.md](CHANGELOG.md), and
+[CONTRIBUTING.md](CONTRIBUTING.md) covers the review expectations.
 
 ## Provenance
 

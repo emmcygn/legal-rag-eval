@@ -19,9 +19,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      # lexichunk is not on PyPI; pyproject pins it as a direct git reference, so pip
-      # clones it here. This is what makes `pip install -e ".[dev]"` work on a clean
-      # runner at all -- the previous version specifier resolved to a PyPI 404.
+      # lexichunk installs from PyPI (>=0.9.0,<0.10). It used to be a pinned git
+      # reference because a version specifier resolved to a PyPI 404, which meant a
+      # clean runner could not `pip install -e ".[dev]"` at all.
       - run: pip install -e ".[dev]"
       - run: make lint
 

@@ -24,15 +24,20 @@ classifiers = [
 ]
 
 dependencies = [
-    # LexiChunk is not published on PyPI. Installing it by version specifier
-    # ("lexichunk>=0.1.0,<1.0") fails with 404, which breaks `pip install -e .`
-    # and every CI job, so pull it from source. Pinned to an exact commit rather
-    # than a branch so a clean clone resolves to the build these results were
-    # produced against. To develop against a local checkout, install the direct
-    # reference first and the editable one LAST -- installing the extras after the
-    # editable silently replaces it with the pinned wheel:
+    # LexiChunk is published on PyPI as of 0.9.0, so it is a normal version
+    # specifier again. It used to be a pinned git reference, because installing it
+    # by version resolved to a PyPI 404 and broke `pip install -e .` and every CI
+    # job. The floor is the release the committed runs in results/ were produced
+    # against; the ceiling stops a minor release from silently changing the
+    # chunker under a published number. Every result file also records the
+    # `lexichunk_version` that produced it, so provenance does not rely on this
+    # line alone.
+    #
+    # To compare a local LexiChunk checkout against the released build, install the
+    # extras FIRST and the editable checkout LAST -- installing the extras after the
+    # editable silently replaces it with the released wheel:
     #     pip install -e ".[dev]" && pip install -e ../lexichunk
-    "lexichunk @ git+https://github.com/emmcygn/lexichunk.git@397274a289e31eeb420a9c65d1e98c70db978d34",
+    "lexichunk>=0.9.0,<0.10",
     "langchain-text-splitters>=1.1.2,<2",
     "rich>=13.0,<14.0",
     "pyyaml>=6.0,<7.0",

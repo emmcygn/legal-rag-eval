@@ -560,20 +560,19 @@ py -3.11 -m venv .venv
 .venv\Scripts\python.exe -m pip install -e ".[dev]"
 ```
 
-**LexiChunk is not published on PyPI.** `pyproject.toml` declares it as a direct git
-reference pinned to an exact commit
-(`lexichunk @ git+https://github.com/emmcygn/lexichunk.git@397274a...`), so pip clones it
-during install and a clean clone resolves to one specific build. Pinning it by version
-specifier resolved to a PyPI 404, which is why a clean install — and therefore CI — could
-not previously succeed.
+**LexiChunk comes from PyPI.** `pip install lexichunk` is the default route as of
+LexiChunk 0.9.0; `pyproject.toml` declares it as `lexichunk>=0.9.0,<0.10`, so a clean
+clone installs the released build with no git access and no source build. It used to be a
+git reference pinned to a commit, because a version specifier resolved to a PyPI 404 and a
+clean install — and therefore CI — could not succeed at all.
 
 Every result file also records `lexichunk_version` and `lexichunk_commit`, the committed
 runs live in directories named after the build, and `make compare-builds` diffs two of them.
 Set `SCAFFOLDER_LEXICHUNK_COMMIT` when running against a local checkout, which records no
 VCS metadata of its own.
 
-To develop against a local LexiChunk checkout, install the extras **first** and the editable
-checkout **last**:
+The local-editable route is for **comparing builds** — measuring a LexiChunk working tree
+against the released one. Install the extras **first** and the editable checkout **last**:
 
 ```bash
 pip install -e ".[dev]"
@@ -582,9 +581,9 @@ python -c "import lexichunk; print(lexichunk.__file__)"   # verify
 ```
 
 The order matters. Installing the extras after the editable checkout silently replaces it
-with the pinned wheel, and the run then measures the pinned build while you believe it is
-measuring your working tree. The verification line above is not optional advice; this trap
-has caught more than one run in this repository's history.
+with the released wheel, and the run then measures the released build while you believe it
+is measuring your working tree. The verification line above is not optional advice; this
+trap has caught more than one run in this repository's history.
 
 ### Anchored-evidence benchmark (offline, no model downloads, seconds)
 

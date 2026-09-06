@@ -1,0 +1,315 @@
+version: 1
+dataset: "coastalcph/lex_glue:ledgar@c23fdff1a6bf74e0e1a71cb86f1e781d37da888c"
+description: >
+  Explicit many-to-one mapping from LEDGAR's 100 clause-type labels (LexGLUE
+  "ledgar" config) onto LexiChunk's 31 ClauseType values. LEDGAR is drawn
+  overwhelmingly from SEC-filed credit agreements, M&A agreements, and
+  employment agreements, whose vocabulary is much narrower and more
+  finance/employment-specific than LexiChunk's general contract/SaaS
+  taxonomy. Mappings are made only where a competent contracts lawyer would
+  agree the LEDGAR label denotes the same substantive clause concept as the
+  target LexiChunk class; everything else is marked __out_of_scope__ rather
+  than forced. Nothing is ever mapped to unknown (a classifier-failure
+  sentinel, not a gold label) or to preamble/recitals (positional classes
+  LexiChunk assigns from document position, not provision text).
+mappings:
+  Adjustments:
+    lexichunk: __out_of_scope__
+    rationale: "Purchase-price/financial adjustment mechanics (e.g., working-capital true-ups); no corresponding LexiChunk class."
+  Agreements:
+    lexichunk: __out_of_scope__
+    rationale: "Generic catch-all heading with no consistent substantive content across contracts; too vague to map to a single doctrine without guessing."
+  Amendments:
+    lexichunk: amendment
+    rationale: "Direct match: governs how the contract may be modified."
+  Anti-Corruption Laws:
+    lexichunk: __out_of_scope__
+    rationale: "Specialized FCPA/anti-bribery regulatory covenant; a distinct jargon-heavy compliance regime with no dedicated LexiChunk class, too narrow to force into general covenants."
+  Applicable Laws:
+    lexichunk: governing_law
+    rationale: "Alternate heading for the choice-of-law/governing-law clause, paired with Governing Laws as a near-duplicate label (a common LEDGAR pattern from heading-text variance across contracts); distinct from the compliance covenant captured separately as Compliance With Laws."
+  Approvals:
+    lexichunk: representations
+    rationale: "Standard no governmental/third-party approval required representation found in reps-and-warranties articles."
+  Arbitration:
+    lexichunk: dispute_resolution
+    rationale: "Specifies the dispute-resolution mechanism itself."
+  Assignments:
+    lexichunk: assignment
+    rationale: "Direct match: restricts or permits transfer of the contract."
+  Assigns:
+    lexichunk: assignment
+    rationale: "Successors and assigns language governs the same transferability concept as the assignment clause."
+  Authority:
+    lexichunk: representations
+    rationale: "Canonical rep that a party has the corporate power/authority to execute and perform the agreement."
+  Authorizations:
+    lexichunk: representations
+    rationale: "Rep that necessary corporate/internal authorizations have been obtained."
+  Base Salary:
+    lexichunk: __out_of_scope__
+    rationale: "Employment-compensation term; no LexiChunk class."
+  Benefits:
+    lexichunk: __out_of_scope__
+    rationale: "Employee-benefits term; no LexiChunk class."
+  Binding Effects:
+    lexichunk: boilerplate
+    rationale: "General binding-upon-successors mechanics clause; grouped with other miscellaneous/general provisions rather than assignment, since it merely confirms the contract binds successors rather than restricting transfer."
+  Books:
+    lexichunk: __out_of_scope__
+    rationale: "Books-and-records inspection/maintenance is a specialized lender/M&A-diligence covenant; too narrow and jargon-specific to the finance context to equate with LexiChunk's general covenants class."
+  Brokers:
+    lexichunk: representations
+    rationale: "Standard no brokers fee owed representation."
+  Capitalization:
+    lexichunk: representations
+    rationale: "Rep as to the company's authorized/outstanding capital stock; formally a statement of present fact (a representation) even though the subject matter is finance/M&A-specific."
+  Change In Control:
+    lexichunk: __out_of_scope__
+    rationale: "REVISED on review of sample text: the overwhelming real-world pattern (9/10 sampled provisions) is equity-award vesting acceleration on a COC, definitions of what constitutes a COC, and severance-eligibility triggers tied to executive compensation plans -- not a termination-of-the-agreement mechanic. Forcing this into termination would misclassify predominantly equity-comp/M&A-trigger content as contract-termination clauses; no LexiChunk class captures the COC-as-compensation-trigger concept."
+  Closings:
+    lexichunk: conditions
+    rationale: "Closing provisions are built around satisfaction or waiver of conditions precedent to consummation. Least-confident call: many Closings sections are pure logistics (date/location/deliverables) rather than a conditions-precedent test."
+  Compliance With Laws:
+    lexichunk: covenants
+    rationale: "Generic affirmative covenant to comply with applicable law going forward; a broadly recognizable covenant pattern across contract types, not finance-specific jargon."
+  Confidentiality:
+    lexichunk: confidentiality
+    rationale: "Direct match."
+  Consent To Jurisdiction:
+    lexichunk: dispute_resolution
+    rationale: "Governs which forum may hear disputes (a procedural/venue mechanic), not the choice of substantive law, so it belongs with dispute_resolution rather than governing_law."
+  Consents:
+    lexichunk: representations
+    rationale: "Standard no consent required representation, frequently paired with No Conflicts."
+  Construction:
+    lexichunk: boilerplate
+    rationale: "Drafting-convention/interpretive rules (headings, gender/number, no-construction-against-drafter); grouped with general boilerplate mechanics rather than definitions, since it establishes interpretive conventions rather than defining terms."
+  Cooperation:
+    lexichunk: covenants
+    rationale: "Generic affirmative covenant to cooperate and take further action, common across contract types."
+  Costs:
+    lexichunk: payment
+    rationale: "Allocates responsibility for costs; a payment-obligation clause."
+  Counterparts:
+    lexichunk: boilerplate
+    rationale: "Classic execution-mechanics boilerplate provision."
+  Death:
+    lexichunk: __out_of_scope__
+    rationale: "Employment/succession-on-death term; no LexiChunk class."
+  Defined Terms:
+    lexichunk: definitions
+    rationale: "Direct match."
+  Definitions:
+    lexichunk: definitions
+    rationale: "Direct match."
+  Disability:
+    lexichunk: __out_of_scope__
+    rationale: "Employment disability-leave/termination term; no LexiChunk class."
+  Disclosures:
+    lexichunk: representations
+    rationale: "REVISED on review of sample text: the dominant real-world pattern (9/15 sampled provisions) is the classic full-disclosure / 'no untrue statement of material fact or omission' representation found in reps-and-warranties articles of purchase and credit agreements (a well-recognized rep, sometimes called the anti-fraud or 10b-5 rep). A minority of samples cover unrelated SEC-filing procedural covenants or confidentiality-adjacent content, but the plurality pattern is squarely a representation."
+  Duties:
+    lexichunk: __out_of_scope__
+    rationale: "Employment job-duties clause; no LexiChunk class."
+  Effective Dates:
+    lexichunk: boilerplate
+    rationale: "States when the agreement takes effect; administrative/mechanical rather than a conditions-precedent test."
+  Effectiveness:
+    lexichunk: boilerplate
+    rationale: "Same administrative/mechanical character as Effective Dates."
+  Employment:
+    lexichunk: __out_of_scope__
+    rationale: "Employment-relationship term generally; no LexiChunk class."
+  Enforceability:
+    lexichunk: representations
+    rationale: "Rep that the agreement constitutes a valid, binding, enforceable obligation of the party."
+  Enforcements:
+    lexichunk: __out_of_scope__
+    rationale: "Ambiguous remedies/enforcement-of-rights concept; no corresponding LexiChunk class (LexiChunk has no general remedies class)."
+  Entire Agreements:
+    lexichunk: entire_agreement
+    rationale: "Direct match."
+  Erisa:
+    lexichunk: __out_of_scope__
+    rationale: "ERISA benefit-plan compliance; no LexiChunk class."
+  Existence:
+    lexichunk: covenants
+    rationale: "REVISED on review of sample text: the dominant real-world pattern (roughly 12/15 sampled provisions) is an ongoing affirmative covenant to preserve, renew, and maintain corporate existence and good standing ('will maintain and preserve its existence...'), not a present-tense representation. A minority of samples do read as a due-organization representation (that pattern is separately captured under Organizations/Existence-as-rep via the Organizations label), but the Existence label itself is dominated by the maintain-existence covenant."
+  Expenses:
+    lexichunk: payment
+    rationale: "Allocates responsibility for expenses; a payment-obligation clause."
+  Fees:
+    lexichunk: payment
+    rationale: "Direct match to payment obligations."
+  Financial Statements:
+    lexichunk: representations
+    rationale: "Rep as to the accuracy/fair presentation of financial statements."
+  Forfeitures:
+    lexichunk: __out_of_scope__
+    rationale: "Equity/benefit-forfeiture term; no LexiChunk class."
+  Further Assurances:
+    lexichunk: covenants
+    rationale: "Generic affirmative covenant to execute further documents and take further action, common across contract types."
+  General:
+    lexichunk: boilerplate
+    rationale: "Catch-all miscellaneous provisions."
+  Governing Laws:
+    lexichunk: governing_law
+    rationale: "Direct match: choice of substantive law."
+  Headings:
+    lexichunk: boilerplate
+    rationale: "Classic headings-are-for-convenience-only boilerplate."
+  Indemnifications:
+    lexichunk: indemnification
+    rationale: "Direct match."
+  Indemnity:
+    lexichunk: indemnification
+    rationale: "Direct match; singular/plural heading variant of the same clause as Indemnifications."
+  Insurances:
+    lexichunk: insurance
+    rationale: "Direct match."
+  Integration:
+    lexichunk: entire_agreement
+    rationale: "The integration clause is the same doctrine as Entire Agreements, just an alternate heading."
+  Intellectual Property:
+    lexichunk: intellectual_property
+    rationale: "Direct match."
+  Interests:
+    lexichunk: __out_of_scope__
+    rationale: "Ambiguous label (could denote interest payments, equity/ownership interests, or conflicts of interest); too indeterminate to map confidently to one class."
+  Interpretations:
+    lexichunk: boilerplate
+    rationale: "Same interpretive-convention character as Construction; grouped with general boilerplate rather than definitions."
+  Jurisdictions:
+    lexichunk: dispute_resolution
+    rationale: "Forum-selection concept (which courts may hear disputes), not choice of substantive law, so grouped with dispute_resolution rather than governing_law."
+  Liens:
+    lexichunk: __out_of_scope__
+    rationale: "Specialized credit-agreement negative covenant restricting encumbrances on assets; too jargon-specific to the lending context to equate with LexiChunk's general covenants class."
+  Litigations:
+    lexichunk: representations
+    rationale: "Standard no pending or threatened litigation representation."
+  Miscellaneous:
+    lexichunk: boilerplate
+    rationale: "Direct match: catch-all general provisions."
+  Modifications:
+    lexichunk: amendment
+    rationale: "Same doctrine as Amendments, alternate heading."
+  No Conflicts:
+    lexichunk: representations
+    rationale: "Rep that execution/performance does not conflict with other obligations or applicable law."
+  No Defaults:
+    lexichunk: representations
+    rationale: "Rep that no default or event of default currently exists."
+  No Waivers:
+    lexichunk: boilerplate
+    rationale: "Standard non-waiver boilerplate provision (failure to enforce a right is not a waiver of it), distinct from the amendment mechanism."
+  Non-Disparagement:
+    lexichunk: __out_of_scope__
+    rationale: "No LexiChunk class for reputation/non-disparagement covenants."
+  Notices:
+    lexichunk: notices
+    rationale: "Direct match."
+  Organizations:
+    lexichunk: representations
+    rationale: "Rep as to due organization and good standing; overlaps with Existence but both are the same underlying representation doctrine (many-to-one)."
+  Participations:
+    lexichunk: __out_of_scope__
+    rationale: "Loan-syndication participation-rights concept; credit-agreement-specific, no LexiChunk class."
+  Payments:
+    lexichunk: payment
+    rationale: "Direct match."
+  Positions:
+    lexichunk: __out_of_scope__
+    rationale: "Employment job-title/position term; no LexiChunk class."
+  Powers:
+    lexichunk: __out_of_scope__
+    rationale: "REVISED on review of sample text: the dominant real-world pattern (roughly 9/15 sampled provisions) is an internal governance/delegation-of-authority provision -- which body or person (Board of Managers, Committee, Plan Administrator, Administrative Agent) holds decision-making power under the agreement or plan -- not a party-capacity representation. Only a minority read as the 'has all requisite power and authority to execute this Agreement' rep already captured under Authority. No LexiChunk class captures internal governance/delegation-of-authority provisions, so forcing the whole label into representations would misclassify most of its real content."
+  Publicity:
+    lexichunk: __out_of_scope__
+    rationale: "Public-announcement/press-release control clause; distinct from confidentiality (which protects secret information rather than controlling public statements) and has no dedicated LexiChunk class."
+  Qualifications:
+    lexichunk: representations
+    rationale: "Rep as to due qualification to do business in relevant jurisdictions."
+  Records:
+    lexichunk: __out_of_scope__
+    rationale: "Records-maintenance/inspection covenant, paired with Books; a specialized lender/M&A-diligence provision too narrow to force into general covenants."
+  Releases:
+    lexichunk: __out_of_scope__
+    rationale: "General release-of-claims doctrine; distinct from indemnification, which allocates future liability rather than releasing existing claims, and has no dedicated LexiChunk class."
+  Remedies:
+    lexichunk: __out_of_scope__
+    rationale: "General remedies-on-default clause; no dedicated LexiChunk class, and forcing it into indemnification/termination/limitation_of_liability would each capture only part of the concept."
+  Representations:
+    lexichunk: representations
+    rationale: "Direct match."
+  Sales:
+    lexichunk: __out_of_scope__
+    rationale: "Asset/stock-sale transaction mechanics; M&A-specific, no LexiChunk class."
+  Sanctions:
+    lexichunk: __out_of_scope__
+    rationale: "Specialized OFAC/trade-sanctions compliance covenant; a distinct regulatory regime with no dedicated LexiChunk class."
+  Severability:
+    lexichunk: severability
+    rationale: "Direct match."
+  Solvency:
+    lexichunk: representations
+    rationale: "Rep that the company is solvent and will remain so after the transaction."
+  Specific Performance:
+    lexichunk: __out_of_scope__
+    rationale: "Equitable-remedy availability clause; concerns the type of relief available rather than the forum/process covered by dispute_resolution, and LexiChunk has no remedies class."
+  Submission To Jurisdiction:
+    lexichunk: dispute_resolution
+    rationale: "Forum/personal-jurisdiction submission clause; a dispute-resolution mechanic, not choice of substantive law."
+  Subsidiaries:
+    lexichunk: representations
+    rationale: "Rep disclosing/warranting the company's subsidiaries and ownership structure."
+  Successors:
+    lexichunk: assignment
+    rationale: "Successors and assigns clause addresses the same transferability/binding-on-transferee concept as assignment."
+  Survival:
+    lexichunk: __out_of_scope__
+    rationale: "Cross-cutting which-provisions-survive-termination mechanic rather than a distinct substantive clause type LexiChunk classifies."
+  Tax Withholdings:
+    lexichunk: payment
+    rationale: "Governs withholding from payments; a payment-mechanics clause."
+  Taxes:
+    lexichunk: payment
+    rationale: "Allocates responsibility for taxes on payments; a payment-obligation clause."
+  Terminations:
+    lexichunk: termination
+    rationale: "Direct match."
+  Terms:
+    lexichunk: __out_of_scope__
+    rationale: "Too generic/ambiguous (could denote contract duration, defined terms, or terms and conditions generally) to map confidently to one doctrine."
+  Titles:
+    lexichunk: boilerplate
+    rationale: "Same titles/headings-for-convenience-only character as Headings."
+  Transactions With Affiliates:
+    lexichunk: __out_of_scope__
+    rationale: "Specialized credit/M&A negative covenant restricting related-party transactions; too jargon-specific to the finance context to equate with LexiChunk's general covenants class."
+  Use Of Proceeds:
+    lexichunk: __out_of_scope__
+    rationale: "Credit-agreement-specific restriction on use of loan proceeds; no analog outside lending contracts."
+  Vacations:
+    lexichunk: __out_of_scope__
+    rationale: "Employment leave/vacation term; no LexiChunk class."
+  Venues:
+    lexichunk: dispute_resolution
+    rationale: "Venue-selection clause specifying where litigation may proceed; a dispute-resolution mechanic."
+  Vesting:
+    lexichunk: __out_of_scope__
+    rationale: "Equity/benefit-vesting term; no LexiChunk class."
+  Waiver Of Jury Trials:
+    lexichunk: dispute_resolution
+    rationale: "Procedural litigation-rights waiver tied to how disputes are adjudicated; grouped with dispute_resolution rather than boilerplate given its direct tie to litigation procedure."
+  Waivers:
+    lexichunk: boilerplate
+    rationale: "General waiver-mechanics boilerplate, same family as No Waivers."
+  Warranties:
+    lexichunk: warranties
+    rationale: "Direct match; note LexiChunk keeps warranties distinct from representations even though many real contracts merge Representations and Warranties into a single article."
+  Withholdings:
+    lexichunk: payment
+    rationale: "Same withholding-from-payments concept as Tax Withholdings, alternate heading."

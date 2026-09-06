@@ -7,6 +7,8 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+import numpy as np
+
 if TYPE_CHECKING:
     from scaffolder.models import BenchmarkResult
 
@@ -22,6 +24,10 @@ def _serialize(obj: Any) -> Any:
         return obj.isoformat()
     if isinstance(obj, set):
         return sorted(obj)
+    # scipy/numpy return numpy scalars (e.g. numpy.bool_ for `p_value < alpha`),
+    # which json cannot encode. Unwrap them to their Python equivalents.
+    if isinstance(obj, np.generic):
+        return obj.item()
     raise TypeError(f"Object of type {type(obj)} is not JSON serializable")
 
 

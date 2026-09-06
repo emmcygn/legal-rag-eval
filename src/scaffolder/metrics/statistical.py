@@ -65,7 +65,9 @@ def paired_t_test(
     d_std = float(np.std(diff, ddof=1))
     cohens_d = d_mean / d_std if d_std > 0 else 0.0
 
-    return float(t_stat), float(p_value), p_value < alpha, cohens_d
+    # bool(...) matters: p_value is a numpy scalar, so `p_value < alpha` is a
+    # numpy.bool_, which json.dump cannot encode.
+    return float(t_stat), float(p_value), bool(p_value < alpha), cohens_d
 
 
 def compute_significance(

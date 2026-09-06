@@ -1,4 +1,20 @@
-"""Structural quality metrics for evaluating chunking strategies."""
+"""LEGACY structural metrics. Retained for provenance; not part of the default report.
+
+Every function in this module scores a chunk set against ground truth produced by running
+LexiChunk's own ``LegalChunker`` over the same text (see :func:`get_ground_truth`). Three
+consequences follow, all of them measured in the audit that motivated the rewrite:
+
+* LexiChunk is graded against its own output, so its clause-fragmentation rate is 0.000 by
+  construction and cannot move no matter how its segmentation changes;
+* the *baselines'* scores are a function of LexiChunk's version — byte-identical baseline
+  chunk sets score differently after a LexiChunk parser fix, because the yardstick moved;
+* two metrics grant a pass on the strength of LexiChunk-only metadata, which no baseline
+  emits.
+
+:mod:`scaffolder.metrics.gold` replaces these with span-overlap measurements against
+hand-checked annotations in ``gold/``. Use that. These functions keep the ``legacy_``
+prefix so no caller reaches for them by accident.
+"""
 
 from __future__ import annotations
 
@@ -6,7 +22,7 @@ import logging
 import re
 from dataclasses import dataclass
 
-from scaffolder.models import Chunk, ChunkSet, Document, StrategyName, StructuralMetrics
+from scaffolder.models import Chunk, ChunkSet, Document, LegacyStructuralMetrics, StrategyName
 
 logger = logging.getLogger(__name__)
 
@@ -147,7 +163,7 @@ def _infer_hierarchy_depth(text: str) -> int:
 # -- Core Metrics -----------------------------------------------------------
 
 
-def clause_fragmentation_rate(chunk_set: ChunkSet, document: Document) -> float:
+def legacy_clause_fragmentation_rate(chunk_set: ChunkSet, document: Document) -> float:
     """Calculate what fraction of ground-truth clauses are fragmented across chunks.
 
     A clause is 'fragmented' if no single chunk contains at least 80% of the
@@ -194,7 +210,7 @@ def _text_overlap_ratio(chunk_text: str, clause_text: str) -> float:
     return len(clause_words & chunk_words) / len(clause_words)
 
 
-def definition_preservation_rate(chunk_set: ChunkSet, document: Document) -> float:
+def legacy_definition_preservation_rate(chunk_set: ChunkSet, document: Document) -> float:
     """Calculate what fraction of defined terms have their definition in a chunk.
 
     Returns:
@@ -230,7 +246,7 @@ def definition_preservation_rate(chunk_set: ChunkSet, document: Document) -> flo
     return preserved / len(valid_terms)
 
 
-def cross_ref_resolution_rate(chunk_set: ChunkSet, document: Document) -> float:
+def legacy_cross_ref_resolution_rate(chunk_set: ChunkSet, document: Document) -> float:
     """Calculate what fraction of cross-references are resolvable from chunks.
 
     Returns:
@@ -279,7 +295,7 @@ def cross_ref_resolution_rate(chunk_set: ChunkSet, document: Document) -> float:
 # -- Hierarchy & Distribution Metrics ----------------------------------------
 
 
-def hierarchy_depth_retained(chunk_set: ChunkSet, document: Document) -> float:
+def legacy_hierarchy_depth_retained(chunk_set: ChunkSet, document: Document) -> float:
     """Calculate what fraction of the document's hierarchy depth is preserved.
 
     Returns:
@@ -306,7 +322,7 @@ def hierarchy_depth_retained(chunk_set: ChunkSet, document: Document) -> float:
     return min(max_chunk_depth / gt.max_hierarchy_depth, 1.0)
 
 
-def chunk_size_cv(chunk_set: ChunkSet) -> float:
+def legacy_chunk_size_cv(chunk_set: ChunkSet) -> float:
     """Calculate the coefficient of variation of chunk sizes.
 
     CV = std_dev / mean. Lower is more uniform.
@@ -327,16 +343,18 @@ def chunk_size_cv(chunk_set: ChunkSet) -> float:
 # -- Convenience Function ---------------------------------------------------
 
 
-def compute_structural_metrics(chunk_set: ChunkSet, document: Document) -> StructuralMetrics:
-    """Compute all structural metrics for a ChunkSet against a Document."""
-    return StructuralMetrics(
+def compute_legacy_structural_metrics(
+    chunk_set: ChunkSet, document: Document
+) -> LegacyStructuralMetrics:
+    """Compute the legacy, LexiChunk-derived structural metrics. Not for reporting."""
+    return LegacyStructuralMetrics(
         strategy=chunk_set.strategy,
         document_id=chunk_set.document_id,
-        clause_fragmentation_rate=clause_fragmentation_rate(chunk_set, document),
-        definition_preservation_rate=definition_preservation_rate(chunk_set, document),
-        cross_ref_resolution_rate=cross_ref_resolution_rate(chunk_set, document),
-        hierarchy_depth_retained=hierarchy_depth_retained(chunk_set, document),
-        chunk_size_cv=chunk_size_cv(chunk_set),
+        clause_fragmentation_rate=legacy_clause_fragmentation_rate(chunk_set, document),
+        definition_preservation_rate=legacy_definition_preservation_rate(chunk_set, document),
+        cross_ref_resolution_rate=legacy_cross_ref_resolution_rate(chunk_set, document),
+        hierarchy_depth_retained=legacy_hierarchy_depth_retained(chunk_set, document),
+        chunk_size_cv=legacy_chunk_size_cv(chunk_set),
         chunk_count=chunk_set.count,
         avg_chunk_chars=chunk_set.avg_chunk_size,
     )

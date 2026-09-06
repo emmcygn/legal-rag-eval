@@ -6,8 +6,10 @@ from typing import TYPE_CHECKING, Any
 
 import streamlit as st
 
+from scaffolder.models import ChunkSet
+
 if TYPE_CHECKING:
-    from scaffolder.models import ChunkSet, Document
+    from scaffolder.models import Document
 
 # Map display names to StrategyName enum values
 _BASELINE_OPTIONS: dict[str, str] = {
@@ -246,11 +248,13 @@ def render_page() -> None:
         lexi_key = f"chunks_{doc_id}_lexichunk"
         base_key = f"chunks_{doc_id}_{last_baseline}"
 
-        lexi_result = st.session_state.get(lexi_key)  # type: ignore[assignment]
-        base_result = st.session_state.get(base_key)  # type: ignore[assignment]
+        cached_lexi_result = st.session_state.get(lexi_key)
+        cached_baseline_result = st.session_state.get(base_key)
 
-        if lexi_result and base_result:
-            _render_results(lexi_result, base_result, last_baseline_label)
+        if isinstance(cached_lexi_result, ChunkSet) and isinstance(
+            cached_baseline_result, ChunkSet
+        ):
+            _render_results(cached_lexi_result, cached_baseline_result, last_baseline_label)
 
 
 def _render_results(lexi: ChunkSet, baseline: ChunkSet, baseline_name: str) -> None:

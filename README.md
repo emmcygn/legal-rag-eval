@@ -1,227 +1,122 @@
 # Legal RAG Eval
 
-Evaluation harness proving that clause-aware legal chunking ([LexiChunk](https://github.com/emmcygn/lexichunk)) improves RAG retrieval P@5 by **100%** over RecursiveCharacterTextSplitter with statistical significance (p<0.05) 
+Legal RAG Eval is a deterministic, offline benchmark for comparing chunk boundaries under a controlled retrieval and context budget. It scores retrieved source spans against independently stored evidence annotations instead of treating chunker output as gold.
 
-## Key Results
-
-### Structural Quality (averaged across 5 legal documents)
-
-| Metric | LexiChunk | RCTS | Sentence Split | Fixed-Size |
-|--------|:---------:|:----:|:--------------:|:----------:|
-| Clause Fragmentation (lower = better) | **0.000** | 0.611 | 0.786 | 0.657 |
-| Definition Preservation | **1.000** | 0.988 | 0.988 | 0.976 |
-| Cross-Reference Resolution | **1.000** | 1.000 | 1.000 | 0.995 |
-| Hierarchy Depth Retained | **1.00** | 0.55 | 0.55 | 0.55 |
-
-LexiChunk achieves **zero clause fragmentation** across all documents. Every legal clause, definition, and cross-reference is preserved intact.
-
-### Retrieval Quality (all-MiniLM-L6-v2, 22 queries)
-
-| Strategy | P@5 | MRR | NDCG@10 |
-|----------|:---:|:---:|:-------:|
-| **LexiChunk** | **0.236** | **0.295** | 0.200 |
-| **LexiChunk Contextual** | 0.218 | 0.277 | **0.248** |
-| RCTS | 0.118 `*` | 0.267 | 0.075 |
-| Sentence Split | 0.082 `**` | 0.239 | 0.087 |
-| Fixed-Size | 0.182 | 0.308 | 0.134 |
-
-`*` p<0.05 `**` p<0.01 (paired t-test vs LexiChunk)
-
-LexiChunk doubles P@5 versus RCTS (0.236 vs 0.118) with statistical significance. The contextual variant achieves the highest NDCG@10 (0.248), showing that prepending clause context headers improves ranking quality.
-
-## Why This Exists
-
-General-purpose text splitters (LangChain's RCTS, sentence splitting, fixed-size windowing) don't understand legal document structure. They split mid-clause, break definition sections, and orphan cross-references. This harness quantifies that damage with 10 metrics across 5 real legal documents and 22 annotated queries.
-
-## Architecture
-
-```
-Fixtures --> ChunkingPipeline --> EmbeddingPipeline --> FAISS Index
-(5 docs)    (5 strategies)      (3 models)            (top-k search)
-                                                           |
-Reports <-- Statistical    <-- RetrievalMetrics <-- RetrievalSimulator
-(CLI/JSON/   Significance      (P@k, R@k, MRR,      (22 annotated
- HTML/       Testing            NDCG, DRM)            queries)
- Streamlit)
-```
-
-### Source Layout
-
-```
-src/scaffolder/
-  config.py              # BenchmarkConfig -- YAML, env vars, validation
-  models.py              # Shared data contracts (Document, Chunk, ChunkSet, etc.)
-  queries.py             # YAML query loader with graded relevance
-  chunking/              # Strategy wrappers + pipeline (LexiChunk, RCTS, sentence, fixed)
-  embedding/             # SentenceTransformer adapter, Voyage adapter, disk cache
-  retrieval/             # FAISS VectorIndex, IndexRegistry, RetrievalSimulator
-  metrics/               # Structural (5), retrieval (5), statistical significance
-  reporting/             # CLI (rich tables), JSON export, HTML (Jinja2 template)
-  dashboard/             # Streamlit app (chunk comparison, retrieval demo, metrics)
-```
-
-### Strategies Compared
-
-| Strategy | Description | Chunk Boundary |
-|----------|-------------|----------------|
-| `lexichunk` | Clause-aware legal chunking | Legal clause boundaries |
-| `lexichunk_contextual` | LexiChunk + context headers | Clause boundaries + context prefix |
-| `rcts` | LangChain RecursiveCharacterTextSplitter (1000/200) | Character count with overlap |
-| `sentence_split` | Sentence boundary splitting | Sentence boundaries |
-| `fixed_size` | Fixed 512-char windows with 50-char overlap | Character count |
-
-### Embedding Models
-
-| Model | Type | Notes |
-|-------|------|-------|
-| `all-MiniLM-L6-v2` | Local (free) | Fast baseline, 384 dims |
-| `bge-base-en-v1.5` | Local (free) | Higher quality, 768 dims |
-| `voyage-law-2` | API (paid) | Legal-specialized, requires `VOYAGE_API_KEY` |
-
-### Metrics
-
-**Structural (5):** Clause fragmentation rate, definition preservation, cross-reference resolution, hierarchy depth retained, chunk size CV
-
-**Retrieval (5):** Precision@k, Recall@k, MRR, NDCG@10, Definition Retrieval Match rate
-
-**Statistical:** Paired t-tests with configurable significance level
-
-See [docs/metrics.md](docs/metrics.md) for formulas, ranges, and interpretation.
+The primary benchmark compares LexiChunk, fixed token windows, and LangChain RecursiveCharacterTextSplitter using the same lexical cosine term-frequency ranker. It does not call an embedding model or paid API.
 
 ## Quick Start
 
-### Install
+Python 3.10–3.12 is supported.
 
 ```bash
 git clone https://github.com/emmcygn/legal-rag-eval.git
 cd legal-rag-eval
-pip install -e ".[dev]"
+python -m venv .venv
+.venv/bin/python -m pip install -e ".[dev]"
+.venv/bin/python -m scaffolder benchmark
 ```
 
-### Run Structural Benchmark (no GPU/embeddings needed)
+Windows PowerShell:
 
-```bash
-make benchmark
+```powershell
+git clone https://github.com/emmcygn/legal-rag-eval.git
+Set-Location legal-rag-eval
+py -3.12 -m venv .venv
+.venv\Scripts\python.exe -m pip install -e ".[dev]"
+.venv\Scripts\python.exe -m scaffolder benchmark
 ```
 
-Outputs rich CLI tables showing all 5 structural metrics across 5 documents x 5 strategies.
+In the examples below, Windows users should replace `.venv/bin/python` with
+`.venv\Scripts\python.exe`. Plain `python` commands assume the virtual environment
+is activated; otherwise use its explicit interpreter path. For Make targets,
+set `PYTHON` accordingly.
 
-### Run Full Retrieval Benchmark
+The command writes `results/evidence-benchmark.json`. No API key, model download, or network access is needed after installation.
 
-```bash
-pip install -e ".[all]"
-make benchmark-embed
-```
+LexiChunk is not published on PyPI, so this package pins public SDK commit `397274a289e31eeb420a9c65d1e98c70db978d34` in `pyproject.toml` and `requirements-dashboard.txt`.
 
-Runs the complete pipeline: chunking, embedding (MiniLM + BGE), FAISS indexing, retrieval simulation across 22 queries, and statistical significance testing. Takes 2-5 minutes.
+## What It Measures
 
-### Generate HTML Report
+- **Evidence recall:** fraction of independently annotated source characters covered by selected context for answerable queries.
+- **Evidence precision:** fraction of selected source characters that overlap annotated evidence for answerable queries.
+- **Abstention accuracy:** whether retrieval emitted no context for an unanswerable query. This measures retrieval emission only, not legal-answer correctness.
+- **Context budget:** a shared count of non-whitespace token spans matching `\S+`; the report records this convention.
 
-```bash
-python -m scaffolder benchmark --json   # export results
-make report                              # render HTML
-```
+Evidence coverage merges duplicate or overlapping gold spans and gives no credit for the wrong document. Every selected character is charged, including duplicate or irrelevant context.
 
-Opens `results/report.html` with bar charts, heatmaps, and methodology documentation.
+## Benchmark Scope
 
-### Launch Interactive Dashboard
+The bundled `synthetic-contracts-v1` challenge has three AI-authored contract-like documents and 15 questions. It includes single- and multi-evidence questions, definition/exception combinations, cross-document distractors, topical unanswerable questions, and a zero-overlap unanswerable control.
 
-```bash
-pip install -e ".[dashboard]"
-make dashboard
-```
+It is explicitly **not** lawyer validated, held out, customer proof, or evidence of market superiority. Results are useful for testing evaluator behavior and exposing wins, losses, and mixed trade-offs—not for making legal or product-performance claims.
 
-Three pages at http://localhost:8501:
-
-- **Chunk Comparison** -- Side-by-side LexiChunk vs baseline on any document. Color-coded clause types, term badges, size distribution charts.
-- **Retrieval Demo** -- Ask a legal question, compare retrieval results across strategies with P@k charts and relevance highlighting.
-- **Metrics Dashboard** -- Headline cards, grouped bar charts, embedding model heatmap.
-
-## Installation Extras
-
-| Extra | Packages | Use Case |
-|-------|----------|----------|
-| `dev` | ruff, mypy, pytest, pytest-cov | Linting, type checking, testing |
-| `embeddings` | sentence-transformers, faiss-cpu | Local embedding models |
-| `voyage` | voyageai | Voyage AI legal embeddings |
-| `dashboard` | streamlit, plotly | Interactive dashboard |
-| `all` | Everything above | Full installation |
-
-```bash
-pip install -e ".[dev]"           # development only
-pip install -e ".[embeddings]"    # add local embeddings
-pip install -e ".[all]"           # everything
-```
+LexiChunk is evaluated in boundary-only mode. Ranking and budget accounting use only the canonical `source[char_start:char_end]`. Generated ancestor headers, definition expansion, and cross-reference expansion are not evaluated in this release.
 
 ## Configuration
 
+Copy `scaffolder.yaml.example` and pass it explicitly:
+
 ```bash
-cp scaffolder.yaml.example scaffolder.yaml
+.venv/bin/python -m scaffolder benchmark --config scaffolder.yaml
+.venv/bin/python -m scaffolder benchmark --corpus path/to/dataset.json --output results/custom.json
 ```
 
 ```yaml
-strategies: [lexichunk, rcts, sentence_split, fixed_size]
-embedding_models: [all-MiniLM-L6-v2]
-k_values: [1, 3, 5, 10]
-top_k: 10
-significance_level: 0.05
+strategies: [lexichunk, token_window, rcts]
+retrieval_depth: 5
+context_budget_tokens: 128
+token_window_tokens: 64
+token_window_overlap: 8
+rcts_chunk_chars: 512
+rcts_chunk_overlap: 50
+lexichunk_max_tokens: 512
 ```
 
-Environment variable overrides:
+Invalid types, booleans used as integers, duplicate IDs, unsupported jurisdictions, bad hashes, missing files, malformed spans, and answer spans not covered by referenced evidence are rejected.
+
+## Dataset Interface
+
+Datasets use schema `anchored_evidence_v1` and declare:
+
+- corpus authorship, legal-validation, held-out, and customer-proof status;
+- document jurisdiction, exact SHA-256, provenance, source URL when applicable, license status, and review status;
+- source-exact evidence spans with grades;
+- answerability, answer spans, and one or more referenced evidence IDs.
+
+Metadata is dataset-declared and is not independently certified by the evaluator. See `docs/dataset-card.md` and `docs/methodology.md` before authoring or interpreting a dataset.
+
+## Reports and Dashboard
+
+Reports include schema and metric versions, resolved configuration, corpus/document hashes, evaluator and SDK package-tree hashes, per-query selected source spans, all strategy aggregates, unfiltered comparisons, and a canonical payload hash.
+
+The Streamlit dashboard is a viewer for these JSON reports and does not recompute scoring:
 
 ```bash
-export SCAFFOLDER_STRATEGIES="lexichunk,rcts"
-export SCAFFOLDER_TOP_K=20
-export VOYAGE_API_KEY=your-key-here    # enables voyage-law-2
+.venv/bin/python -m pip install -e ".[dashboard]"
+.venv/bin/python -m streamlit run streamlit_app.py
 ```
 
-See [EXTENSIBILITY.md](EXTENSIBILITY.md) for the full configuration reference and extension guides.
+## Legacy Diagnostics
 
-## Query Annotations
+The old SDK-generated structural reference scorer remains available only as an explicitly deprecated diagnostic:
 
-22 queries across 5 legal documents (UK, US, EU jurisdictions) with graded relevance:
-
-```yaml
-- id: uk_sa_q1
-  text: "What are the termination rights under this agreement?"
-  document_id: uk_service_agreement
-  failure_mode: clause_boundary
-  relevant_sections:
-    - section_id: "6.1"
-      relevance: exact      # 3 points
-    - section_id: "6.2"
-      relevance: same_section  # 2 points
+```bash
+.venv/bin/python -m scaffolder benchmark-legacy
 ```
 
-See [queries/schema.md](queries/schema.md) for the annotation format.
+The five SDK-duplicate fixtures and legacy embedding workflow are regression assets, not headline evidence. `evidence_assignment_ndcg_v1` is a versioned custom assignment metric, not classical NDCG. The legacy dashboard retrieval page is no longer routed by the hosted app.
 
 ## Development
 
 ```bash
-make lint          # ruff check + format verification
-make typecheck     # mypy --strict
-make test          # pytest with 80% coverage minimum
-make ci            # all of the above
+make lint
+make typecheck
+make test
+.venv/bin/python -m build
 ```
 
-| Check | Status |
-|-------|--------|
-| ruff (lint + format) | 0 errors |
-| mypy --strict | 0 errors, 30 files |
-| pytest | 270 passed, 86% coverage |
-| Benchmark | End-to-end, 5 docs x 5 strategies |
-
-## How This Was Built
-
-This project was built by **two parallel AI agents** (Claude Code) over 2 days with 20 "days" planning files each, running autonomously with daily plans and shared coordination files. Agent A owned the pipeline (chunking, embedding, retrieval, metrics, reporting) while Agent B owned the UI and configuration (Streamlit dashboard, config system, query annotations, CI).
-
-The agents coordinated through:
-- **Shared data contracts** (`models.py`) as the interface boundary
-- **Append-only handoff logs** for cross-agent deliveries
-- **Issue tracking** for cross-agent bugs and blockers
-
-See [guides/agents-orchestration-guide.md](guides/agents-orchestration-guide.md) for the complete methodology -- a reproducible playbook for running parallel AI agents on any software project.
+See `CONTRIBUTING.md`, `SECURITY.md`, `docs/methodology.md`, `docs/dataset-card.md`, and `docs/limitations.md`.
 
 ## License
 
-MIT -- see [LICENSE](LICENSE)
+MIT. See `LICENSE`.

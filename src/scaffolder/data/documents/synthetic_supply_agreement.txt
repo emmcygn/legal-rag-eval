@@ -1,0 +1,12 @@
+SYNTHETIC COMPONENT SUPPLY AGREEMENT
+
+1 PAYMENT
+1.1 Buyer must pay each undisputed invoice within twenty calendar days after receipt.
+
+2 DELIVERY
+2.1 Seller must dispatch components by the shipment date in the order form.
+2.2 Buyer must report delayed delivery in writing within five business days after the shipment date.
+2.3 A routine shipment notice does not constitute a delayed-delivery report.
+
+3 REPLACEMENT
+3.1 Seller will replace components that fail inspection before acceptance.

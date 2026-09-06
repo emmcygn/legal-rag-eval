@@ -1,0 +1,11 @@
+SYNTHETIC SUPPORT TERMS
+
+1 SUPPORT HOURS
+1.1 Standard support operates from 09:00 to 17:00 on business days.
+
+2 INCIDENTS
+2.1 A critical incident means a complete interruption of the hosted service.
+2.2 Routine maintenance announced two days in advance is not a critical incident.
+
+3 CONTACT
+3.1 Support requests must identify the account and describe the observed interruption.

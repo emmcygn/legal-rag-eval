@@ -212,7 +212,7 @@ class RetrievalResult:
 
 @dataclass(frozen=True, slots=True)
 class RetrievalMetrics:
-    """Retrieval quality metrics for one query x one strategy x one model."""
+    """Retrieval metrics; ndcg_at_10 is a compatibility field identified by ndcg_metric."""
 
     query_id: str
     strategy: StrategyName
@@ -228,6 +228,7 @@ class RetrievalMetrics:
     mrr: float
     ndcg_at_10: float
     drm_hit: bool  # Document Retrieval Mismatch: pulled from wrong doc?
+    ndcg_metric: str = "legacy_unversioned"
 
 
 # -- Statistical Significance -----------------------------------------------

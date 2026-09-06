@@ -1,13 +1,14 @@
 [build-system]
-requires = ["setuptools>=68.0", "setuptools-scm>=8.0"]
+requires = ["setuptools>=77.0", "setuptools-scm>=8.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "scaffolder"
 version = "1.0.0"
-description = "Evaluation harness proving LexiChunk improves RAG retrieval quality over general-purpose chunkers"
+description = "Deterministic source-anchored evidence evaluation for legal RAG chunking"
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.10"
 authors = [
     {name = "SDK Scaffolder Team"}
@@ -15,7 +16,6 @@ authors = [
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -24,13 +24,14 @@ classifiers = [
 ]
 
 dependencies = [
-    "lexichunk>=0.1.0,<1.0",
-    "langchain-text-splitters>=0.2.0,<1.0",
+    "lexichunk @ git+https://github.com/emmcygn/lexichunk.git@397274a289e31eeb420a9c65d1e98c70db978d34",
+    "langchain-text-splitters>=1.1.2,<2",
     "rich>=13.0,<14.0",
     "pyyaml>=6.0,<7.0",
     "numpy>=1.24,<2.0",
     "scipy>=1.10,<2.0",
     "jinja2>=3.1,<4.0",
+    "plotly>=5.18,<8",
 ]
 
 [project.optional-dependencies]
@@ -43,9 +44,10 @@ voyage = [
 ]
 dashboard = [
     "streamlit>=1.30",
-    "plotly>=5.18",
 ]
 dev = [
+    "build>=1.2,<2",
+    "faiss-cpu>=1.7,<2",
     "ruff>=0.4",
     "mypy>=1.10",
     "pytest>=8.0",
@@ -61,6 +63,17 @@ scaffolder = "scaffolder.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+scaffolder = [
+    "data/*.json",
+    "data/documents/*.txt",
+    "fixtures/documents/*.txt",
+    "reporting/templates/*.j2",
+]
+
+[tool.setuptools.data-files]
+"share/scaffolder/queries" = ["queries/*.yaml", "queries/schema.md"]
 
 [tool.ruff]
 target-version = "py310"
@@ -81,6 +94,8 @@ module = [
     "lexichunk.*",
     "langchain_text_splitters.*",
     "sentence_transformers.*",
+    "scipy.optimize",
+    "torch.*",
     "faiss.*",
     "voyageai.*",
     "streamlit.*",

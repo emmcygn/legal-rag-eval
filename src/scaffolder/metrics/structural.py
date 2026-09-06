@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import logging
 import re
 from dataclasses import dataclass
@@ -36,16 +37,17 @@ class GroundTruthStructure:
 
 
 # Cache ground truth per document to avoid re-parsing
-_gt_cache: dict[str, GroundTruthStructure] = {}
+_gt_cache: dict[tuple[str, str], GroundTruthStructure] = {}
 
 
 def get_ground_truth(document: Document) -> GroundTruthStructure:
     """Parse a document with LexiChunk to extract ground truth structure.
 
-    Results are cached by document.id so repeated calls are free.
+    Results are cached by document identity and content hash.
     """
-    if document.id in _gt_cache:
-        return _gt_cache[document.id]
+    cache_key = (document.id, hashlib.sha256(document.text.encode()).hexdigest())
+    if cache_key in _gt_cache:
+        return _gt_cache[cache_key]
 
     from lexichunk import LegalChunker
 
@@ -59,12 +61,21 @@ def get_ground_truth(document: Document) -> GroundTruthStructure:
     max_depth = 0
 
     for lc in legal_chunks:
-        clauses.append(lc.content)
-        # Approximate boundary from text position in original
-        prefix = lc.content[:80] if len(lc.content) >= 80 else lc.content
-        start = document.text.find(prefix)
-        if start >= 0:
-            clause_boundaries.append((start, start + len(lc.content)))
+        start = getattr(lc, "char_start", None)
+        end = getattr(lc, "char_end", None)
+        if (
+            isinstance(start, int)
+            and isinstance(end, int)
+            and 0 <= start < end <= len(document.text)
+        ):
+            clauses.append(document.text[start:end])
+            clause_boundaries.append((start, end))
+        else:
+            clauses.append(lc.content)
+            prefix = lc.content[:80] if len(lc.content) >= 80 else lc.content
+            fallback_start = document.text.find(prefix)
+            if fallback_start >= 0:
+                clause_boundaries.append((fallback_start, fallback_start + len(lc.content)))
 
         if lc.defined_terms_used:
             all_defined_terms.update(lc.defined_terms_used)
@@ -102,7 +113,7 @@ def get_ground_truth(document: Document) -> GroundTruthStructure:
         cross_references=all_cross_refs,
         max_hierarchy_depth=max(max_depth, 1),
     )
-    _gt_cache[document.id] = gt
+    _gt_cache[cache_key] = gt
     return gt
 
 
@@ -206,7 +217,7 @@ def definition_preservation_rate(chunk_set: ChunkSet, document: Document) -> flo
         return 1.0  # no terms to preserve = vacuously true
 
     preserved = 0
-    definition_indicators = ("means", "shall mean", "defined as", "refers to")
+    definition_indicators = r"(?:means|shall\s+mean|defined\s+as|refers\s+to)"
 
     for term in valid_terms:
         term_lower = term.lower().strip()
@@ -216,14 +227,16 @@ def definition_preservation_rate(chunk_set: ChunkSet, document: Document) -> flo
             if term_lower not in chunk_lower:
                 continue
 
-            has_definition = any(ind in chunk_lower for ind in definition_indicators)
-            has_quoted = f'"{term_lower}"' in chunk_lower or f"'{term_lower}'" in chunk_lower
-            defined_terms_meta = chunk.metadata.get("defined_terms")
-            has_metadata = bool(
-                isinstance(defined_terms_meta, (list, set, tuple)) and term in defined_terms_meta
+            term_pattern = re.escape(term_lower)
+            has_definition = bool(
+                re.search(
+                    rf"(?:[\"']?{term_pattern}[\"']?\s*.{{0,80}}?{definition_indicators})",
+                    chunk_lower,
+                    re.DOTALL,
+                )
             )
 
-            if has_definition or has_quoted or has_metadata:
+            if has_definition:
                 preserved += 1
                 break
 
@@ -253,20 +266,13 @@ def cross_ref_resolution_rate(chunk_set: ChunkSet, document: Document) -> float:
             if ref_text_lower not in chunk_lower:
                 continue
 
-            # Check 1: target section is in the same chunk
-            if target_lower in chunk_lower:
+            if _contains_target_heading(_effective_text(chunk), target_lower):
                 resolved += 1
                 break
 
-            # Check 2: metadata has resolved cross-refs
-            if chunk.metadata.get("cross_references"):
-                resolved += 1
-                break
-
-            # Check 3: target is in adjacent chunk (index +/- 1)
             found_adjacent = any(
                 0 <= adj_i < len(chunks_list)
-                and target_lower in _effective_text(chunks_list[adj_i]).lower()
+                and _contains_target_heading(_effective_text(chunks_list[adj_i]), target_lower)
                 for adj_i in (i - 1, i + 1)
             )
             if found_adjacent:
@@ -274,6 +280,24 @@ def cross_ref_resolution_rate(chunk_set: ChunkSet, document: Document) -> float:
                 break
 
     return resolved / len(valid_refs)
+
+
+def _contains_target_heading(text: str, target: str) -> bool:
+    match = re.fullmatch(
+        r"(?:(clause|section|article|schedule)\s+)?([\d.()]+)",
+        target.strip(),
+    )
+    if match is None:
+        return False
+    kind, identifier = match.groups()
+    optional_kind = rf"(?:{re.escape(kind)}[ \t]+)?" if kind else ""
+    return bool(
+        re.search(
+            rf"(?im)^[ \t]*(?:#{{1,6}}[ \t]*)?{optional_kind}"
+            rf"{re.escape(identifier)}(?=$|[ \t:—-]|\.(?!\d)|\)(?!\d))",
+            text,
+        )
+    )
 
 
 # -- Hierarchy & Distribution Metrics ----------------------------------------

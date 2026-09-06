@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import json
+import subprocess
+import sys
 from typing import TYPE_CHECKING
 
 from scaffolder.__main__ import _reconstruct_benchmark_result
@@ -139,3 +142,26 @@ class TestReconstructBenchmarkResult:
         assert len(reconstructed.structural_metrics) == 1
         sm = reconstructed.structural_metrics[0]
         assert sm.clause_fragmentation_rate == 0.05
+
+
+def test_primary_cli_runs_offline_anchored_benchmark(tmp_path: Path) -> None:
+    output_path = tmp_path / "evidence.json"
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "scaffolder",
+            "benchmark",
+            "--output",
+            str(output_path),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 0, completed.stderr
+    report = json.loads(output_path.read_text(encoding="utf-8"))
+    assert report["report_version"] == "evidence_benchmark_report_v1"
+    assert report["scope"]["retrieval"].startswith("deterministic lexical")

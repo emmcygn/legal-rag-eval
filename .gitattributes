@@ -1,0 +1,2 @@
+src/scaffolder/data/*.json text eol=lf
+src/scaffolder/data/documents/*.txt text eol=lf

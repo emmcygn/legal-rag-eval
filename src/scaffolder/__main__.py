@@ -14,6 +14,7 @@ import numpy as np
 from rich.console import Console
 
 from scaffolder.chunking import ChunkingPipeline, get_all_strategies
+from scaffolder.evidence.benchmark import EvidenceBenchmarkConfig, run_benchmark
 from scaffolder.fixtures import FixtureManager
 from scaffolder.metrics.structural import compute_structural_metrics
 from scaffolder.models import BenchmarkResult, EmbeddingModelName
@@ -48,17 +49,37 @@ def _pin_seeds(seed: int = SEED) -> None:
 
 def main() -> None:
     """Parse CLI arguments and dispatch to the appropriate command."""
-    parser = argparse.ArgumentParser(description="sdk-scaffolder benchmark")
+    parser = argparse.ArgumentParser(description="anchored legal retrieval evaluation")
     parser.add_argument(
         "command",
-        choices=["benchmark", "benchmark-embed", "report"],
+        choices=["benchmark", "benchmark-legacy", "benchmark-embed", "report"],
         help="Command to run",
+    )
+    parser.add_argument(
+        "--config",
+        type=Path,
+        help="Evidence benchmark YAML configuration file",
+    )
+    parser.add_argument(
+        "--corpus",
+        type=Path,
+        help="Override the anchored-evidence dataset JSON path",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        help="Override the evidence benchmark JSON output path",
     )
     parser.add_argument(
         "--output-dir",
         type=Path,
         default=Path("results"),
         help="Directory for output files",
+    )
+    parser.add_argument(
+        "--enable-voyage",
+        action="store_true",
+        help="Explicitly allow the legacy model benchmark to use Voyage",
     )
     parser.add_argument(
         "--json",
@@ -84,6 +105,8 @@ def main() -> None:
     )
 
     if args.command == "benchmark":
+        run_evidence_benchmark(args)
+    elif args.command == "benchmark-legacy":
         run_structural_benchmark(args)
     elif args.command == "benchmark-embed":
         run_retrieval_benchmark(args)
@@ -91,8 +114,40 @@ def main() -> None:
         run_report(args)
 
 
+def run_evidence_benchmark(args: argparse.Namespace) -> None:
+    """Run the deterministic anchored-evidence benchmark."""
+    config = EvidenceBenchmarkConfig.load(
+        args.config,
+        dataset_path=args.corpus,
+        output_path=args.output,
+    )
+    result = run_benchmark(config)
+    console = _make_console()
+    console.print("[bold]Anchored evidence benchmark[/bold]")
+    corpus = result.get("corpus", {})
+    if isinstance(corpus, dict):
+        console.print(
+            f"Corpus: {corpus.get('title', corpus.get('id', 'unknown'))} | "
+            f"authorship={corpus.get('authorship', 'unknown')} | "
+            f"legal_validation={corpus.get('legal_validation', 'unknown')} | "
+            f"held_out={corpus.get('held_out', 'unknown')} | "
+            f"customer_proof={corpus.get('customer_proof', 'unknown')}"
+        )
+        console.print(
+            "Metadata is dataset-declared and is not independently certified by this tool."
+        )
+    aggregates = result["aggregates"]
+    if isinstance(aggregates, dict):
+        for strategy, metrics in aggregates.items():
+            console.print(f"{strategy}: {metrics}")
+    console.print(f"JSON report: {config.output_path}")
+
+
 def run_structural_benchmark(args: argparse.Namespace) -> None:
     """Run structural-only benchmark (no embeddings)."""
+    logger.warning(
+        "benchmark-legacy uses SDK-generated structural references and is diagnostic only"
+    )
     _pin_seeds()
     fm = FixtureManager()
     documents = fm.load_all()
@@ -125,25 +180,28 @@ def run_structural_benchmark(args: argparse.Namespace) -> None:
         print(f"\nJSON exported to: {json_path}")
 
 
-def _get_available_models() -> list[EmbeddingModelName]:
+def _get_available_models(*, enable_voyage: bool = False) -> list[EmbeddingModelName]:
     """Return list of available embedding models.
 
-    Always includes local models. Includes Voyage only if API key is set.
+    Always includes the local model. Voyage requires an explicit CLI opt-in.
     """
     models: list[EmbeddingModelName] = [EmbeddingModelName.MINILM]
 
     voyage_key = os.environ.get("VOYAGE_API_KEY")
-    if voyage_key:
-        logger.info("VOYAGE_API_KEY found, including voyage-law-2.")
+    if enable_voyage and voyage_key:
+        logger.info("Voyage explicitly enabled, including voyage-law-2.")
         models.append(EmbeddingModelName.VOYAGE_LAW_2)
-    else:
-        logger.info("VOYAGE_API_KEY not set, skipping voyage-law-2.")
+    elif enable_voyage:
+        raise ValueError("--enable-voyage requires VOYAGE_API_KEY")
 
     return models
 
 
 def run_retrieval_benchmark(args: argparse.Namespace) -> None:
     """Run full benchmark including embeddings and retrieval."""
+    logger.warning(
+        "benchmark-embed is a legacy model-based diagnostic and may download model weights"
+    )
     _pin_seeds()
     from scaffolder.embedding import EmbeddingPipeline
     from scaffolder.metrics.retrieval import compute_retrieval_metrics
@@ -159,7 +217,7 @@ def run_retrieval_benchmark(args: argparse.Namespace) -> None:
     pipeline = ChunkingPipeline(strategies)
     strategy_results = pipeline.run(documents)
 
-    models = _get_available_models()
+    models = _get_available_models(enable_voyage=args.enable_voyage)
     result = BenchmarkResult(
         timestamp=datetime.datetime.now(datetime.timezone.utc).isoformat(),
         strategies=[sr.strategy for sr in strategy_results],
@@ -310,6 +368,7 @@ def _reconstruct_benchmark_result(data: dict) -> BenchmarkResult:  # type: ignor
                     mrr=rm_data["mrr"],
                     ndcg_at_10=rm_data["ndcg_at_10"],
                     drm_hit=rm_data["drm_hit"],
+                    ndcg_metric=rm_data.get("ndcg_metric", "legacy_unversioned"),
                 )
             )
 

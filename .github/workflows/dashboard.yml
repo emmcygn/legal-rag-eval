@@ -5,12 +5,18 @@ on:
     branches: [master, main]
     paths:
       - "src/scaffolder/dashboard/**"
+      - "src/scaffolder/evidence/**"
+      - "src/scaffolder/data/**"
+      - "pyproject.toml"
       - "streamlit_app.py"
       - "requirements-dashboard.txt"
   pull_request:
     branches: [master, main]
     paths:
       - "src/scaffolder/dashboard/**"
+      - "src/scaffolder/evidence/**"
+      - "src/scaffolder/data/**"
+      - "pyproject.toml"
       - "streamlit_app.py"
       - "requirements-dashboard.txt"
 

@@ -113,6 +113,10 @@
 
     {% if has_retrieval %}
     <h2>Retrieval Quality Metrics</h2>
+    <p>NDCG@10 is a compatibility field. Metric versions:
+    {{ retrieval_metrics | map(attribute='ndcg_metric') | unique | join(', ') }}.
+    Evidence-assignment scores are not classical chunk NDCG. Do not compare
+    different versions or infer validated gains from unanchored annotations.</p>
 
     {% for model, chart_html in retrieval_charts.items() %}
     <h3>{{ model }}</h3>

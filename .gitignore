@@ -49,6 +49,10 @@ results/*
 results/*/*
 !results/*/*.json
 !results/external/*.md
+# `make evals-smoke` writes synthetic runs beside the real ones, into a directory the
+# negations above track. The numbers are meaningless by design, so keep them out.
+results/external/*_smoke.json
+results/external/*_smoke.md
 .cache/
 *.faiss
 requirements.lock

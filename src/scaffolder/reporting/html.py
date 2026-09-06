@@ -1,8 +1,15 @@
-"""HTML report generator using Jinja2 templates and Plotly charts."""
+"""HTML report generator using Jinja2 templates and Plotly charts.
+
+Uses the same gold-scored `GoldStructuralMetrics` and `ComparisonResult`-shaped statistics
+as the CLI (`scaffolder.reporting.cli`) — see that module's docstring for why this file also
+never imports `scaffolder.metrics.statistical` directly and instead checks the `ComparisonLike`
+shape structurally.
+"""
 
 from __future__ import annotations
 
 import logging
+import math
 from collections import defaultdict
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -11,12 +18,45 @@ import plotly.graph_objects as go
 import plotly.io as pio
 from jinja2 import Environment, FileSystemLoader
 
+from scaffolder.reporting.cli import (
+    ComparisonLike,
+    aggregate_gold_structural_metrics,
+    aggregate_legacy_structural_metrics,
+    aggregate_retrieval_metrics,
+)
+
 if TYPE_CHECKING:
-    from scaffolder.models import BenchmarkResult, StructuralMetrics
+    from scaffolder.models import BenchmarkResult, GoldStructuralMetrics
 
 logger = logging.getLogger(__name__)
 
 _TEMPLATES_DIR = Path(__file__).parent / "templates"
+
+
+def _fmt_rate(value: float) -> str:
+    return f"{value:.3f}"
+
+
+def _fmt_optional(value: float | None) -> str:
+    return "n/a" if value is None else f"{value:.3f}"
+
+
+def _fmt_pct(value: float) -> str:
+    return f"{value * 100:.1f}%"
+
+
+def _fmt_effect_size(value: float) -> str:
+    if math.isinf(value):
+        return "+inf" if value > 0 else "-inf"
+    if math.isnan(value):
+        return "n/a"
+    return f"{value:.3f}"
+
+
+def _fmt_ci_or_lodo(low: float, high: float) -> str:
+    if math.isnan(low) or math.isnan(high):
+        return "n/a"
+    return f"[{low:+.3f}, {high:+.3f}]"
 
 
 def render_html_report(
@@ -28,9 +68,11 @@ def render_html_report(
     The output is a self-contained HTML file with:
     - Inline CSS (no external dependencies)
     - Inline Plotly charts (plotly.js loaded via CDN)
-    - Structural metrics tables and charts
-    - Retrieval metrics tables and charts
-    - Significance results with colour-coded p-values
+    - Gold-scored structural metrics table and charts
+    - Retrieval metrics tables and charts (per embedding model)
+    - `ComparisonResult`-based statistics (bootstrap CI, Holm-adjusted p, Wilcoxon, effect
+      sizes, leave-one-document-out), falling back to the legacy uncorrected table with a
+      warning when only that is available
     - Methodology section
 
     Args:
@@ -55,59 +97,170 @@ def _build_context(result: BenchmarkResult) -> dict[str, Any]:
     """Build the template context from benchmark results."""
     context: dict[str, Any] = {
         "timestamp": result.timestamp,
+        "seed": result.seed if result.seed is not None else "unknown",
+        "lexichunk_version": result.lexichunk_version or "unknown",
+        "lexichunk_commit": result.lexichunk_commit or "unknown",
         "strategies": [s.value for s in result.strategies],
         "documents": result.documents,
-        "structural_metrics": result.structural_metrics,
-        "retrieval_metrics": result.retrieval_metrics,
-        "significance_results": result.significance_results,
+        "models": [m.value for m in result.models],
         "structural_chart_html": _structural_bar_chart(result),
         "structural_heatmap_html": _structural_heatmap(result),
         "has_retrieval": bool(result.retrieval_metrics),
-        "has_significance": bool(result.significance_results),
         "retrieval_charts": {},
         "model_comparison_html": "",
         "drm_chart_html": "",
     }
 
+    context.update(_structural_table_context(result))
+    context.update(_comparisons_context(result))
+
     if result.retrieval_metrics:
         models = sorted({rm.embedding_model.value for rm in result.retrieval_metrics})
+        context["retrieval_by_model"] = _retrieval_table_context(result)
         for model in models:
             context["retrieval_charts"][model] = _retrieval_bar_chart(result, model)
         context["model_comparison_html"] = _model_comparison_chart(result)
         context["drm_chart_html"] = _drm_chart(result)
+    else:
+        context["retrieval_by_model"] = {}
 
     return context
 
 
+def _structural_table_context(result: BenchmarkResult) -> dict[str, Any]:
+    structural_rows: list[dict[str, Any]] = []
+    n_structural_documents = len({m.document_id for m in result.structural_metrics})
+    for a in aggregate_gold_structural_metrics(result.structural_metrics):
+        structural_rows.append(
+            {
+                "strategy": a.strategy.value,
+                "located": _fmt_pct(a.localization_rate),
+                "leaf_frag": _fmt_rate(a.clause_fragmentation_rate),
+                "over_merge": _fmt_rate(a.top_level_over_merge_rate),
+                "sub_clause_grp": _fmt_rate(a.sub_clause_grouping_rate),
+                "head_r": _fmt_optional(a.heading_recall),
+                "head_p": _fmt_optional(a.heading_precision),
+                "def_attach": _fmt_rate(a.definition_attachment_recall),
+                "xref_r": _fmt_optional(a.xref_target_recall),
+                "xref_p": _fmt_optional(a.xref_target_precision),
+                "size_cv": _fmt_rate(a.chunk_size_cv),
+                "avg_chars": f"{a.avg_chunk_chars:.0f}",
+                "chunks": f"{a.chunk_count:.1f}",
+            }
+        )
+
+    legacy_rows: list[dict[str, Any]] = []
+    n_legacy_documents = len({m.document_id for m in result.legacy_structural_metrics})
+    for legacy_agg in aggregate_legacy_structural_metrics(result.legacy_structural_metrics):
+        legacy_rows.append(
+            {
+                "strategy": legacy_agg.strategy.value,
+                "clause_frag": _fmt_rate(legacy_agg.clause_fragmentation_rate),
+                "def_preserv": _fmt_rate(legacy_agg.definition_preservation_rate),
+                "xref_resol": _fmt_rate(legacy_agg.cross_ref_resolution_rate),
+                "hierarchy": _fmt_rate(legacy_agg.hierarchy_depth_retained),
+                "size_cv": _fmt_rate(legacy_agg.chunk_size_cv),
+                "avg_chars": f"{legacy_agg.avg_chunk_chars:.0f}",
+                "chunks": f"{legacy_agg.chunk_count:.1f}",
+            }
+        )
+
+    return {
+        "structural_rows": structural_rows,
+        "n_structural_documents": n_structural_documents,
+        "legacy_structural_rows": legacy_rows,
+        "n_legacy_documents": n_legacy_documents,
+        "has_legacy_structural": bool(legacy_rows),
+    }
+
+
+def _retrieval_table_context(result: BenchmarkResult) -> dict[str, Any]:
+    by_model: dict[str, Any] = {}
+    models = sorted({rm.embedding_model.value for rm in result.retrieval_metrics})
+    for model in models:
+        model_metrics = [rm for rm in result.retrieval_metrics if rm.embedding_model.value == model]
+        n_queries = len({rm.query_id for rm in model_metrics})
+        rows = [
+            {
+                "strategy": a.strategy.value,
+                "p1": _fmt_rate(a.precision_at_1),
+                "p3": _fmt_rate(a.precision_at_3),
+                "p5": _fmt_rate(a.precision_at_5),
+                "p10": _fmt_rate(a.precision_at_10),
+                "mrr": _fmt_rate(a.mrr),
+                "ndcg10": _fmt_rate(a.ndcg_at_10),
+                "drm_rate": _fmt_rate(a.drm_rate),
+            }
+            for a in aggregate_retrieval_metrics(model_metrics)
+        ]
+        by_model[model] = {"n_queries": n_queries, "rows": rows}
+    return by_model
+
+
+def _comparisons_context(result: BenchmarkResult) -> dict[str, Any]:
+    rows = [c for c in result.comparisons if isinstance(c, ComparisonLike)]
+    by_model: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for c in sorted(rows, key=lambda c: (c.embedding_model, c.metric_name, c.strategy_b.value)):
+        by_model[c.embedding_model].append(
+            {
+                "metric": c.metric_name,
+                "a": c.strategy_a.value,
+                "b": c.strategy_b.value,
+                "n": c.n,
+                "mean_a": _fmt_rate(c.mean_a),
+                "mean_b": _fmt_rate(c.mean_b),
+                "delta": f"{c.delta:+.3f}",
+                "ci": _fmt_ci_or_lodo(c.ci_low, c.ci_high),
+                "p_t": _fmt_rate(c.p_value_t),
+                "p_wilcoxon": _fmt_rate(c.p_value_wilcoxon),
+                "p_holm": _fmt_rate(c.p_value_holm),
+                "significant_holm": c.significant_holm,
+                "cohens_d": _fmt_effect_size(c.cohens_d),
+                "lodo": _fmt_ci_or_lodo(c.lodo_min_delta, c.lodo_max_delta),
+            }
+        )
+
+    legacy_rows: list[dict[str, Any]] = []
+    if not rows and result.significance_results:
+        for sr in result.significance_results:
+            legacy_rows.append(
+                {
+                    "metric": sr.metric_name,
+                    "baseline": sr.strategy_b.value,
+                    "mean_a": _fmt_rate(sr.mean_a),
+                    "mean_b": _fmt_rate(sr.mean_b),
+                    "p_value": f"{sr.p_value:.4f}",
+                    "significant": sr.significant,
+                    "effect_size": _fmt_effect_size(sr.effect_size),
+                    "n_queries": sr.n_queries,
+                }
+            )
+
+    return {
+        "comparisons_by_model": dict(by_model),
+        "has_comparisons": bool(by_model),
+        "legacy_significance_rows": legacy_rows,
+        "has_legacy_significance_fallback": bool(legacy_rows),
+    }
+
+
 def _structural_bar_chart(result: BenchmarkResult) -> str:
-    """Generate grouped bar chart comparing structural metrics across strategies."""
+    """Grouped bar chart comparing gold-scored structural metrics across strategies."""
     if not result.structural_metrics:
         return ""
 
-    by_strategy: dict[str, list[StructuralMetrics]] = defaultdict(list)
-    for sm in result.structural_metrics:
-        by_strategy[sm.strategy.value].append(sm)
-
-    strategies = sorted(by_strategy.keys())
+    aggregated = aggregate_gold_structural_metrics(result.structural_metrics)
+    strategies = [a.strategy.value for a in aggregated]
 
     metrics_config = [
-        ("Clause Frag. (1-rate)", "clause_fragmentation_rate", True),
-        ("Definition Preservation", "definition_preservation_rate", False),
-        ("Cross-Ref Resolution", "cross_ref_resolution_rate", False),
-        ("Hierarchy Depth", "hierarchy_depth_retained", False),
+        ("Located", [a.localization_rate for a in aggregated]),
+        ("1 - Leaf Frag.", [1.0 - a.clause_fragmentation_rate for a in aggregated]),
+        ("1 - Over-merge", [1.0 - a.top_level_over_merge_rate for a in aggregated]),
+        ("Def. Attachment", [a.definition_attachment_recall for a in aggregated]),
     ]
 
     fig = go.Figure()
-
-    for label, attr, invert in metrics_config:
-        values = []
-        for strat in strategies:
-            metrics = by_strategy[strat]
-            avg = sum(getattr(m, attr) for m in metrics) / len(metrics)
-            if invert:
-                avg = 1.0 - avg
-            values.append(avg)
-
+    for label, values in metrics_config:
         fig.add_trace(
             go.Bar(
                 name=label,
@@ -119,7 +272,7 @@ def _structural_bar_chart(result: BenchmarkResult) -> str:
         )
 
     fig.update_layout(
-        title="Structural Quality Metrics by Strategy (higher = better)",
+        title="Gold-Scored Structural Quality by Strategy (higher = better)",
         barmode="group",
         yaxis_title="Score",
         yaxis_range=[0, 1.05],
@@ -131,11 +284,16 @@ def _structural_bar_chart(result: BenchmarkResult) -> str:
 
 
 def _structural_heatmap(result: BenchmarkResult) -> str:
-    """Generate heatmap: strategies x documents, coloured by composite score."""
+    """Heatmap: strategies x documents, coloured by a composite of gold metrics.
+
+    The composite only uses metrics that are never `None` (localization, fragmentation,
+    over-merge, definition attachment) so it is always computable, unlike heading/cross-ref
+    recall which are `None` for strategies that expose neither.
+    """
     if not result.structural_metrics:
         return ""
 
-    by_sd: dict[tuple[str, str], StructuralMetrics] = {}
+    by_sd: dict[tuple[str, str], GoldStructuralMetrics] = {}
     for sm in result.structural_metrics:
         by_sd[(sm.strategy.value, sm.document_id)] = sm
 
@@ -149,10 +307,10 @@ def _structural_heatmap(result: BenchmarkResult) -> str:
             sm_entry = by_sd.get((strat, doc))
             if sm_entry:
                 composite = (
-                    (1 - sm_entry.clause_fragmentation_rate)
-                    + sm_entry.definition_preservation_rate
-                    + sm_entry.cross_ref_resolution_rate
-                    + sm_entry.hierarchy_depth_retained
+                    sm_entry.localization_rate
+                    + (1 - sm_entry.clause_fragmentation_rate)
+                    + (1 - sm_entry.top_level_over_merge_rate)
+                    + sm_entry.definition_attachment_recall
                 ) / 4.0
                 row.append(round(composite, 3))
             else:
@@ -173,7 +331,7 @@ def _structural_heatmap(result: BenchmarkResult) -> str:
     )
 
     fig.update_layout(
-        title="Structural Quality Composite Score (strategy x document)",
+        title="Gold-Scored Structural Composite Score (strategy x document)",
         height=400,
         template="plotly_white",
     )
@@ -183,26 +341,21 @@ def _structural_heatmap(result: BenchmarkResult) -> str:
 
 def _retrieval_bar_chart(result: BenchmarkResult, model_name: str) -> str:
     """Grouped bar chart: strategies x retrieval metrics for one model."""
-    by_strategy: dict[str, list[Any]] = defaultdict(list)
-    for rm in result.retrieval_metrics:
-        if rm.embedding_model.value == model_name:
-            by_strategy[rm.strategy.value].append(rm)
+    model_metrics = [
+        rm for rm in result.retrieval_metrics if rm.embedding_model.value == model_name
+    ]
+    aggregated = aggregate_retrieval_metrics(model_metrics)
+    strategies = [a.strategy.value for a in aggregated]
 
-    strategies = sorted(by_strategy.keys())
-    metrics = [
-        ("P@5", "precision_at_5"),
-        ("R@10", "recall_at_10"),
-        ("MRR", "mrr"),
-        ("NDCG@10", "ndcg_at_10"),
+    metrics_config = [
+        ("P@5", [a.precision_at_5 for a in aggregated]),
+        ("R@10", [a.recall_at_10 for a in aggregated]),
+        ("MRR", [a.mrr for a in aggregated]),
+        ("NDCG@10", [a.ndcg_at_10 for a in aggregated]),
     ]
 
     fig = go.Figure()
-    for label, attr in metrics:
-        values = []
-        for strat in strategies:
-            items = by_strategy[strat]
-            avg = sum(getattr(m, attr) for m in items) / len(items) if items else 0
-            values.append(avg)
+    for label, values in metrics_config:
         fig.add_trace(
             go.Bar(
                 name=label,
@@ -263,7 +416,12 @@ def _model_comparison_chart(result: BenchmarkResult) -> str:
 
 
 def _drm_chart(result: BenchmarkResult) -> str:
-    """Bar chart showing Document Retrieval Mismatch rate per strategy."""
+    """Bar chart showing mean Document Retrieval Mismatch rate per strategy.
+
+    Uses `RetrievalMetrics.drm_rate` (the per-query mismatch fraction), not `drm_hit` — with
+    one shared index across all documents, `drm_hit` is `True` for essentially every query
+    and carries no information on its own (see the field's docstring in `scaffolder.models`).
+    """
     by_strategy: dict[str, list[Any]] = defaultdict(list)
     for rm in result.retrieval_metrics:
         by_strategy[rm.strategy.value].append(rm)
@@ -272,7 +430,7 @@ def _drm_chart(result: BenchmarkResult) -> str:
     drm_rates = []
     for strat in strategies:
         items = by_strategy[strat]
-        rate = sum(1 for m in items if m.drm_hit) / len(items) * 100 if items else 0
+        rate = sum(m.drm_rate for m in items) / len(items) * 100 if items else 0
         drm_rates.append(rate)
 
     fig = go.Figure(

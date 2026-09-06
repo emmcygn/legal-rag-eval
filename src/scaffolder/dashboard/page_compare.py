@@ -9,11 +9,16 @@ import streamlit as st
 if TYPE_CHECKING:
     from scaffolder.models import ChunkSet, Document
 
-# Map display names to StrategyName enum values
+# Map display names to StrategyName enum values. rcts_1024 is the size-matched
+# control for LexiChunk's ~790-char chunks; rcts_512 is kept as the older,
+# unmatched comparison. LexiChunk Contextual is included as a baseline here too so
+# it can be compared against plain LexiChunk, the same way the other strategies are.
 _BASELINE_OPTIONS: dict[str, str] = {
-    "LangChain RCTS": "rcts",
+    "LangChain RCTS (512)": "rcts_512",
+    "LangChain RCTS (1024, size-matched)": "rcts_1024",
     "Sentence Split": "sentence_split",
     "Fixed Size (512)": "fixed_size",
+    "LexiChunk Contextual": "lexichunk_contextual",
 }
 
 _FIXTURE_IDS = [

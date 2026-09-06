@@ -1,11 +1,17 @@
-"""Tests for __main__.py CLI commands."""
+"""Tests for benchmark result reconstruction used by `scaffolder.__main__`'s `report` command.
+
+`reconstruct_benchmark_result` used to live in `scaffolder.__main__` as a private function; it
+now lives in `scaffolder.reporting.json_export` (the reporting package owns JSON round-tripping,
+and `__main__` just calls it) — see that module for the implementation and its docstring for
+what is (and, for `comparisons`, deliberately is not) reconstructed.
+"""
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from scaffolder.__main__ import _reconstruct_benchmark_result
 from scaffolder.models import StrategyName
+from scaffolder.reporting.json_export import reconstruct_benchmark_result
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -13,12 +19,12 @@ if TYPE_CHECKING:
 
 class TestReconstructBenchmarkResult:
     def test_empty_data(self) -> None:
-        result = _reconstruct_benchmark_result({})
+        result = reconstruct_benchmark_result({})
         assert result.timestamp == ""
         assert result.strategies == []
         assert result.documents == []
 
-    def test_structural_metrics(self) -> None:
+    def test_gold_structural_metrics(self) -> None:
         data = {
             "timestamp": "2026-03-18T00:00:00",
             "strategies": ["lexichunk", "rcts"],
@@ -28,29 +34,42 @@ class TestReconstructBenchmarkResult:
                 {
                     "strategy": "lexichunk",
                     "document_id": "doc1",
-                    "clause_fragmentation_rate": 0.05,
-                    "definition_preservation_rate": 0.95,
-                    "cross_ref_resolution_rate": 0.90,
-                    "hierarchy_depth_retained": 1.0,
-                    "chunk_size_cv": 0.3,
                     "chunk_count": 10,
                     "avg_chunk_chars": 400.0,
+                    "chunk_size_cv": 0.3,
+                    "located_chunks": 10,
+                    "localization_rate": 1.0,
+                    "localization_coverage": 1.0,
+                    "n_leaf_clauses": 20,
+                    "clause_fragmentation_rate": 0.05,
+                    "n_top_level_clauses": 8,
+                    "top_level_over_merge_rate": 0.02,
+                    "sub_clause_grouping_rate": 0.1,
+                    "heading_recall": 0.9,
+                    "heading_precision": 0.85,
+                    "n_gold_headings": 8,
+                    "n_definition_uses": 12,
+                    "definition_attachment_recall": 0.95,
+                    "n_gold_cross_refs": 5,
+                    "xref_target_recall": 0.9,
+                    "xref_target_precision": 0.88,
                 },
             ],
             "retrieval_metrics": [],
             "significance_results": [],
         }
-        result = _reconstruct_benchmark_result(data)
+        result = reconstruct_benchmark_result(data)
         assert len(result.strategies) == 2
         assert result.strategies[0] == StrategyName.LEXICHUNK
         assert len(result.structural_metrics) == 1
         assert result.structural_metrics[0].clause_fragmentation_rate == 0.05
+        assert result.structural_metrics[0].heading_recall == 0.9
 
     def test_invalid_strategy_skipped(self) -> None:
         data = {
             "strategies": ["lexichunk", "invalid_strategy"],
         }
-        result = _reconstruct_benchmark_result(data)
+        result = reconstruct_benchmark_result(data)
         assert len(result.strategies) == 1
 
     def test_malformed_metric_skipped(self) -> None:
@@ -59,7 +78,7 @@ class TestReconstructBenchmarkResult:
                 {"strategy": "lexichunk"},  # Missing fields
             ],
         }
-        result = _reconstruct_benchmark_result(data)
+        result = reconstruct_benchmark_result(data)
         assert len(result.structural_metrics) == 0
 
     def test_retrieval_metrics(self) -> None:
@@ -83,7 +102,7 @@ class TestReconstructBenchmarkResult:
                 },
             ],
         }
-        result = _reconstruct_benchmark_result(data)
+        result = reconstruct_benchmark_result(data)
         assert len(result.retrieval_metrics) == 1
         assert result.retrieval_metrics[0].mrr == 1.0
 
@@ -105,13 +124,13 @@ class TestReconstructBenchmarkResult:
                 },
             ],
         }
-        result = _reconstruct_benchmark_result(data)
+        result = reconstruct_benchmark_result(data)
         assert len(result.significance_results) == 1
         assert result.significance_results[0].significant is True
 
     def test_roundtrip_via_json(self, tmp_path: Path) -> None:
         """Export a result to JSON, then reconstruct it."""
-        from scaffolder.models import BenchmarkResult, StructuralMetrics
+        from scaffolder.models import BenchmarkResult, GoldStructuralMetrics
         from scaffolder.reporting.json_export import export_json, load_json
 
         original = BenchmarkResult(
@@ -119,23 +138,35 @@ class TestReconstructBenchmarkResult:
             strategies=[StrategyName.LEXICHUNK],
             documents=["doc1"],
             structural_metrics=[
-                StructuralMetrics(
+                GoldStructuralMetrics(
                     strategy=StrategyName.LEXICHUNK,
                     document_id="doc1",
-                    clause_fragmentation_rate=0.05,
-                    definition_preservation_rate=0.95,
-                    cross_ref_resolution_rate=0.90,
-                    hierarchy_depth_retained=1.0,
-                    chunk_size_cv=0.3,
                     chunk_count=10,
                     avg_chunk_chars=400.0,
+                    chunk_size_cv=0.3,
+                    located_chunks=10,
+                    localization_rate=1.0,
+                    localization_coverage=1.0,
+                    n_leaf_clauses=20,
+                    clause_fragmentation_rate=0.05,
+                    n_top_level_clauses=8,
+                    top_level_over_merge_rate=0.02,
+                    sub_clause_grouping_rate=0.1,
+                    heading_recall=0.9,
+                    heading_precision=0.85,
+                    n_gold_headings=8,
+                    n_definition_uses=12,
+                    definition_attachment_recall=0.95,
+                    n_gold_cross_refs=5,
+                    xref_target_recall=0.9,
+                    xref_target_precision=0.88,
                 ),
             ],
         )
         path = tmp_path / "test.json"
         export_json(original, path)
         data = load_json(path)
-        reconstructed = _reconstruct_benchmark_result(data)
+        reconstructed = reconstruct_benchmark_result(data)
         assert len(reconstructed.structural_metrics) == 1
         sm = reconstructed.structural_metrics[0]
         assert sm.clause_fragmentation_rate == 0.05

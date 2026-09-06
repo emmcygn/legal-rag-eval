@@ -7,6 +7,9 @@ from typing import Any
 
 import streamlit as st
 
+from scaffolder.chunking import DEFAULT_STRATEGIES
+from scaffolder.models import StrategyName
+
 
 def _invalidate_on_change(key: str, new_value: Any) -> bool:
     """Track a value and return True if it changed, clearing relevant caches."""
@@ -68,18 +71,20 @@ def main() -> None:
     st.sidebar.markdown("---")
     st.sidebar.markdown("**Settings**")
 
+    strategy_options = [s.value for s in DEFAULT_STRATEGIES]
+
     # Global settings in sidebar
     if "config" not in st.session_state:
         st.session_state.config = {
-            "strategies": ["lexichunk", "rcts", "sentence_split", "fixed_size"],
+            "strategies": strategy_options,
             "embedding_model": "all-MiniLM-L6-v2",
         }
 
     # Strategy multi-select
     selected_strategies = st.sidebar.multiselect(
         "Strategies",
-        options=["lexichunk", "rcts", "sentence_split", "fixed_size"],
-        default=["lexichunk", "rcts"],
+        options=strategy_options,
+        default=[StrategyName.LEXICHUNK.value, StrategyName.RCTS_512.value],
     )
     st.session_state.config["strategies"] = selected_strategies
     _invalidate_on_change("strategies", tuple(selected_strategies))

@@ -1,0 +1,1001 @@
+{
+  "document_id": "us_msa",
+  "source_file": "src/scaffolder/fixtures/documents/us_msa.txt",
+  "text_sha256": "cd8fc71920ad254f1f5adfd844c71af5461c5bb663fda85e5d13fb6b456402f5",
+  "n_chars": 25346,
+  "numbering_style": "us_article_section",
+  "clauses": [
+    {
+      "identifier": "article_1",
+      "level": 1,
+      "parent": null,
+      "char_start": 1182,
+      "char_end": 1205,
+      "is_top_level": true,
+      "heading": "DEFINITIONS"
+    },
+    {
+      "identifier": "section_1.01",
+      "level": 2,
+      "parent": "article_1",
+      "char_start": 1205,
+      "char_end": 1326,
+      "is_top_level": false,
+      "heading": "Definitions"
+    },
+    {
+      "identifier": "section_1.01(a)",
+      "level": 3,
+      "parent": "section_1.01",
+      "char_start": 1326,
+      "char_end": 1833,
+      "is_top_level": false,
+      "heading": "\"Affiliate\" means, with respect to any Person, any other Person that directly or indirectly controls, is controlled by, "
+    },
+    {
+      "identifier": "section_1.01(b)",
+      "level": 3,
+      "parent": "section_1.01",
+      "char_start": 1833,
+      "char_end": 2139,
+      "is_top_level": false,
+      "heading": "\"Authorized User\" means any employee, contractor, or agent of Customer or its Affiliates who is authorized by Customer t"
+    },
+    {
+      "identifier": "section_1.01(c)",
+      "level": 3,
+      "parent": "section_1.01",
+      "char_start": 2139,
+      "char_end": 3027,
+      "is_top_level": false,
+      "heading": "\"Confidential Information\" means any information disclosed by one Party (the \"Disclosing Party\") to the other Party (the"
+    },
+    {
+      "identifier": "section_1.01(d)",
+      "level": 3,
+      "parent": "section_1.01",
+      "char_start": 3027,
+      "char_end": 3280,
+      "is_top_level": false,
+      "heading": "\"Documentation\" means the technical and functional specifications, user manuals, and other written materials relating to"
+    },
+    {
+      "identifier": "section_1.01(e)",
+      "level": 3,
+      "parent": "section_1.01",
+      "char_start": 3280,
+      "char_end": 3694,
+      "is_top_level": false,
+      "heading": "\"Intellectual Property Rights\" means all forms of intellectual property rights throughout the world, including patents, "
+    },
+    {
+      "identifier": "section_1.01(f)",
+      "level": 3,
+      "parent": "section_1.01",
+      "char_start": 3694,
+      "char_end": 4040,
+      "is_top_level": false,
+      "heading": "\"Order Form\" means a written order form, purchase order, or statement of work executed by both Parties that references t"
+    },
+    {
+      "identifier": "section_1.01(g)",
+      "level": 3,
+      "parent": "section_1.01",
+      "char_start": 4040,
+      "char_end": 4441,
+      "is_top_level": false,
+      "heading": "\"Provider Technology\" means the Services, software, hardware, products, processes, algorithms, user interfaces, know-how"
+    },
+    {
+      "identifier": "section_1.01(h)",
+      "level": 3,
+      "parent": "section_1.01",
+      "char_start": 4441,
+      "char_end": 4817,
+      "is_top_level": false,
+      "heading": "\"Services\" means the services, software, and deliverables to be provided by Provider to Customer as described in each Or"
+    },
+    {
+      "identifier": "section_1.01(i)",
+      "level": 3,
+      "parent": "section_1.01",
+      "char_start": 4817,
+      "char_end": 5059,
+      "is_top_level": false,
+      "heading": "\"Statement of Work\" or \"SOW\" means an Order Form that describes in detail professional services, deliverables, timelines"
+    },
+    {
+      "identifier": "section_1.01(j)",
+      "level": 3,
+      "parent": "section_1.01",
+      "char_start": 5059,
+      "char_end": 5222,
+      "is_top_level": false,
+      "heading": "\"Term\" means the period commencing on the Effective Date and continuing until this Agreement is terminated in accordance"
+    },
+    {
+      "identifier": "section_1.02",
+      "level": 2,
+      "parent": "article_1",
+      "char_start": 5222,
+      "char_end": 5708,
+      "is_top_level": false,
+      "heading": "Interpretation"
+    },
+    {
+      "identifier": "article_2",
+      "level": 1,
+      "parent": null,
+      "char_start": 5708,
+      "char_end": 5729,
+      "is_top_level": true,
+      "heading": "SERVICES"
+    },
+    {
+      "identifier": "section_2.01",
+      "level": 2,
+      "parent": "article_2",
+      "char_start": 5729,
+      "char_end": 6012,
+      "is_top_level": false,
+      "heading": "Provision of Services"
+    },
+    {
+      "identifier": "section_2.02",
+      "level": 2,
+      "parent": "article_2",
+      "char_start": 6012,
+      "char_end": 6496,
+      "is_top_level": false,
+      "heading": "Statements of Work"
+    },
+    {
+      "identifier": "section_2.03",
+      "level": 2,
+      "parent": "article_2",
+      "char_start": 6496,
+      "char_end": 6800,
+      "is_top_level": false,
+      "heading": "Change Orders"
+    },
+    {
+      "identifier": "section_2.04",
+      "level": 2,
+      "parent": "article_2",
+      "char_start": 6800,
+      "char_end": 7472,
+      "is_top_level": false,
+      "heading": "Customer Responsibilities"
+    },
+    {
+      "identifier": "section_2.05",
+      "level": 2,
+      "parent": "article_2",
+      "char_start": 7472,
+      "char_end": 7870,
+      "is_top_level": false,
+      "heading": "Subcontractors"
+    },
+    {
+      "identifier": "article_3",
+      "level": 1,
+      "parent": null,
+      "char_start": 7870,
+      "char_end": 7900,
+      "is_top_level": true,
+      "heading": "FEES AND PAYMENT"
+    },
+    {
+      "identifier": "section_3.01",
+      "level": 2,
+      "parent": "article_3",
+      "char_start": 7900,
+      "char_end": 8174,
+      "is_top_level": false,
+      "heading": "Fees"
+    },
+    {
+      "identifier": "section_3.02",
+      "level": 2,
+      "parent": "article_3",
+      "char_start": 8174,
+      "char_end": 8572,
+      "is_top_level": false,
+      "heading": "Invoicing and Payment"
+    },
+    {
+      "identifier": "section_3.03",
+      "level": 2,
+      "parent": "article_3",
+      "char_start": 8572,
+      "char_end": 9034,
+      "is_top_level": false,
+      "heading": "Late Payments"
+    },
+    {
+      "identifier": "section_3.04",
+      "level": 2,
+      "parent": "article_3",
+      "char_start": 9034,
+      "char_end": 9610,
+      "is_top_level": false,
+      "heading": "Taxes"
+    },
+    {
+      "identifier": "section_3.05",
+      "level": 2,
+      "parent": "article_3",
+      "char_start": 9610,
+      "char_end": 9973,
+      "is_top_level": false,
+      "heading": "Fee Adjustments"
+    },
+    {
+      "identifier": "article_4",
+      "level": 1,
+      "parent": null,
+      "char_start": 9973,
+      "char_end": 10001,
+      "is_top_level": true,
+      "heading": "CONFIDENTIALITY"
+    },
+    {
+      "identifier": "section_4.01",
+      "level": 2,
+      "parent": "article_4",
+      "char_start": 10001,
+      "char_end": 10605,
+      "is_top_level": false,
+      "heading": "Confidentiality Obligations"
+    },
+    {
+      "identifier": "section_4.02",
+      "level": 2,
+      "parent": "article_4",
+      "char_start": 10605,
+      "char_end": 11246,
+      "is_top_level": false,
+      "heading": "Permitted Disclosures"
+    },
+    {
+      "identifier": "section_4.03",
+      "level": 2,
+      "parent": "article_4",
+      "char_start": 11246,
+      "char_end": 11558,
+      "is_top_level": false,
+      "heading": "Survival"
+    },
+    {
+      "identifier": "article_5",
+      "level": 1,
+      "parent": null,
+      "char_start": 11558,
+      "char_end": 11591,
+      "is_top_level": true,
+      "heading": "INTELLECTUAL PROPERTY"
+    },
+    {
+      "identifier": "section_5.01",
+      "level": 2,
+      "parent": "article_5",
+      "char_start": 11591,
+      "char_end": 11903,
+      "is_top_level": false,
+      "heading": "Provider Ownership"
+    },
+    {
+      "identifier": "section_5.02",
+      "level": 2,
+      "parent": "article_5",
+      "char_start": 11903,
+      "char_end": 12250,
+      "is_top_level": false,
+      "heading": "License Grant"
+    },
+    {
+      "identifier": "section_5.03",
+      "level": 2,
+      "parent": "article_5",
+      "char_start": 12250,
+      "char_end": 12820,
+      "is_top_level": false,
+      "heading": "Customer Data"
+    },
+    {
+      "identifier": "section_5.04",
+      "level": 2,
+      "parent": "article_5",
+      "char_start": 12820,
+      "char_end": 13307,
+      "is_top_level": false,
+      "heading": "Deliverables"
+    },
+    {
+      "identifier": "section_5.05",
+      "level": 2,
+      "parent": "article_5",
+      "char_start": 13307,
+      "char_end": 13645,
+      "is_top_level": false,
+      "heading": "Feedback"
+    },
+    {
+      "identifier": "article_6",
+      "level": 1,
+      "parent": null,
+      "char_start": 13645,
+      "char_end": 13681,
+      "is_top_level": true,
+      "heading": "LIMITATION OF LIABILITY"
+    },
+    {
+      "identifier": "section_6.01",
+      "level": 2,
+      "parent": "article_6",
+      "char_start": 13681,
+      "char_end": 14300,
+      "is_top_level": false,
+      "heading": "Exclusion of Consequential Damages"
+    },
+    {
+      "identifier": "section_6.01(b)",
+      "level": 2,
+      "parent": "article_6",
+      "char_start": 14300,
+      "char_end": 14836,
+      "is_top_level": false,
+      "heading": "Cap on Liability"
+    },
+    {
+      "identifier": "section_6.02",
+      "level": 2,
+      "parent": "article_6",
+      "char_start": 14836,
+      "char_end": 15306,
+      "is_top_level": false,
+      "heading": "Exceptions to Limitations"
+    },
+    {
+      "identifier": "article_7",
+      "level": 1,
+      "parent": null,
+      "char_start": 15306,
+      "char_end": 15335,
+      "is_top_level": true,
+      "heading": "INDEMNIFICATION"
+    },
+    {
+      "identifier": "section_7.01",
+      "level": 2,
+      "parent": "article_7",
+      "char_start": 15335,
+      "char_end": 15984,
+      "is_top_level": false,
+      "heading": "Indemnification by Provider"
+    },
+    {
+      "identifier": "section_7.02",
+      "level": 2,
+      "parent": "article_7",
+      "char_start": 15984,
+      "char_end": 16479,
+      "is_top_level": false,
+      "heading": "Indemnification by Customer"
+    },
+    {
+      "identifier": "section_7.03",
+      "level": 2,
+      "parent": "article_7",
+      "char_start": 16479,
+      "char_end": 17302,
+      "is_top_level": false,
+      "heading": "Indemnification Procedure"
+    },
+    {
+      "identifier": "article_8",
+      "level": 1,
+      "parent": null,
+      "char_start": 17302,
+      "char_end": 17337,
+      "is_top_level": true,
+      "heading": "TERM AND TERMINATION"
+    },
+    {
+      "identifier": "section_8.01",
+      "level": 2,
+      "parent": "article_8",
+      "char_start": 17337,
+      "char_end": 17505,
+      "is_top_level": false,
+      "heading": "Term"
+    },
+    {
+      "identifier": "section_8.02",
+      "level": 2,
+      "parent": "article_8",
+      "char_start": 17505,
+      "char_end": 17869,
+      "is_top_level": false,
+      "heading": "Termination for Convenience"
+    },
+    {
+      "identifier": "section_8.03",
+      "level": 2,
+      "parent": "article_8",
+      "char_start": 17869,
+      "char_end": 18452,
+      "is_top_level": false,
+      "heading": "Termination for Cause"
+    },
+    {
+      "identifier": "section_8.04",
+      "level": 2,
+      "parent": "article_8",
+      "char_start": 18452,
+      "char_end": 19144,
+      "is_top_level": false,
+      "heading": "Effect of Termination"
+    },
+    {
+      "identifier": "article_9",
+      "level": 1,
+      "parent": null,
+      "char_start": 19144,
+      "char_end": 19170,
+      "is_top_level": true,
+      "heading": "MISCELLANEOUS"
+    },
+    {
+      "identifier": "section_9.01",
+      "level": 2,
+      "parent": "article_9",
+      "char_start": 19170,
+      "char_end": 19541,
+      "is_top_level": false,
+      "heading": "Governing Law"
+    },
+    {
+      "identifier": "section_9.02",
+      "level": 2,
+      "parent": "article_9",
+      "char_start": 19541,
+      "char_end": 20143,
+      "is_top_level": false,
+      "heading": "Entire Agreement"
+    },
+    {
+      "identifier": "section_9.03",
+      "level": 2,
+      "parent": "article_9",
+      "char_start": 20143,
+      "char_end": 20487,
+      "is_top_level": false,
+      "heading": "Severability"
+    },
+    {
+      "identifier": "section_9.04",
+      "level": 2,
+      "parent": "article_9",
+      "char_start": 20487,
+      "char_end": 21110,
+      "is_top_level": false,
+      "heading": "Notices"
+    },
+    {
+      "identifier": "section_9.05",
+      "level": 2,
+      "parent": "article_9",
+      "char_start": 21110,
+      "char_end": 21779,
+      "is_top_level": false,
+      "heading": "Assignment"
+    },
+    {
+      "identifier": "section_9.06",
+      "level": 2,
+      "parent": "article_9",
+      "char_start": 21779,
+      "char_end": 22036,
+      "is_top_level": false,
+      "heading": "Waiver"
+    },
+    {
+      "identifier": "section_9.07",
+      "level": 2,
+      "parent": "article_9",
+      "char_start": 22036,
+      "char_end": 22698,
+      "is_top_level": false,
+      "heading": "Force Majeure"
+    },
+    {
+      "identifier": "section_9.08",
+      "level": 2,
+      "parent": "article_9",
+      "char_start": 22698,
+      "char_end": 22957,
+      "is_top_level": false,
+      "heading": "Counterparts"
+    }
+  ],
+  "defined_terms": [
+    {
+      "term": "Agreement",
+      "definition_span": [
+        27,
+        76
+      ]
+    },
+    {
+      "term": "Effective Date",
+      "definition_span": [
+        93,
+        139
+      ]
+    },
+    {
+      "term": "Provider",
+      "definition_span": [
+        157,
+        325
+      ]
+    },
+    {
+      "term": "Customer",
+      "definition_span": [
+        333,
+        496
+      ]
+    },
+    {
+      "term": "Party",
+      "definition_span": [
+        499,
+        573
+      ]
+    },
+    {
+      "term": "Parties",
+      "definition_span": [
+        578,
+        608
+      ]
+    },
+    {
+      "term": "Affiliate",
+      "definition_span": [
+        1331,
+        1550
+      ]
+    },
+    {
+      "term": "control",
+      "definition_span": [
+        1550,
+        1826
+      ]
+    },
+    {
+      "term": "Authorized User",
+      "definition_span": [
+        1838,
+        2132
+      ]
+    },
+    {
+      "term": "Confidential Information",
+      "definition_span": [
+        2144,
+        3020
+      ]
+    },
+    {
+      "term": "Disclosing Party",
+      "definition_span": [
+        2177,
+        2250
+      ]
+    },
+    {
+      "term": "Receiving Party",
+      "definition_span": [
+        2251,
+        2293
+      ]
+    },
+    {
+      "term": "Documentation",
+      "definition_span": [
+        3032,
+        3273
+      ]
+    },
+    {
+      "term": "Intellectual Property Rights",
+      "definition_span": [
+        3285,
+        3687
+      ]
+    },
+    {
+      "term": "Order Form",
+      "definition_span": [
+        3699,
+        4033
+      ]
+    },
+    {
+      "term": "Provider Technology",
+      "definition_span": [
+        4045,
+        4434
+      ]
+    },
+    {
+      "term": "Services",
+      "definition_span": [
+        4446,
+        4810
+      ]
+    },
+    {
+      "term": "Statement of Work",
+      "definition_span": [
+        4822,
+        5052
+      ]
+    },
+    {
+      "term": "SOW",
+      "definition_span": [
+        4845,
+        5052
+      ]
+    },
+    {
+      "term": "Term",
+      "definition_span": [
+        5064,
+        5220
+      ]
+    },
+    {
+      "term": "Fees",
+      "definition_span": [
+        7920,
+        8009
+      ]
+    },
+    {
+      "term": "Payment Due Date",
+      "definition_span": [
+        8363,
+        8454
+      ]
+    },
+    {
+      "term": "Taxes",
+      "definition_span": [
+        9055,
+        9267
+      ]
+    },
+    {
+      "term": "Customer Data",
+      "definition_span": [
+        12279,
+        12446
+      ]
+    },
+    {
+      "term": "Feedback",
+      "definition_span": [
+        13331,
+        13446
+      ]
+    },
+    {
+      "term": "Customer Indemnitees",
+      "definition_span": [
+        15378,
+        15528
+      ]
+    },
+    {
+      "term": "Losses",
+      "definition_span": [
+        15546,
+        15699
+      ]
+    },
+    {
+      "term": "Provider Indemnitees",
+      "definition_span": [
+        16027,
+        16177
+      ]
+    },
+    {
+      "term": "Indemnified Party",
+      "definition_span": [
+        16520,
+        16579
+      ]
+    },
+    {
+      "term": "Indemnifying Party",
+      "definition_span": [
+        16591,
+        16656
+      ]
+    },
+    {
+      "term": "Force Majeure Event",
+      "definition_span": [
+        22065,
+        22441
+      ]
+    }
+  ],
+  "cross_references": [
+    {
+      "raw_text": "Exhibit A",
+      "char_start": 4588,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "an Order Form",
+      "char_start": 4857,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "Article VIII",
+      "char_start": 5200,
+      "target_identifier": "article_8",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "the applicable Order Form",
+      "char_start": 5852,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "a SOW",
+      "char_start": 6336,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the SOW",
+      "char_start": 6411,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "a SOW",
+      "char_start": 6574,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "a SOW",
+      "char_start": 6676,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "2.04",
+      "char_start": 7465,
+      "target_identifier": "section_2.04",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Article IV",
+      "char_start": 7825,
+      "target_identifier": "article_4",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Article V",
+      "char_start": 7840,
+      "target_identifier": "article_5",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Article III",
+      "char_start": 8034,
+      "target_identifier": "article_3",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "the applicable Order Form",
+      "char_start": 8077,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the applicable\nOrder Form",
+      "char_start": 8336,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "any Order Form",
+      "char_start": 9699,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "4.02",
+      "char_start": 10437,
+      "target_identifier": "section_4.02",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Article IV",
+      "char_start": 10910,
+      "target_identifier": "article_4",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Article IV",
+      "char_start": 11294,
+      "target_identifier": "article_4",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "a Statement of Work",
+      "char_start": 12885,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "a\nSOW",
+      "char_start": 12990,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "SECTION 6.02",
+      "char_start": 14346,
+      "target_identifier": "section_6.02",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "6.01",
+      "char_start": 14914,
+      "target_identifier": "section_6.01",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Article VII",
+      "char_start": 14992,
+      "target_identifier": "article_7",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Article IV",
+      "char_start": 15072,
+      "target_identifier": "article_4",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Article III",
+      "char_start": 15141,
+      "target_identifier": "article_3",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Article VIII",
+      "char_start": 17490,
+      "target_identifier": "article_8",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "any Order Form",
+      "char_start": 17727,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "any\nOrder Form",
+      "char_start": 17951,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "any Order Form",
+      "char_start": 18545,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "Article I",
+      "char_start": 18990,
+      "target_identifier": "article_1",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "3.01",
+      "char_start": 19009,
+      "target_identifier": "section_3.01",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "3.04",
+      "char_start": 19022,
+      "target_identifier": "section_3.04",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Article IV",
+      "char_start": 19028,
+      "target_identifier": "article_4",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Article V",
+      "char_start": 19040,
+      "target_identifier": "article_5",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "5.01",
+      "char_start": 19060,
+      "target_identifier": "section_5.01",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "5.03",
+      "char_start": 19066,
+      "target_identifier": "section_5.03",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "5.05",
+      "char_start": 19076,
+      "target_identifier": "section_5.05",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Article VI",
+      "char_start": 19083,
+      "target_identifier": "article_6",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Article VII",
+      "char_start": 19095,
+      "target_identifier": "article_7",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "8.04",
+      "char_start": 19121,
+      "target_identifier": "section_8.04",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Article IX",
+      "char_start": 19131,
+      "target_identifier": "article_9",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "9.05",
+      "char_start": 21749,
+      "target_identifier": "section_9.05",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "3.01",
+      "char_start": 25266,
+      "target_identifier": "section_3.01",
+      "kind": "internal_clause"
+    }
+  ]
+}

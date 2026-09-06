@@ -1,0 +1,995 @@
+{
+  "document_id": "uk_terms_conditions",
+  "source_file": "src/scaffolder/fixtures/documents/uk_terms_conditions.txt",
+  "text_sha256": "a9b38a99a3f80a998021f8656319e43de95b7e2898695e7855a4f35d8548d44e",
+  "n_chars": 16948,
+  "numbering_style": "uk_decimal",
+  "clauses": [
+    {
+      "identifier": "1",
+      "level": 1,
+      "parent": null,
+      "char_start": 947,
+      "char_end": 965,
+      "is_top_level": true,
+      "heading": "Definitions"
+    },
+    {
+      "identifier": "1.1",
+      "level": 2,
+      "parent": "1",
+      "char_start": 965,
+      "char_end": 3437,
+      "is_top_level": false,
+      "heading": "In these Terms, the following words and expressions shall have the meanings given to them below"
+    },
+    {
+      "identifier": "1.2",
+      "level": 2,
+      "parent": "1",
+      "char_start": 3437,
+      "char_end": 3598,
+      "is_top_level": false,
+      "heading": "References to clauses are to clauses of these Terms. Clause headings are for convenience only and shall not affect the i"
+    },
+    {
+      "identifier": "1.3",
+      "level": 2,
+      "parent": "1",
+      "char_start": 3598,
+      "char_end": 3781,
+      "is_top_level": false,
+      "heading": "In the event of any conflict between these Terms and an Order Form, the Order Form shall take precedence to the extent o"
+    },
+    {
+      "identifier": "2",
+      "level": 1,
+      "parent": null,
+      "char_start": 3781,
+      "char_end": 3810,
+      "is_top_level": true,
+      "heading": "Access to the Platform"
+    },
+    {
+      "identifier": "2.1",
+      "level": 2,
+      "parent": "2",
+      "char_start": 3810,
+      "char_end": 4128,
+      "is_top_level": false,
+      "heading": "Subject to these Terms and the Customer's timely payment of Fees, CloudVault grants to the Customer a limited, non-exclu"
+    },
+    {
+      "identifier": "2.2",
+      "level": 2,
+      "parent": "2",
+      "char_start": 4128,
+      "char_end": 4417,
+      "is_top_level": false,
+      "heading": "The Customer shall procure that each Authorised User keeps their login credentials confidential and does not share them "
+    },
+    {
+      "identifier": "2.3",
+      "level": 2,
+      "parent": "2",
+      "char_start": 4417,
+      "char_end": 4643,
+      "is_top_level": false,
+      "heading": "The Customer shall notify CloudVault immediately at security@cloudvault.io upon becoming aware of any unauthorised acces"
+    },
+    {
+      "identifier": "2.4",
+      "level": 2,
+      "parent": "2",
+      "char_start": 4643,
+      "char_end": 5059,
+      "is_top_level": false,
+      "heading": "CloudVault reserves the right to suspend access to the Platform without liability where it reasonably suspects a securit"
+    },
+    {
+      "identifier": "3",
+      "level": 1,
+      "parent": null,
+      "char_start": 5059,
+      "char_end": 5080,
+      "is_top_level": true,
+      "heading": "Acceptable use"
+    },
+    {
+      "identifier": "3.1",
+      "level": 2,
+      "parent": "3",
+      "char_start": 5080,
+      "char_end": 5192,
+      "is_top_level": false,
+      "heading": "The Customer shall not, and shall ensure that its Authorised Users do not, use the Platform to"
+    },
+    {
+      "identifier": "3.1(a)",
+      "level": 3,
+      "parent": "3.1",
+      "char_start": 5192,
+      "char_end": 5367,
+      "is_top_level": false,
+      "heading": "upload, store, process, or transmit any data or content that is unlawful, harmful, threatening, abusive, defamatory, obs"
+    },
+    {
+      "identifier": "3.1(b)",
+      "level": 3,
+      "parent": "3.1",
+      "char_start": 5367,
+      "char_end": 5501,
+      "is_top_level": false,
+      "heading": "infringe or misappropriate the Intellectual Property Rights, privacy rights, or other rights of any third party;"
+    },
+    {
+      "identifier": "3.1(c)",
+      "level": 3,
+      "parent": "3.1",
+      "char_start": 5501,
+      "char_end": 5729,
+      "is_top_level": false,
+      "heading": "introduce any virus, worm, Trojan horse, spyware, ransomware, or other malicious code or material that is designed to ad"
+    },
+    {
+      "identifier": "3.1(d)",
+      "level": 3,
+      "parent": "3.1",
+      "char_start": 5729,
+      "char_end": 5871,
+      "is_top_level": false,
+      "heading": "attempt to gain unauthorised access to any part of the Platform or to any systems or networks connected to the Platform;"
+    },
+    {
+      "identifier": "3.1(e)",
+      "level": 3,
+      "parent": "3.1",
+      "char_start": 5871,
+      "char_end": 6007,
+      "is_top_level": false,
+      "heading": "use the Platform in any way that imposes a disproportionate or unreasonable load on the Platform's infrastructure;"
+    },
+    {
+      "identifier": "3.1(f)",
+      "level": 3,
+      "parent": "3.1",
+      "char_start": 6007,
+      "char_end": 6252,
+      "is_top_level": false,
+      "heading": "reverse engineer, decompile, disassemble, or attempt to derive the source code of any element of the Platform, except to"
+    },
+    {
+      "identifier": "3.1(g)",
+      "level": 3,
+      "parent": "3.1",
+      "char_start": 6252,
+      "char_end": 6420,
+      "is_top_level": false,
+      "heading": "use the Platform for any purpose other than the Permitted Purpose, including providing the Platform or its functionality"
+    },
+    {
+      "identifier": "3.2",
+      "level": 2,
+      "parent": "3",
+      "char_start": 6420,
+      "char_end": 6731,
+      "is_top_level": false,
+      "heading": "CloudVault may, at its sole discretion and without prior notice, remove or disable access to any Customer Data that Clou"
+    },
+    {
+      "identifier": "4",
+      "level": 1,
+      "parent": null,
+      "char_start": 6731,
+      "char_end": 6753,
+      "is_top_level": true,
+      "heading": "Data protection"
+    },
+    {
+      "identifier": "4.1",
+      "level": 2,
+      "parent": "4",
+      "char_start": 6753,
+      "char_end": 6900,
+      "is_top_level": false,
+      "heading": "Each party shall comply with the Data Protection Legislation in respect of any Personal Data processed in connection wit"
+    },
+    {
+      "identifier": "4.2",
+      "level": 2,
+      "parent": "4",
+      "char_start": 6900,
+      "char_end": 7304,
+      "is_top_level": false,
+      "heading": "To the extent CloudVault processes Personal Data contained within Customer Data on the Customer's behalf, it shall do so"
+    },
+    {
+      "identifier": "4.3",
+      "level": 2,
+      "parent": "4",
+      "char_start": 7304,
+      "char_end": 7553,
+      "is_top_level": false,
+      "heading": "The Customer acts as data controller in respect of Personal Data submitted via the Platform and is responsible for ensur"
+    },
+    {
+      "identifier": "4.4",
+      "level": 2,
+      "parent": "4",
+      "char_start": 7553,
+      "char_end": 7918,
+      "is_top_level": false,
+      "heading": "CloudVault shall implement and maintain appropriate technical and organisational measures designed to protect Personal D"
+    },
+    {
+      "identifier": "4.5",
+      "level": 2,
+      "parent": "4",
+      "char_start": 7918,
+      "char_end": 8266,
+      "is_top_level": false,
+      "heading": "CloudVault shall notify the Customer without undue delay upon becoming aware of a Personal Data breach (as defined in th"
+    },
+    {
+      "identifier": "5",
+      "level": 1,
+      "parent": null,
+      "char_start": 8266,
+      "char_end": 8298,
+      "is_top_level": true,
+      "heading": "Fees, billing and payment"
+    },
+    {
+      "identifier": "5.1",
+      "level": 2,
+      "parent": "5",
+      "char_start": 8298,
+      "char_end": 8579,
+      "is_top_level": false,
+      "heading": "The Customer shall pay the Fees in advance on the billing cycle set out in the Order Form (monthly or annual, as applica"
+    },
+    {
+      "identifier": "5.2",
+      "level": 2,
+      "parent": "5",
+      "char_start": 8579,
+      "char_end": 8837,
+      "is_top_level": false,
+      "heading": "CloudVault shall collect payment via the payment method specified in the Order Form. Where payment is by credit or debit"
+    },
+    {
+      "identifier": "5.3",
+      "level": 2,
+      "parent": "5",
+      "char_start": 8837,
+      "char_end": 9262,
+      "is_top_level": false,
+      "heading": "If any payment is not received by the due date (whether because a payment method fails or otherwise), CloudVault may sus"
+    },
+    {
+      "identifier": "5.4",
+      "level": 2,
+      "parent": "5",
+      "char_start": 9262,
+      "char_end": 9674,
+      "is_top_level": false,
+      "heading": "CloudVault may increase the Fees at the start of each Renewal Term by giving the Customer not less than sixty (60) days'"
+    },
+    {
+      "identifier": "5.5",
+      "level": 2,
+      "parent": "5",
+      "char_start": 9674,
+      "char_end": 9792,
+      "is_top_level": false,
+      "heading": "All Fees paid are non-refundable except as expressly set out in these Terms or required by applicable law."
+    },
+    {
+      "identifier": "6",
+      "level": 1,
+      "parent": null,
+      "char_start": 9792,
+      "char_end": 9820,
+      "is_top_level": true,
+      "heading": "Intellectual property"
+    },
+    {
+      "identifier": "6.1",
+      "level": 2,
+      "parent": "6",
+      "char_start": 9820,
+      "char_end": 10203,
+      "is_top_level": false,
+      "heading": "All Intellectual Property Rights in the Platform, the Documentation, and all software, algorithms, interfaces, and other"
+    },
+    {
+      "identifier": "6.2",
+      "level": 2,
+      "parent": "6",
+      "char_start": 10203,
+      "char_end": 10605,
+      "is_top_level": false,
+      "heading": "Subject to clause 6.1, all Intellectual Property Rights in the Customer Data shall vest in and remain the property of th"
+    },
+    {
+      "identifier": "6.3",
+      "level": 2,
+      "parent": "6",
+      "char_start": 10605,
+      "char_end": 10912,
+      "is_top_level": false,
+      "heading": "CloudVault may use aggregated, anonymised, and de-identified data derived from the Customer's use of the Platform for th"
+    },
+    {
+      "identifier": "7",
+      "level": 1,
+      "parent": null,
+      "char_start": 10912,
+      "char_end": 10942,
+      "is_top_level": true,
+      "heading": "Limitation of liability"
+    },
+    {
+      "identifier": "7.1",
+      "level": 2,
+      "parent": "7",
+      "char_start": 10942,
+      "char_end": 11029,
+      "is_top_level": false,
+      "heading": "Nothing in these Terms shall limit or exclude either party's liability for"
+    },
+    {
+      "identifier": "7.1(a)",
+      "level": 3,
+      "parent": "7.1",
+      "char_start": 11029,
+      "char_end": 11092,
+      "is_top_level": false,
+      "heading": "death or personal injury resulting from negligence;"
+    },
+    {
+      "identifier": "7.1(b)",
+      "level": 3,
+      "parent": "7.1",
+      "char_start": 11092,
+      "char_end": 11145,
+      "is_top_level": false,
+      "heading": "fraud or fraudulent misrepresentation; or"
+    },
+    {
+      "identifier": "7.1(c)",
+      "level": 3,
+      "parent": "7.1",
+      "char_start": 11145,
+      "char_end": 11217,
+      "is_top_level": false,
+      "heading": "any liability which cannot be limited or excluded by English law."
+    },
+    {
+      "identifier": "7.2",
+      "level": 2,
+      "parent": "7",
+      "char_start": 11217,
+      "char_end": 11477,
+      "is_top_level": false,
+      "heading": "Subject to clause 7.1, to the maximum extent permitted by applicable law, neither CloudVault nor the Customer shall be l"
+    },
+    {
+      "identifier": "7.2(a)",
+      "level": 3,
+      "parent": "7.2",
+      "char_start": 11477,
+      "char_end": 11527,
+      "is_top_level": false,
+      "heading": "loss of revenue, profits, or business;"
+    },
+    {
+      "identifier": "7.2(b)",
+      "level": 3,
+      "parent": "7.2",
+      "char_start": 11527,
+      "char_end": 11567,
+      "is_top_level": false,
+      "heading": "loss of anticipated savings;"
+    },
+    {
+      "identifier": "7.2(c)",
+      "level": 3,
+      "parent": "7.2",
+      "char_start": 11567,
+      "char_end": 11607,
+      "is_top_level": false,
+      "heading": "loss of data or information;"
+    },
+    {
+      "identifier": "7.2(d)",
+      "level": 3,
+      "parent": "7.2",
+      "char_start": 11607,
+      "char_end": 11639,
+      "is_top_level": false,
+      "heading": "loss of goodwill; or"
+    },
+    {
+      "identifier": "7.2(e)",
+      "level": 3,
+      "parent": "7.2",
+      "char_start": 11639,
+      "char_end": 11854,
+      "is_top_level": false,
+      "heading": "indirect, consequential, or special loss,"
+    },
+    {
+      "identifier": "7.3",
+      "level": 2,
+      "parent": "7",
+      "char_start": 11854,
+      "char_end": 12177,
+      "is_top_level": false,
+      "heading": "Subject to clauses 7.1 and 7.2, CloudVault's total aggregate liability to the Customer under or in connection with these"
+    },
+    {
+      "identifier": "7.4",
+      "level": 2,
+      "parent": "7",
+      "char_start": 12177,
+      "char_end": 12401,
+      "is_top_level": false,
+      "heading": "The Customer acknowledges that the Fees reflect the allocation of risk set out in this clause 7, and that CloudVault wou"
+    },
+    {
+      "identifier": "8",
+      "level": 1,
+      "parent": null,
+      "char_start": 12401,
+      "char_end": 12428,
+      "is_top_level": true,
+      "heading": "Term and termination"
+    },
+    {
+      "identifier": "8.1",
+      "level": 2,
+      "parent": "8",
+      "char_start": 12428,
+      "char_end": 12737,
+      "is_top_level": false,
+      "heading": "These Terms shall commence on the date the Customer accepts them in accordance with the introduction above and shall con"
+    },
+    {
+      "identifier": "8.2",
+      "level": 2,
+      "parent": "8",
+      "char_start": 12737,
+      "char_end": 12987,
+      "is_top_level": false,
+      "heading": "Unless either party gives written notice to terminate not less than thirty (30) days before the end of the then-current "
+    },
+    {
+      "identifier": "8.3",
+      "level": 2,
+      "parent": "8",
+      "char_start": 12987,
+      "char_end": 13071,
+      "is_top_level": false,
+      "heading": "Either party may terminate these Terms immediately by written notice if"
+    },
+    {
+      "identifier": "8.3(a)",
+      "level": 3,
+      "parent": "8.3",
+      "char_start": 13071,
+      "char_end": 13278,
+      "is_top_level": false,
+      "heading": "the other party commits a material breach of these Terms and (where remediable) fails to remedy that breach within thirt"
+    },
+    {
+      "identifier": "8.3(b)",
+      "level": 3,
+      "parent": "8.3",
+      "char_start": 13278,
+      "char_end": 13481,
+      "is_top_level": false,
+      "heading": "the other party enters into liquidation, administration, or receivership, or makes any arrangement with its creditors ge"
+    },
+    {
+      "identifier": "8.4",
+      "level": 2,
+      "parent": "8",
+      "char_start": 13481,
+      "char_end": 13694,
+      "is_top_level": false,
+      "heading": "CloudVault may terminate these Terms immediately and without liability to the Customer if the Customer or any Authorised"
+    },
+    {
+      "identifier": "8.5",
+      "level": 2,
+      "parent": "8",
+      "char_start": 13694,
+      "char_end": 13761,
+      "is_top_level": false,
+      "heading": "On termination or expiry of these Terms for any reason"
+    },
+    {
+      "identifier": "8.5(a)",
+      "level": 3,
+      "parent": "8.5",
+      "char_start": 13761,
+      "char_end": 13849,
+      "is_top_level": false,
+      "heading": "the Customer's right to access and use the Platform shall immediately cease;"
+    },
+    {
+      "identifier": "8.5(b)",
+      "level": 3,
+      "parent": "8.5",
+      "char_start": 13849,
+      "char_end": 14154,
+      "is_top_level": false,
+      "heading": "the Customer shall export any Customer Data it requires within thirty (30) days of the date of termination, after which "
+    },
+    {
+      "identifier": "8.5(c)",
+      "level": 3,
+      "parent": "8.5",
+      "char_start": 14154,
+      "char_end": 14261,
+      "is_top_level": false,
+      "heading": "clauses 1, 4, 6.1, 7, 9, and 10 shall continue in full force and effect after termination."
+    },
+    {
+      "identifier": "9",
+      "level": 1,
+      "parent": null,
+      "char_start": 14261,
+      "char_end": 14304,
+      "is_top_level": true,
+      "heading": "Governing law and dispute resolution"
+    },
+    {
+      "identifier": "9.1",
+      "level": 2,
+      "parent": "9",
+      "char_start": 14304,
+      "char_end": 14537,
+      "is_top_level": false,
+      "heading": "These Terms and any dispute or claim (including non-contractual disputes or claims) arising out of or in connection with"
+    },
+    {
+      "identifier": "9.2",
+      "level": 2,
+      "parent": "9",
+      "char_start": 14537,
+      "char_end": 14956,
+      "is_top_level": false,
+      "heading": "The parties shall use their reasonable endeavours to negotiate in good faith to resolve any dispute that arises between "
+    },
+    {
+      "identifier": "10",
+      "level": 1,
+      "parent": null,
+      "char_start": 14956,
+      "char_end": 14970,
+      "is_top_level": true,
+      "heading": "General"
+    },
+    {
+      "identifier": "10.1",
+      "level": 2,
+      "parent": "10",
+      "char_start": 14970,
+      "char_end": 15332,
+      "is_top_level": false,
+      "heading": "These Terms, together with any Order Form and any data processing agreement entered into pursuant to clause 4.2, constit"
+    },
+    {
+      "identifier": "10.2",
+      "level": 2,
+      "parent": "10",
+      "char_start": 15332,
+      "char_end": 15535,
+      "is_top_level": false,
+      "heading": "No failure or delay by either party to enforce any right or provision of these Terms shall constitute a waiver of that r"
+    },
+    {
+      "identifier": "10.3",
+      "level": 2,
+      "parent": "10",
+      "char_start": 15535,
+      "char_end": 15774,
+      "is_top_level": false,
+      "heading": "If any provision of these Terms is found by a court of competent jurisdiction to be invalid, void, or unenforceable, tha"
+    },
+    {
+      "identifier": "10.4",
+      "level": 2,
+      "parent": "10",
+      "char_start": 15774,
+      "char_end": 16148,
+      "is_top_level": false,
+      "heading": "The Customer may not assign, novate, or transfer its rights or obligations under these Terms without CloudVault's prior "
+    },
+    {
+      "identifier": "10.5",
+      "level": 2,
+      "parent": "10",
+      "char_start": 16148,
+      "char_end": 16624,
+      "is_top_level": false,
+      "heading": "CloudVault may update these Terms from time to time by posting revised Terms on its website and notifying the Customer b"
+    },
+    {
+      "identifier": "10.6",
+      "level": 2,
+      "parent": "10",
+      "char_start": 16624,
+      "char_end": 16794,
+      "is_top_level": false,
+      "heading": "Nothing in these Terms creates, or shall be construed as creating, any partnership, joint venture, or agency relationshi"
+    },
+    {
+      "identifier": "10.7",
+      "level": 2,
+      "parent": "10",
+      "char_start": 16794,
+      "char_end": 16948,
+      "is_top_level": false,
+      "heading": "CloudVault Limited, registered in England and Wales. Registered office: 50 Broadway, London, SW1H 0BL. VAT registration "
+    }
+  ],
+  "defined_terms": [
+    {
+      "term": "Terms",
+      "definition_span": [
+        100,
+        142
+      ]
+    },
+    {
+      "term": "Platform",
+      "definition_span": [
+        175,
+        256
+      ]
+    },
+    {
+      "term": "CloudVault",
+      "definition_span": [
+        269,
+        463
+      ]
+    },
+    {
+      "term": "Customer",
+      "definition_span": [
+        649,
+        741
+      ]
+    },
+    {
+      "term": "Account",
+      "definition_span": [
+        1078,
+        1204
+      ]
+    },
+    {
+      "term": "Authorised Users",
+      "definition_span": [
+        1211,
+        1429
+      ]
+    },
+    {
+      "term": "Customer Data",
+      "definition_span": [
+        1436,
+        1599
+      ]
+    },
+    {
+      "term": "Data Protection Legislation",
+      "definition_span": [
+        1606,
+        1996
+      ]
+    },
+    {
+      "term": "UK GDPR",
+      "definition_span": [
+        1647,
+        1833
+      ]
+    },
+    {
+      "term": "Documentation",
+      "definition_span": [
+        2003,
+        2225
+      ]
+    },
+    {
+      "term": "Fees",
+      "definition_span": [
+        2232,
+        2427
+      ]
+    },
+    {
+      "term": "Intellectual Property Rights",
+      "definition_span": [
+        2434,
+        2742
+      ]
+    },
+    {
+      "term": "Order Form",
+      "definition_span": [
+        2749,
+        2997
+      ]
+    },
+    {
+      "term": "Personal Data",
+      "definition_span": [
+        3004,
+        3063
+      ]
+    },
+    {
+      "term": "Permitted Purpose",
+      "definition_span": [
+        3070,
+        3270
+      ]
+    },
+    {
+      "term": "Subscription Term",
+      "definition_span": [
+        3277,
+        3435
+      ]
+    }
+  ],
+  "cross_references": [
+    {
+      "raw_text": "an Order Form",
+      "char_start": 560,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the applicable\nOrder Form",
+      "char_start": 688,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "2",
+      "char_start": 1202,
+      "target_identifier": "2",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "the Order Form",
+      "char_start": 1414,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "section 3 of\n     the European Union (Withdrawal) Act 2018",
+      "char_start": 1762,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "the Data Protection\n     Act 2018",
+      "char_start": 1839,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "the applicable Order Form",
+      "char_start": 2332,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "5",
+      "char_start": 2425,
+      "target_identifier": "5",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "the UK GDPR",
+      "char_start": 3051,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "the applicable Order\n     Form",
+      "char_start": 3340,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "an Order Form",
+      "char_start": 3656,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the Order Form",
+      "char_start": 3671,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the Documentation",
+      "char_start": 4108,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "3.1",
+      "char_start": 6593,
+      "target_identifier": "3.1",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Article 28 of the UK GDPR",
+      "char_start": 7276,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "the UK GDPR",
+      "char_start": 7489,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "the UK GDPR",
+      "char_start": 8046,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "the UK GDPR",
+      "char_start": 8219,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "the Data Protection Act 2018",
+      "char_start": 8235,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "the\n     Order Form",
+      "char_start": 8378,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the Order Form",
+      "char_start": 8653,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the Late Payment of Commercial Debts (Interest) Act 1998",
+      "char_start": 9203,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "the Documentation",
+      "char_start": 9875,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "6.1",
+      "char_start": 10226,
+      "target_identifier": "6.1",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "7.1",
+      "char_start": 11240,
+      "target_identifier": "7.1",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "7.1",
+      "char_start": 11878,
+      "target_identifier": "7.1",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "7.2",
+      "char_start": 11886,
+      "target_identifier": "7.2",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "7",
+      "char_start": 12281,
+      "target_identifier": "7",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "the applicable Order Form",
+      "char_start": 12643,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "8",
+      "char_start": 12733,
+      "target_identifier": "8",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "3",
+      "char_start": 13658,
+      "target_identifier": "3",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "1",
+      "char_start": 14167,
+      "target_identifier": "1",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "4",
+      "char_start": 14170,
+      "target_identifier": "4",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "6.1",
+      "char_start": 14173,
+      "target_identifier": "6.1",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "7",
+      "char_start": 14178,
+      "target_identifier": "7",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "9",
+      "char_start": 14181,
+      "target_identifier": "9",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "10",
+      "char_start": 14188,
+      "target_identifier": "10",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "any Order Form",
+      "char_start": 15002,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "4.2",
+      "char_start": 15088,
+      "target_identifier": "4.2",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "8.3(a)",
+      "char_start": 16507,
+      "target_identifier": "8.3(a)",
+      "kind": "internal_clause"
+    }
+  ]
+}

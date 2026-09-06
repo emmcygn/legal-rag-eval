@@ -7,6 +7,8 @@ from typing import Any
 
 import streamlit as st
 
+from scaffolder.models import StrategyName
+
 FIXTURE_OPTIONS = [
     "uk_service_agreement",
     "uk_terms_conditions",
@@ -75,7 +77,9 @@ def render_page() -> None:
         st.slider("Top-k results", min_value=1, max_value=20, value=5, key="ret_k")
 
     # Strategies come from sidebar config (set in app.py)
-    strategies = st.session_state.get("config", {}).get("strategies", ["lexichunk", "rcts"])
+    strategies = st.session_state.get("config", {}).get(
+        "strategies", [StrategyName.LEXICHUNK.value, StrategyName.RCTS_512.value]
+    )
 
     # --- Query Input ---
     st.subheader("Query")
@@ -155,7 +159,7 @@ def _run_retrieval(
         from scaffolder.chunking import get_strategy
         from scaffolder.embedding.pipeline import EmbeddingPipeline
         from scaffolder.fixtures import FixtureManager
-        from scaffolder.models import EmbeddingModelName, StrategyName
+        from scaffolder.models import EmbeddingModelName
         from scaffolder.retrieval.index import VectorIndex
 
         manager = FixtureManager()
@@ -486,11 +490,10 @@ def _render_filtered_retrieval(doc_id: str) -> None:
                 try:
                     from scaffolder.chunking import get_strategy
                     from scaffolder.fixtures import FixtureManager
-                    from scaffolder.models import StrategyName
 
                     manager = FixtureManager()
                     document = manager.get_by_id(doc_id)
-                    strategy = get_strategy(StrategyName("lexichunk"))
+                    strategy = get_strategy(StrategyName.LEXICHUNK)
                     chunk_set = strategy.chunk(document)
                     st.session_state[chunk_set_key] = chunk_set
                 except Exception as e:
@@ -527,7 +530,7 @@ def _render_filtered_retrieval(doc_id: str) -> None:
                 f"that don't contain the exact phrase."
             )
 
-            baseline_key = f"chunks_{doc_id}_rcts"
+            baseline_key = f"chunks_{doc_id}_{StrategyName.RCTS_512.value}"
             baseline_set = st.session_state.get(baseline_key)
             if baseline_set:
                 keyword = selected_type.replace("_", " ")

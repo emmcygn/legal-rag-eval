@@ -1,0 +1,1502 @@
+{
+  "document_id": "us_terms_of_service",
+  "source_file": "src/scaffolder/fixtures/documents/us_terms_of_service.txt",
+  "text_sha256": "ef6b36ea2bf8d647a946b141ca6c3d690aad566e0dc2067c9951e03503c1df62",
+  "n_chars": 25743,
+  "numbering_style": "us_section_decimal",
+  "clauses": [
+    {
+      "identifier": "section_1",
+      "level": 1,
+      "parent": null,
+      "char_start": 762,
+      "char_end": 788,
+      "is_top_level": true,
+      "heading": "Definitions"
+    },
+    {
+      "identifier": "section_1.1",
+      "level": 2,
+      "parent": "section_1",
+      "char_start": 788,
+      "char_end": 961,
+      "is_top_level": false,
+      "heading": "\"Account\" means a Customer-specific account enabling access to the Platform, created upon registration and subject to th"
+    },
+    {
+      "identifier": "section_1.2",
+      "level": 2,
+      "parent": "section_1",
+      "char_start": 961,
+      "char_end": 1208,
+      "is_top_level": false,
+      "heading": "\"Authorized Users\" means the individuals (employees, agents, or contractors of Customer) who Customer permits to access "
+    },
+    {
+      "identifier": "section_1.3",
+      "level": 2,
+      "parent": "section_1",
+      "char_start": 1208,
+      "char_end": 1422,
+      "is_top_level": false,
+      "heading": "\"Customer Content\" means any data, files, documents, information, and other content submitted by Customer or its Authori"
+    },
+    {
+      "identifier": "section_1.4",
+      "level": 2,
+      "parent": "section_1",
+      "char_start": 1422,
+      "char_end": 1622,
+      "is_top_level": false,
+      "heading": "\"Documentation\" means the technical and user documentation for the Platform made available by Strata at docs.strataplatf"
+    },
+    {
+      "identifier": "section_1.5",
+      "level": 2,
+      "parent": "section_1",
+      "char_start": 1622,
+      "char_end": 1945,
+      "is_top_level": false,
+      "heading": "\"Intellectual Property Rights\" means all patents, patent applications, copyrights, trade secrets, trademarks, service ma"
+    },
+    {
+      "identifier": "section_1.6",
+      "level": 2,
+      "parent": "section_1",
+      "char_start": 1945,
+      "char_end": 2181,
+      "is_top_level": false,
+      "heading": "\"Order Form\" means a written or online ordering document or subscription agreement that references these Terms, identifi"
+    },
+    {
+      "identifier": "section_1.7",
+      "level": 2,
+      "parent": "section_1",
+      "char_start": 2181,
+      "char_end": 2523,
+      "is_top_level": false,
+      "heading": "\"Personal Information\" means any information that identifies or could reasonably be used to identify a natural person, a"
+    },
+    {
+      "identifier": "section_1.8",
+      "level": 2,
+      "parent": "section_1",
+      "char_start": 2523,
+      "char_end": 2753,
+      "is_top_level": false,
+      "heading": "\"Platform\" means Strata's proprietary software-as-a-service platform, including all associated software, infrastructure,"
+    },
+    {
+      "identifier": "section_1.9",
+      "level": 2,
+      "parent": "section_1",
+      "char_start": 2753,
+      "char_end": 2962,
+      "is_top_level": false,
+      "heading": "\"Professional Services\" means any implementation, configuration, training, or other professional services provided by St"
+    },
+    {
+      "identifier": "section_1.10",
+      "level": 2,
+      "parent": "section_1",
+      "char_start": 2962,
+      "char_end": 3145,
+      "is_top_level": false,
+      "heading": "\"Subscription Fees\" means the recurring fees for access to the Platform as specified in the applicable Order Form, exclu"
+    },
+    {
+      "identifier": "section_1.11",
+      "level": 2,
+      "parent": "section_1",
+      "char_start": 3145,
+      "char_end": 3342,
+      "is_top_level": false,
+      "heading": "\"Subscription Term\" means the subscription period specified in the Order Form, commencing on the date the Account is act"
+    },
+    {
+      "identifier": "section_1.12",
+      "level": 2,
+      "parent": "section_1",
+      "char_start": 3342,
+      "char_end": 3533,
+      "is_top_level": false,
+      "heading": "\"Third-Party Services\" means services, applications, or data sources provided by parties other than Strata that may inte"
+    },
+    {
+      "identifier": "section_2",
+      "level": 1,
+      "parent": null,
+      "char_start": 3533,
+      "char_end": 3572,
+      "is_top_level": true,
+      "heading": "License Grant and Access"
+    },
+    {
+      "identifier": "section_2.1",
+      "level": 2,
+      "parent": "section_2",
+      "char_start": 3572,
+      "char_end": 4000,
+      "is_top_level": false,
+      "heading": "License Grant"
+    },
+    {
+      "identifier": "section_2.2",
+      "level": 2,
+      "parent": "section_2",
+      "char_start": 4000,
+      "char_end": 4113,
+      "is_top_level": false,
+      "heading": "Restrictions"
+    },
+    {
+      "identifier": "section_2.2(a)",
+      "level": 3,
+      "parent": "section_2.2",
+      "char_start": 4113,
+      "char_end": 4231,
+      "is_top_level": false,
+      "heading": "copy, modify, adapt, translate, or create derivative works of the Platform or the Documentation;"
+    },
+    {
+      "identifier": "section_2.2(b)",
+      "level": 3,
+      "parent": "section_2.2",
+      "char_start": 4231,
+      "char_end": 4527,
+      "is_top_level": false,
+      "heading": "reverse engineer, decompile, disassemble, or attempt to discover the source code, object code, or underlying algorithms "
+    },
+    {
+      "identifier": "section_2.2(c)",
+      "level": 3,
+      "parent": "section_2.2",
+      "char_start": 4527,
+      "char_end": 4671,
+      "is_top_level": false,
+      "heading": "sublicense, sell, resell, transfer, assign, or otherwise dispose of the Platform or any rights therein to any third part"
+    },
+    {
+      "identifier": "section_2.2(d)",
+      "level": 3,
+      "parent": "section_2.2",
+      "char_start": 4671,
+      "char_end": 4823,
+      "is_top_level": false,
+      "heading": "use the Platform to provide timesharing, service bureau, or software-as-a- service functionality for the benefit of thir"
+    },
+    {
+      "identifier": "section_2.2(e)",
+      "level": 3,
+      "parent": "section_2.2",
+      "char_start": 4823,
+      "char_end": 4946,
+      "is_top_level": false,
+      "heading": "remove, alter, or obscure any proprietary notices, labels, or marks on the Platform or Documentation;"
+    },
+    {
+      "identifier": "section_2.2(f)",
+      "level": 3,
+      "parent": "section_2.2",
+      "char_start": 4946,
+      "char_end": 5110,
+      "is_top_level": false,
+      "heading": "access the Platform for the purpose of building a competitive product or service or copying its features, functionality,"
+    },
+    {
+      "identifier": "section_2.2(g)",
+      "level": 3,
+      "parent": "section_2.2",
+      "char_start": 5110,
+      "char_end": 5254,
+      "is_top_level": false,
+      "heading": "use the Platform in violation of any applicable law or regulation, including any applicable export control laws or regul"
+    },
+    {
+      "identifier": "section_2.3",
+      "level": 2,
+      "parent": "section_2",
+      "char_start": 5254,
+      "char_end": 5433,
+      "is_top_level": false,
+      "heading": "Account Security"
+    },
+    {
+      "identifier": "section_2.3(a)",
+      "level": 3,
+      "parent": "section_2.3",
+      "char_start": 5433,
+      "char_end": 5499,
+      "is_top_level": false,
+      "heading": "require each Authorized User to use strong, unique passwords;"
+    },
+    {
+      "identifier": "section_2.3(b)",
+      "level": 3,
+      "parent": "section_2.3",
+      "char_start": 5499,
+      "char_end": 5594,
+      "is_top_level": false,
+      "heading": "implement multi-factor authentication if offered and required by Strata's security policy;"
+    },
+    {
+      "identifier": "section_2.3(c)",
+      "level": 3,
+      "parent": "section_2.3",
+      "char_start": 5594,
+      "char_end": 5729,
+      "is_top_level": false,
+      "heading": "notify Strata promptly at security@strataplatform.io upon discovering any unauthorized access to or use of Customer's Ac"
+    },
+    {
+      "identifier": "section_2.3(d)",
+      "level": 3,
+      "parent": "section_2.3",
+      "char_start": 5729,
+      "char_end": 5919,
+      "is_top_level": false,
+      "heading": "not allow any Authorized User to share credentials with any other individual. Strata shall not be liable for any loss re"
+    },
+    {
+      "identifier": "section_2.4",
+      "level": 2,
+      "parent": "section_2",
+      "char_start": 5919,
+      "char_end": 6202,
+      "is_top_level": false,
+      "heading": "Acceptable Use Policy"
+    },
+    {
+      "identifier": "section_2.5",
+      "level": 2,
+      "parent": "section_2",
+      "char_start": 6202,
+      "char_end": 6543,
+      "is_top_level": false,
+      "heading": "Professional Services"
+    },
+    {
+      "identifier": "section_2.6",
+      "level": 2,
+      "parent": "section_2",
+      "char_start": 6543,
+      "char_end": 6945,
+      "is_top_level": false,
+      "heading": "Third-Party Services"
+    },
+    {
+      "identifier": "section_3",
+      "level": 1,
+      "parent": null,
+      "char_start": 6945,
+      "char_end": 6979,
+      "is_top_level": true,
+      "heading": "Restrictions on Use"
+    },
+    {
+      "identifier": "section_3.1",
+      "level": 2,
+      "parent": "section_3",
+      "char_start": 6979,
+      "char_end": 7115,
+      "is_top_level": false,
+      "heading": "Prohibited Content"
+    },
+    {
+      "identifier": "section_3.1(a)",
+      "level": 3,
+      "parent": "section_3.1",
+      "char_start": 7115,
+      "char_end": 7163,
+      "is_top_level": false,
+      "heading": "is illegal or facilitates illegal activity;"
+    },
+    {
+      "identifier": "section_3.1(b)",
+      "level": 3,
+      "parent": "section_3.1",
+      "char_start": 7163,
+      "char_end": 7225,
+      "is_top_level": false,
+      "heading": "infringes any third party's Intellectual Property Rights;"
+    },
+    {
+      "identifier": "section_3.1(c)",
+      "level": 3,
+      "parent": "section_3.1",
+      "char_start": 7225,
+      "char_end": 7293,
+      "is_top_level": false,
+      "heading": "contains malware, viruses, or other harmful or disruptive code;"
+    },
+    {
+      "identifier": "section_3.1(d)",
+      "level": 3,
+      "parent": "section_3.1",
+      "char_start": 7293,
+      "char_end": 7378,
+      "is_top_level": false,
+      "heading": "violates any third party's privacy rights or applicable data protection laws; or"
+    },
+    {
+      "identifier": "section_3.1(e)",
+      "level": 3,
+      "parent": "section_3.1",
+      "char_start": 7378,
+      "char_end": 7440,
+      "is_top_level": false,
+      "heading": "is false, misleading, or constitutes unfair competition."
+    },
+    {
+      "identifier": "section_3.2",
+      "level": 2,
+      "parent": "section_3",
+      "char_start": 7440,
+      "char_end": 7775,
+      "is_top_level": false,
+      "heading": "Usage Limits"
+    },
+    {
+      "identifier": "section_3.3",
+      "level": 2,
+      "parent": "section_3",
+      "char_start": 7775,
+      "char_end": 8313,
+      "is_top_level": false,
+      "heading": "Export Compliance"
+    },
+    {
+      "identifier": "section_4",
+      "level": 1,
+      "parent": null,
+      "char_start": 8313,
+      "char_end": 8344,
+      "is_top_level": true,
+      "heading": "Privacy and Data"
+    },
+    {
+      "identifier": "section_4.1",
+      "level": 2,
+      "parent": "section_4",
+      "char_start": 8344,
+      "char_end": 8680,
+      "is_top_level": false,
+      "heading": "Privacy Policy"
+    },
+    {
+      "identifier": "section_4.2",
+      "level": 2,
+      "parent": "section_4",
+      "char_start": 8680,
+      "char_end": 9074,
+      "is_top_level": false,
+      "heading": "Customer Content Ownership"
+    },
+    {
+      "identifier": "section_4.3",
+      "level": 2,
+      "parent": "section_4",
+      "char_start": 9074,
+      "char_end": 9529,
+      "is_top_level": false,
+      "heading": "Data Processing"
+    },
+    {
+      "identifier": "section_4.4",
+      "level": 2,
+      "parent": "section_4",
+      "char_start": 9529,
+      "char_end": 9976,
+      "is_top_level": false,
+      "heading": "Data Security"
+    },
+    {
+      "identifier": "section_4.5",
+      "level": 2,
+      "parent": "section_4",
+      "char_start": 9976,
+      "char_end": 10375,
+      "is_top_level": false,
+      "heading": "Data Retention and Deletion"
+    },
+    {
+      "identifier": "section_5",
+      "level": 1,
+      "parent": null,
+      "char_start": 10375,
+      "char_end": 10403,
+      "is_top_level": true,
+      "heading": "Payment Terms"
+    },
+    {
+      "identifier": "section_5.1",
+      "level": 2,
+      "parent": "section_5",
+      "char_start": 10403,
+      "char_end": 10641,
+      "is_top_level": false,
+      "heading": "Subscription Fees"
+    },
+    {
+      "identifier": "section_5.2",
+      "level": 2,
+      "parent": "section_5",
+      "char_start": 10641,
+      "char_end": 10888,
+      "is_top_level": false,
+      "heading": "Invoicing"
+    },
+    {
+      "identifier": "section_5.3",
+      "level": 2,
+      "parent": "section_5",
+      "char_start": 10888,
+      "char_end": 10969,
+      "is_top_level": false,
+      "heading": "Late Payments"
+    },
+    {
+      "identifier": "section_5.3(a)",
+      "level": 3,
+      "parent": "section_5.3",
+      "char_start": 10969,
+      "char_end": 11078,
+      "is_top_level": false,
+      "heading": "suspend Customer's access to the Platform after providing five (5) days' written notice to Customer; and"
+    },
+    {
+      "identifier": "section_5.3(b)",
+      "level": 3,
+      "parent": "section_5.3",
+      "char_start": 11078,
+      "char_end": 11277,
+      "is_top_level": false,
+      "heading": "charge interest on all overdue amounts at the rate of 1.5% per month, or the maximum rate permitted by applicable law, w"
+    },
+    {
+      "identifier": "section_5.4",
+      "level": 2,
+      "parent": "section_5",
+      "char_start": 11277,
+      "char_end": 11552,
+      "is_top_level": false,
+      "heading": "Taxes"
+    },
+    {
+      "identifier": "section_5.5",
+      "level": 2,
+      "parent": "section_5",
+      "char_start": 11552,
+      "char_end": 11971,
+      "is_top_level": false,
+      "heading": "Fee Increases"
+    },
+    {
+      "identifier": "section_5.6",
+      "level": 2,
+      "parent": "section_5",
+      "char_start": 11971,
+      "char_end": 12274,
+      "is_top_level": false,
+      "heading": "No Refunds"
+    },
+    {
+      "identifier": "section_6",
+      "level": 1,
+      "parent": null,
+      "char_start": 12274,
+      "char_end": 12310,
+      "is_top_level": true,
+      "heading": "Intellectual Property"
+    },
+    {
+      "identifier": "section_6.1",
+      "level": 2,
+      "parent": "section_6",
+      "char_start": 12310,
+      "char_end": 12686,
+      "is_top_level": false,
+      "heading": "Strata Ownership"
+    },
+    {
+      "identifier": "section_6.2",
+      "level": 2,
+      "parent": "section_6",
+      "char_start": 12686,
+      "char_end": 13124,
+      "is_top_level": false,
+      "heading": "Feedback"
+    },
+    {
+      "identifier": "section_6.3",
+      "level": 2,
+      "parent": "section_6",
+      "char_start": 13124,
+      "char_end": 13489,
+      "is_top_level": false,
+      "heading": "Usage Data"
+    },
+    {
+      "identifier": "section_7",
+      "level": 1,
+      "parent": null,
+      "char_start": 13489,
+      "char_end": 13524,
+      "is_top_level": true,
+      "heading": "Term and Termination"
+    },
+    {
+      "identifier": "section_7.1",
+      "level": 2,
+      "parent": "section_7",
+      "char_start": 13524,
+      "char_end": 13953,
+      "is_top_level": false,
+      "heading": "Term"
+    },
+    {
+      "identifier": "section_7.2",
+      "level": 2,
+      "parent": "section_7",
+      "char_start": 13953,
+      "char_end": 14292,
+      "is_top_level": false,
+      "heading": "Termination for Convenience"
+    },
+    {
+      "identifier": "section_7.3",
+      "level": 2,
+      "parent": "section_7",
+      "char_start": 14292,
+      "char_end": 14421,
+      "is_top_level": false,
+      "heading": "Termination for Cause"
+    },
+    {
+      "identifier": "section_7.3(a)",
+      "level": 3,
+      "parent": "section_7.3",
+      "char_start": 14421,
+      "char_end": 14591,
+      "is_top_level": false,
+      "heading": "the other party materially breaches these Terms or any Order Form and fails to cure such breach within thirty (30) days "
+    },
+    {
+      "identifier": "section_7.3(b)",
+      "level": 3,
+      "parent": "section_7.3",
+      "char_start": 14591,
+      "char_end": 14815,
+      "is_top_level": false,
+      "heading": "the other party becomes the subject of a bankruptcy, insolvency, reorganization, receivership, or assignment for the ben"
+    },
+    {
+      "identifier": "section_7.3(c)",
+      "level": 3,
+      "parent": "section_7.3",
+      "char_start": 14815,
+      "char_end": 14881,
+      "is_top_level": false,
+      "heading": "Customer violates Section 2.2 or Section 3.1 of these Terms."
+    },
+    {
+      "identifier": "section_7.4",
+      "level": 2,
+      "parent": "section_7",
+      "char_start": 14881,
+      "char_end": 15219,
+      "is_top_level": false,
+      "heading": "Refunds on Termination for Cause by Customer"
+    },
+    {
+      "identifier": "section_7.5",
+      "level": 2,
+      "parent": "section_7",
+      "char_start": 15219,
+      "char_end": 15317,
+      "is_top_level": false,
+      "heading": "Effect of Termination"
+    },
+    {
+      "identifier": "section_7.5(a)",
+      "level": 3,
+      "parent": "section_7.5",
+      "char_start": 15317,
+      "char_end": 15401,
+      "is_top_level": false,
+      "heading": "all licenses granted to Customer under these Terms shall immediately terminate;"
+    },
+    {
+      "identifier": "section_7.5(b)",
+      "level": 3,
+      "parent": "section_7.5",
+      "char_start": 15401,
+      "char_end": 15482,
+      "is_top_level": false,
+      "heading": "Customer shall promptly export its Customer Content pursuant to Section 4.5;"
+    },
+    {
+      "identifier": "section_7.5(c)",
+      "level": 3,
+      "parent": "section_7.5",
+      "char_start": 15482,
+      "char_end": 15685,
+      "is_top_level": false,
+      "heading": "all outstanding Subscription Fees for the remainder of the then-current Subscription Term (if termination is due to Cust"
+    },
+    {
+      "identifier": "section_7.5(d)",
+      "level": 3,
+      "parent": "section_7.5",
+      "char_start": 15685,
+      "char_end": 15879,
+      "is_top_level": false,
+      "heading": "the following Sections shall survive: Section 1, Section 3, Section 4.5, Section 5 (with respect to amounts owed), Secti"
+    },
+    {
+      "identifier": "section_8",
+      "level": 1,
+      "parent": null,
+      "char_start": 15879,
+      "char_end": 15918,
+      "is_top_level": true,
+      "heading": "Disclaimer of Warranties"
+    },
+    {
+      "identifier": "section_8.1",
+      "level": 2,
+      "parent": "section_8",
+      "char_start": 15918,
+      "char_end": 16400,
+      "is_top_level": false,
+      "heading": "AS IS"
+    },
+    {
+      "identifier": "section_8.2",
+      "level": 2,
+      "parent": "section_8",
+      "char_start": 16400,
+      "char_end": 16825,
+      "is_top_level": false,
+      "heading": "No Guarantee of Availability"
+    },
+    {
+      "identifier": "section_8.3",
+      "level": 2,
+      "parent": "section_8",
+      "char_start": 16825,
+      "char_end": 17016,
+      "is_top_level": false,
+      "heading": "Third-Party Disclaimer"
+    },
+    {
+      "identifier": "section_9",
+      "level": 1,
+      "parent": null,
+      "char_start": 17016,
+      "char_end": 17054,
+      "is_top_level": true,
+      "heading": "Limitation of Liability"
+    },
+    {
+      "identifier": "section_9.1",
+      "level": 2,
+      "parent": "section_9",
+      "char_start": 17054,
+      "char_end": 17704,
+      "is_top_level": false,
+      "heading": "Exclusion of Consequential Damages"
+    },
+    {
+      "identifier": "section_9.2",
+      "level": 2,
+      "parent": "section_9",
+      "char_start": 17704,
+      "char_end": 17965,
+      "is_top_level": false,
+      "heading": "Cap on Liability"
+    },
+    {
+      "identifier": "section_9.2(a)",
+      "level": 3,
+      "parent": "section_9.2",
+      "char_start": 17965,
+      "char_end": 18130,
+      "is_top_level": false,
+      "heading": "THE TOTAL SUBSCRIPTION FEES ACTUALLY PAID BY CUSTOMER TO STRATA DURING THE TWELVE (12) MONTH PERIOD IMMEDIATELY PRECEDIN"
+    },
+    {
+      "identifier": "section_9.2(b)",
+      "level": 3,
+      "parent": "section_9.2",
+      "char_start": 18130,
+      "char_end": 18342,
+      "is_top_level": false,
+      "heading": "ONE HUNDRED U.S. DOLLARS ($100). THE PARTIES ACKNOWLEDGE THAT THE SUBSCRIPTION FEES REFLECT THE ALLOCATION OF RISK UNDER"
+    },
+    {
+      "identifier": "section_9.3",
+      "level": 2,
+      "parent": "section_9",
+      "char_start": 18342,
+      "char_end": 18434,
+      "is_top_level": false,
+      "heading": "Exceptions"
+    },
+    {
+      "identifier": "section_9.3(a)",
+      "level": 3,
+      "parent": "section_9.3",
+      "char_start": 18434,
+      "char_end": 18486,
+      "is_top_level": false,
+      "heading": "Customer's payment obligations under Section 5;"
+    },
+    {
+      "identifier": "section_9.3(b)",
+      "level": 3,
+      "parent": "section_9.3",
+      "char_start": 18486,
+      "char_end": 18551,
+      "is_top_level": false,
+      "heading": "either party's indemnification obligations under Section 10;"
+    },
+    {
+      "identifier": "section_9.3(c)",
+      "level": 3,
+      "parent": "section_9.3",
+      "char_start": 18551,
+      "char_end": 18613,
+      "is_top_level": false,
+      "heading": "either party's breach of its confidentiality obligations;"
+    },
+    {
+      "identifier": "section_9.3(d)",
+      "level": 3,
+      "parent": "section_9.3",
+      "char_start": 18613,
+      "char_end": 18697,
+      "is_top_level": false,
+      "heading": "any liability arising from a party's gross negligence or willful misconduct; or"
+    },
+    {
+      "identifier": "section_9.3(e)",
+      "level": 3,
+      "parent": "section_9.3",
+      "char_start": 18697,
+      "char_end": 18773,
+      "is_top_level": false,
+      "heading": "any liability that cannot be excluded or limited under applicable law."
+    },
+    {
+      "identifier": "section_9.4",
+      "level": 2,
+      "parent": "section_9",
+      "char_start": 18773,
+      "char_end": 19016,
+      "is_top_level": false,
+      "heading": "Essential Basis"
+    },
+    {
+      "identifier": "section_10",
+      "level": 1,
+      "parent": null,
+      "char_start": 19016,
+      "char_end": 19046,
+      "is_top_level": true,
+      "heading": "Indemnification"
+    },
+    {
+      "identifier": "section_10.1",
+      "level": 2,
+      "parent": "section_10",
+      "char_start": 19046,
+      "char_end": 19751,
+      "is_top_level": false,
+      "heading": "Indemnification by Strata"
+    },
+    {
+      "identifier": "section_10.1(a)",
+      "level": 3,
+      "parent": "section_10.1",
+      "char_start": 19751,
+      "char_end": 19818,
+      "is_top_level": false,
+      "heading": "procure for Customer the right to continue using the Platform;"
+    },
+    {
+      "identifier": "section_10.1(b)",
+      "level": 3,
+      "parent": "section_10.1",
+      "char_start": 19818,
+      "char_end": 19872,
+      "is_top_level": false,
+      "heading": "modify the Platform to make it non-infringing; or"
+    },
+    {
+      "identifier": "section_10.1(c)",
+      "level": 3,
+      "parent": "section_10.1",
+      "char_start": 19872,
+      "char_end": 20305,
+      "is_top_level": false,
+      "heading": "terminate Customer's access to the infringing portion and refund a pro-rata portion of prepaid Subscription Fees. Strata"
+    },
+    {
+      "identifier": "section_10.2",
+      "level": 2,
+      "parent": "section_10",
+      "char_start": 20305,
+      "char_end": 20522,
+      "is_top_level": false,
+      "heading": "Indemnification by Customer"
+    },
+    {
+      "identifier": "section_10.2(a)",
+      "level": 3,
+      "parent": "section_10.2",
+      "char_start": 20522,
+      "char_end": 20625,
+      "is_top_level": false,
+      "heading": "Customer Content, including any allegation that Customer Content infringes any third-party rights;"
+    },
+    {
+      "identifier": "section_10.2(b)",
+      "level": 3,
+      "parent": "section_10.2",
+      "char_start": 20625,
+      "char_end": 20663,
+      "is_top_level": false,
+      "heading": "Customer's breach of these Terms;"
+    },
+    {
+      "identifier": "section_10.2(c)",
+      "level": 3,
+      "parent": "section_10.2",
+      "char_start": 20663,
+      "char_end": 20707,
+      "is_top_level": false,
+      "heading": "Customer's violation of applicable law;"
+    },
+    {
+      "identifier": "section_10.2(d)",
+      "level": 3,
+      "parent": "section_10.2",
+      "char_start": 20707,
+      "char_end": 20754,
+      "is_top_level": false,
+      "heading": "Customer's use of Third-Party Services; or"
+    },
+    {
+      "identifier": "section_10.2(e)",
+      "level": 3,
+      "parent": "section_10.2",
+      "char_start": 20754,
+      "char_end": 20810,
+      "is_top_level": false,
+      "heading": "Customer's gross negligence or willful misconduct."
+    },
+    {
+      "identifier": "section_10.3",
+      "level": 2,
+      "parent": "section_10",
+      "char_start": 20810,
+      "char_end": 20879,
+      "is_top_level": false,
+      "heading": "Indemnification Procedure"
+    },
+    {
+      "identifier": "section_10.3(a)",
+      "level": 3,
+      "parent": "section_10.3",
+      "char_start": 20879,
+      "char_end": 20947,
+      "is_top_level": false,
+      "heading": "promptly notify the Indemnifying Party in writing of any Claim;"
+    },
+    {
+      "identifier": "section_10.3(b)",
+      "level": 3,
+      "parent": "section_10.3",
+      "char_start": 20947,
+      "char_end": 21188,
+      "is_top_level": false,
+      "heading": "give the Indemnifying Party sole control of the defense and settlement of the Claim, provided that any settlement that i"
+    },
+    {
+      "identifier": "section_10.3(c)",
+      "level": 3,
+      "parent": "section_10.3",
+      "char_start": 21188,
+      "char_end": 21361,
+      "is_top_level": false,
+      "heading": "provide the Indemnifying Party with reasonable assistance at the Indemnifying Party's expense. The Indemnified Party may"
+    },
+    {
+      "identifier": "section_11",
+      "level": 1,
+      "parent": null,
+      "char_start": 21361,
+      "char_end": 21394,
+      "is_top_level": true,
+      "heading": "General Provisions"
+    },
+    {
+      "identifier": "section_11.1",
+      "level": 2,
+      "parent": "section_11",
+      "char_start": 21394,
+      "char_end": 21853,
+      "is_top_level": false,
+      "heading": "Governing Law"
+    },
+    {
+      "identifier": "section_11.2",
+      "level": 2,
+      "parent": "section_11",
+      "char_start": 21853,
+      "char_end": 22435,
+      "is_top_level": false,
+      "heading": "Entire Agreement"
+    },
+    {
+      "identifier": "section_11.3",
+      "level": 2,
+      "parent": "section_11",
+      "char_start": 22435,
+      "char_end": 22916,
+      "is_top_level": false,
+      "heading": "Modifications"
+    },
+    {
+      "identifier": "section_11.4",
+      "level": 2,
+      "parent": "section_11",
+      "char_start": 22916,
+      "char_end": 23496,
+      "is_top_level": false,
+      "heading": "Assignment"
+    },
+    {
+      "identifier": "section_11.5",
+      "level": 2,
+      "parent": "section_11",
+      "char_start": 23496,
+      "char_end": 23743,
+      "is_top_level": false,
+      "heading": "Severability"
+    },
+    {
+      "identifier": "section_11.6",
+      "level": 2,
+      "parent": "section_11",
+      "char_start": 23743,
+      "char_end": 23979,
+      "is_top_level": false,
+      "heading": "Waiver"
+    },
+    {
+      "identifier": "section_11.7",
+      "level": 2,
+      "parent": "section_11",
+      "char_start": 23979,
+      "char_end": 24489,
+      "is_top_level": false,
+      "heading": "Notices"
+    },
+    {
+      "identifier": "section_11.8",
+      "level": 2,
+      "parent": "section_11",
+      "char_start": 24489,
+      "char_end": 25002,
+      "is_top_level": false,
+      "heading": "Force Majeure"
+    },
+    {
+      "identifier": "section_11.9",
+      "level": 2,
+      "parent": "section_11",
+      "char_start": 25002,
+      "char_end": 25307,
+      "is_top_level": false,
+      "heading": "Relationship of the Parties"
+    },
+    {
+      "identifier": "section_11.10",
+      "level": 2,
+      "parent": "section_11",
+      "char_start": 25307,
+      "char_end": 25582,
+      "is_top_level": false,
+      "heading": "Counterparts; Electronic Signatures"
+    }
+  ],
+  "defined_terms": [
+    {
+      "term": "Account",
+      "definition_span": [
+        801,
+        959
+      ]
+    },
+    {
+      "term": "Authorized Users",
+      "definition_span": [
+        974,
+        1206
+      ]
+    },
+    {
+      "term": "Customer Content",
+      "definition_span": [
+        1221,
+        1420
+      ]
+    },
+    {
+      "term": "Documentation",
+      "definition_span": [
+        1435,
+        1620
+      ]
+    },
+    {
+      "term": "Intellectual Property Rights",
+      "definition_span": [
+        1635,
+        1943
+      ]
+    },
+    {
+      "term": "Order Form",
+      "definition_span": [
+        1958,
+        2179
+      ]
+    },
+    {
+      "term": "Personal Information",
+      "definition_span": [
+        2194,
+        2521
+      ]
+    },
+    {
+      "term": "Platform",
+      "definition_span": [
+        2536,
+        2751
+      ]
+    },
+    {
+      "term": "Professional Services",
+      "definition_span": [
+        2766,
+        2960
+      ]
+    },
+    {
+      "term": "Subscription Fees",
+      "definition_span": [
+        2975,
+        3143
+      ]
+    },
+    {
+      "term": "Subscription Term",
+      "definition_span": [
+        3158,
+        3340
+      ]
+    },
+    {
+      "term": "Third-Party Services",
+      "definition_span": [
+        3355,
+        3531
+      ]
+    },
+    {
+      "term": "SOW",
+      "definition_span": [
+        6238,
+        6365
+      ]
+    },
+    {
+      "term": "DPA",
+      "definition_span": [
+        9104,
+        9387
+      ]
+    },
+    {
+      "term": "Feedback",
+      "definition_span": [
+        12709,
+        12864
+      ]
+    },
+    {
+      "term": "Usage Data",
+      "definition_span": [
+        13149,
+        13347
+      ]
+    },
+    {
+      "term": "Customer\nIndemnitees",
+      "definition_span": [
+        19086,
+        19220
+      ]
+    },
+    {
+      "term": "Claims",
+      "definition_span": [
+        19295,
+        19400
+      ]
+    },
+    {
+      "term": "Strata Indemnitees",
+      "definition_span": [
+        20347,
+        20479
+      ]
+    }
+  ],
+  "cross_references": [
+    {
+      "raw_text": "2.3",
+      "char_start": 955,
+      "target_identifier": "section_2.3",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "the applicable Order Form",
+      "char_start": 1180,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the California Consumer Privacy Act",
+      "char_start": 2364,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "the California Privacy\nRights Act",
+      "char_start": 2415,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "2.5",
+      "char_start": 2956,
+      "target_identifier": "section_2.5",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "the applicable Order Form",
+      "char_start": 3063,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the Order\nForm",
+      "char_start": 3221,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "7.1",
+      "char_start": 3336,
+      "target_identifier": "section_7.1",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "the Documentation",
+      "char_start": 3931,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the Order Form",
+      "char_start": 3983,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the Documentation",
+      "char_start": 4206,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "2.3",
+      "char_start": 5913,
+      "target_identifier": "section_2.3",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "SOW",
+      "char_start": 6371,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the SOW",
+      "char_start": 6463,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the applicable Order Form",
+      "char_start": 7617,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the Order Form",
+      "char_start": 7758,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the Export Administration Regulations",
+      "char_start": 7906,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "the Privacy Policy",
+      "char_start": 8659,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the DPA",
+      "char_start": 9425,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the DPA",
+      "char_start": 9505,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the Order Form",
+      "char_start": 10546,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "any\nOrder Form",
+      "char_start": 11634,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "7.2",
+      "char_start": 11965,
+      "target_identifier": "section_7.2",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "7.4",
+      "char_start": 12268,
+      "target_identifier": "section_7.4",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "any Order Form",
+      "char_start": 14037,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "any\nOrder Form",
+      "char_start": 14370,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "any Order Form",
+      "char_start": 14476,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "2.2",
+      "char_start": 14845,
+      "target_identifier": "section_2.2",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "3.1",
+      "char_start": 14860,
+      "target_identifier": "section_3.1",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "7.3",
+      "char_start": 14995,
+      "target_identifier": "section_7.3",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "4.5",
+      "char_start": 15477,
+      "target_identifier": "section_4.5",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "7.3",
+      "char_start": 15634,
+      "target_identifier": "section_7.3",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "1",
+      "char_start": 15735,
+      "target_identifier": "section_1",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "3",
+      "char_start": 15746,
+      "target_identifier": "section_3",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "4.5",
+      "char_start": 15757,
+      "target_identifier": "section_4.5",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "5",
+      "char_start": 15770,
+      "target_identifier": "section_5",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "6",
+      "char_start": 15812,
+      "target_identifier": "section_6",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "7.5",
+      "char_start": 15823,
+      "target_identifier": "section_7.5",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "8",
+      "char_start": 15836,
+      "target_identifier": "section_8",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "9",
+      "char_start": 15847,
+      "target_identifier": "section_9",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "10",
+      "char_start": 15858,
+      "target_identifier": "section_10",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "11",
+      "char_start": 15874,
+      "target_identifier": "section_11",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "9.1",
+      "char_start": 18394,
+      "target_identifier": "section_9.1",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "9.2",
+      "char_start": 18410,
+      "target_identifier": "section_9.2",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "5",
+      "char_start": 18483,
+      "target_identifier": "section_5",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "10",
+      "char_start": 18547,
+      "target_identifier": "section_10",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "10.1",
+      "char_start": 20041,
+      "target_identifier": "section_10.1",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "the Privacy\nPolicy",
+      "char_start": 21928,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the Acceptable Use Policy",
+      "char_start": 21948,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "DPA",
+      "char_start": 21992,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "SOW",
+      "char_start": 21999,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "an Order Form",
+      "char_start": 22315,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the Order Form",
+      "char_start": 22363,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "7.2",
+      "char_start": 22789,
+      "target_identifier": "section_7.2",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "11.4",
+      "char_start": 23466,
+      "target_identifier": "section_11.4",
+      "kind": "internal_clause"
+    }
+  ]
+}

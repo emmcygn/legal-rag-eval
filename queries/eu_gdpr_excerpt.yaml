@@ -1,81 +1,85 @@
 document_id: eu_gdpr_excerpt
 queries:
   - id: eu_gdpr_q1
-    text: "What are the lawful bases for processing personal data?"
-    failure_mode: clause_fragmentation
-    relevant_sections:
-      - section_id: "article_6"
+    text: "What does this regulation mean by 'processing' of personal data?"
+    category: definition_lookup
+    relevant_clauses:
+      - identifier: "article_4"
         relevance: 3
-        description: "Article 6 — Lawfulness of processing"
-      - section_id: "article_6_1"
-        relevance: 3
-        description: "Six lawful bases enumerated"
-      - section_id: "recital_40"
-        relevance: 1
-        description: "Recital explaining lawful bases"
+        description: "Article 4 (Definitions) — defines 'Processing' along with the other core terms (Personal Data, Controller, Processor, Recipient, Consent)."
     notes: >
-      Tests clause fragmentation. Article 6 lists six lawful bases — splitting
-      them across chunks means a retrieval query gets an incomplete list.
+      Article 4 defines 'Processing' as "any operation or set of operations which is
+      performed on personal data ... whether or not by automated means." All the
+      excerpt's definitions live in one undivided gold clause, so this is the only
+      identifier that can answer any definition question in this document.
 
   - id: eu_gdpr_q2
-    text: "What rights does a data subject have regarding their personal data?"
-    failure_mode: destroyed_hierarchy
-    relevant_sections:
-      - section_id: "chapter_3_heading"
-        relevance: 2
-        description: "Chapter 3 heading — Rights of the data subject"
-      - section_id: "article_15"
+    text: "Is protecting people's personal data treated as a fundamental right under this law?"
+    category: clause_lookup
+    relevant_clauses:
+      - identifier: "recital_1"
         relevance: 3
-        description: "Right of access"
-      - section_id: "article_16"
-        relevance: 3
-        description: "Right to rectification"
-      - section_id: "article_17"
-        relevance: 3
-        description: "Right to erasure"
-      - section_id: "article_20"
-        relevance: 2
-        description: "Right to data portability"
+        description: "Recital 1 — states that the protection of natural persons in relation to processing of personal data is a fundamental right."
     notes: >
-      Tests destroyed hierarchy. GDPR data subject rights span multiple
-      articles under a single chapter. The chapter heading provides crucial
-      context that baseline chunkers discard.
+      Recital 1 opens with "The protection of natural persons in relation to the
+      processing of personal data is a fundamental right." Front matter (recitals) is
+      a numbered clause here, so it resolves cleanly and its span is tiny relative to
+      the document.
 
   - id: eu_gdpr_q3
-    text: "What does 'personal data' mean under the GDPR?"
-    failure_mode: lost_definitions
-    relevant_sections:
-      - section_id: "article_4_1"
+    text: "If a business outside the EU is only monitoring the online behaviour of people located in the EU, is it still covered by this law?"
+    category: conditional
+    relevant_clauses:
+      - identifier: "article_3_2"
         relevance: 3
-        description: "Definition of personal data"
-      - section_id: "recital_26"
-        relevance: 2
-        description: "Recital elaborating on personal data definition"
-      - section_id: "article_9"
-        relevance: 1
-        description: "Special categories of personal data"
+        description: "Article 3(2) — territorial scope extends to processing of data of subjects in the Union by a controller/processor not established there, where activities relate to offering goods/services or monitoring behaviour."
     notes: >
-      Tests lost definitions. The GDPR defines 'personal data' in Article 4(1)
-      and elaborates in Recital 26. Special categories in Article 9 extend
-      the concept. All three must be retrievable for a complete answer.
+      Article 3(2)(b) extends the regulation to processors "not established in the
+      Union" whose activities relate to "the monitoring of their behaviour as far as
+      their behaviour takes place within the Union." A lexical retriever fixated on
+      "outside the EU" or "monitoring" without connecting it to territorial scope
+      would miss this.
 
   - id: eu_gdpr_q4
-    text: "What are the requirements for obtaining valid consent?"
-    failure_mode: orphaned_cross_refs
-    relevant_sections:
-      - section_id: "article_7"
+    text: "What is the underlying purpose of this regulation, and what core principles must data processing follow to serve that purpose?"
+    category: multi_clause
+    relevant_clauses:
+      - identifier: "article_1_2"
         relevance: 3
-        description: "Conditions for consent"
-      - section_id: "article_4_11"
-        relevance: 3
-        description: "Definition of consent"
-      - section_id: "recital_32"
+        description: "Article 1(2) — states the regulation protects fundamental rights and freedoms, in particular the right to protection of personal data."
+      - identifier: "article_5_1"
         relevance: 2
-        description: "Recital on consent requirements"
-      - section_id: "article_8"
-        relevance: 1
-        description: "Consent for children"
+        description: "Article 5(1) — the principles (lawfulness, purpose limitation, minimisation, accuracy, storage limitation, integrity/confidentiality) that operationalise that purpose."
     notes: >
-      Tests orphaned cross-references. Article 7 on consent conditions
-      cross-references the definition in Article 4(11). Without the
-      definition, the conditions lack a foundation.
+      A complete answer needs both the stated purpose (Article 1, Chapter I) and the
+      principles that carry it out (Article 5, Chapter II) — two non-adjacent clauses
+      in different chapters, not just two sub-clauses of the same parent.
+
+  - id: eu_gdpr_q5
+    text: "How many separate legal grounds could make it lawful to process someone's personal data?"
+    category: numeric_lookup
+    relevant_clauses:
+      - identifier: "article_6_1"
+        relevance: 3
+        description: "Article 6(1) — lists six alternative lawful bases for processing, (a) through (f)."
+    notes: >
+      Article 6(1) lists six alternative bases (consent, contract necessity, legal
+      obligation, vital interests, public task, legitimate interests). The answer is
+      a count the reader must derive from the lettered list, not a number stated
+      outright.
+
+  - id: eu_gdpr_q6
+    text: "The rule requiring controllers to prove their own compliance points back to an earlier paragraph — what does that paragraph actually require them to comply with?"
+    category: cross_reference
+    relevant_clauses:
+      - identifier: "article_5_1"
+        relevance: 3
+        description: "Article 5(1) — the referenced 'paragraph 1': the substantive principles a controller must comply with."
+      - identifier: "article_5_2"
+        relevance: 2
+        description: "Article 5(2) — the accountability obligation itself, which cross-references 'paragraph 1' (Article 5(1))."
+    notes: >
+      Article 5(2) says "The controller shall be responsible for, and be able to
+      demonstrate compliance with, paragraph 1" — an explicit internal cross-reference
+      (annotated in gold as target_identifier article_5_1). A retriever that surfaces
+      only 5(2) without 5(1) leaves the actual substantive obligations unanswered.

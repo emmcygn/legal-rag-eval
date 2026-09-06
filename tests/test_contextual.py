@@ -132,6 +132,6 @@ class TestContextualRegistry:
         strategy = get_strategy(StrategyName.LEXICHUNK_CONTEXTUAL)
         assert strategy.name == StrategyName.LEXICHUNK_CONTEXTUAL
 
-    def test_registry_now_has_five(self) -> None:
+    def test_registry_now_has_six(self) -> None:
         strategies = get_all_strategies()
-        assert len(strategies) == 5
+        assert len(strategies) == 6

@@ -6,6 +6,7 @@ import hashlib
 import importlib
 import importlib.metadata
 import json
+import logging
 import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -21,6 +22,8 @@ from scaffolder.evidence.schema import (
     EvidenceDataset,
     load_dataset,
 )
+
+logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Sequence
@@ -313,9 +316,23 @@ def _lexichunk_candidates(
 ) -> tuple[SpanCandidate, ...]:
     lexichunk = importlib.import_module("lexichunk")
     chunker_class = lexichunk.LegalChunker
+    # `sanitize` is a public classmethod on newer LexiChunk builds only. The check
+    # it enables is worth keeping (a document that does not survive sanitisation
+    # unchanged would make every char offset below wrong), but requiring the
+    # attribute made the whole benchmark uncallable against older builds, which
+    # defeats the point of a harness meant to compare builds. Fall back to the
+    # private implementation, then to skipping the assertion with a warning.
+    sanitize = getattr(chunker_class, "sanitize", None) or getattr(
+        chunker_class, "_sanitize_input", None
+    )
+    if sanitize is None:
+        logger.warning(
+            "This LexiChunk build exposes no sanitize hook; skipping the "
+            "source-text sanitisation check. Offsets are still validated per chunk."
+        )
     candidates: list[SpanCandidate] = []
     for document in documents:
-        if chunker_class.sanitize(document.text) != document.text:
+        if sanitize is not None and sanitize(document.text) != document.text:
             raise DatasetError(
                 f"document {document.id} must already match LexiChunk sanitized source text"
             )

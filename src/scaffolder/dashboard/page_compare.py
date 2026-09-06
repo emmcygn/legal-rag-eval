@@ -2,20 +2,23 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import streamlit as st
 
-from scaffolder.models import ChunkSet
-
 if TYPE_CHECKING:
-    from scaffolder.models import Document
+    from scaffolder.models import ChunkSet, Document
 
-# Map display names to StrategyName enum values
+# Map display names to StrategyName enum values. rcts_1024 is the size-matched
+# control for LexiChunk's ~790-char chunks; rcts_512 is kept as the older,
+# unmatched comparison. LexiChunk Contextual is included as a baseline here too so
+# it can be compared against plain LexiChunk, the same way the other strategies are.
 _BASELINE_OPTIONS: dict[str, str] = {
-    "LangChain RCTS": "rcts",
+    "LangChain RCTS (512)": "rcts_512",
+    "LangChain RCTS (1024, size-matched)": "rcts_1024",
     "Sentence Split": "sentence_split",
     "Fixed Size (512)": "fixed_size",
+    "LexiChunk Contextual": "lexichunk_contextual",
 }
 
 _FIXTURE_IDS = [
@@ -248,13 +251,16 @@ def render_page() -> None:
         lexi_key = f"chunks_{doc_id}_lexichunk"
         base_key = f"chunks_{doc_id}_{last_baseline}"
 
-        cached_lexi_result = st.session_state.get(lexi_key)
-        cached_baseline_result = st.session_state.get(base_key)
+        # `cast` to a distinct name rather than `# type: ignore`: whether
+        # st.session_state.get is typed depends on whether streamlit is installed, so an
+        # ignore that is needed in a dashboard environment is an unused-ignore error on a
+        # CI runner without it. The names differ from the ones bound above because those
+        # are non-optional.
+        stored_lexi = cast("ChunkSet | None", st.session_state.get(lexi_key))
+        stored_base = cast("ChunkSet | None", st.session_state.get(base_key))
 
-        if isinstance(cached_lexi_result, ChunkSet) and isinstance(
-            cached_baseline_result, ChunkSet
-        ):
-            _render_results(cached_lexi_result, cached_baseline_result, last_baseline_label)
+        if stored_lexi and stored_base:
+            _render_results(stored_lexi, stored_base, last_baseline_label)
 
 
 def _render_results(lexi: ChunkSet, baseline: ChunkSet, baseline_name: str) -> None:

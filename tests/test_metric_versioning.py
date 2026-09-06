@@ -2,7 +2,6 @@
 
 import json
 
-from scaffolder.__main__ import _reconstruct_benchmark_result
 from scaffolder.metrics.retrieval import compute_retrieval_metrics
 from scaffolder.models import (
     AnnotatedQuery,
@@ -12,7 +11,7 @@ from scaffolder.models import (
     RetrievalResult,
     StrategyName,
 )
-from scaffolder.reporting.json_export import export_json_string
+from scaffolder.reporting.json_export import export_json_string, reconstruct_benchmark_result
 
 
 def test_metric_version_survives_roundtrip_and_legacy_is_not_relabelled() -> None:
@@ -22,8 +21,8 @@ def test_metric_version_survives_roundtrip_and_legacy_is_not_relabelled() -> Non
     result = BenchmarkResult("test", retrieval_metrics=[metrics])
     data = json.loads(export_json_string(result))
     assert data["retrieval_metrics"][0]["ndcg_metric"] == "evidence_assignment_ndcg_v1"
-    restored = _reconstruct_benchmark_result(data)
+    restored = reconstruct_benchmark_result(data)
     assert restored.retrieval_metrics[0].ndcg_metric == "evidence_assignment_ndcg_v1"
     del data["retrieval_metrics"][0]["ndcg_metric"]
-    legacy = _reconstruct_benchmark_result(data)
+    legacy = reconstruct_benchmark_result(data)
     assert legacy.retrieval_metrics[0].ndcg_metric == "legacy_unversioned"

@@ -18,7 +18,8 @@ VALID_STRATEGIES = frozenset(
     {
         "lexichunk",
         "lexichunk_contextual",
-        "rcts",
+        "rcts_512",
+        "rcts_1024",
         "sentence_split",
         "fixed_size",
     }
@@ -45,9 +46,18 @@ class BenchmarkConfig:
     3. Defaults defined here
     """
 
-    # Chunking strategies to compare
+    # Chunking strategies to compare. rcts_1024 is the size-matched control for
+    # lexichunk (~790-char chunks); rcts_512 is kept so the older, unmatched
+    # comparison stays visible and explicitly labelled rather than implied.
     strategies: list[str] = field(
-        default_factory=lambda: ["lexichunk", "rcts", "sentence_split", "fixed_size"]
+        default_factory=lambda: [
+            "lexichunk",
+            "lexichunk_contextual",
+            "rcts_512",
+            "rcts_1024",
+            "sentence_split",
+            "fixed_size",
+        ]
     )
 
     # Embedding models to use
@@ -60,6 +70,7 @@ class BenchmarkConfig:
     # Directory paths (relative to repo root or absolute)
     fixture_dir: str = "src/scaffolder/fixtures/documents"
     query_dir: str = "queries"
+    gold_dir: str = "gold"
     output_dir: str = "results"
     template_dir: str = "src/scaffolder/reporting/templates"
 
@@ -67,8 +78,16 @@ class BenchmarkConfig:
     k_values: list[int] = field(default_factory=lambda: [1, 3, 5, 10])
     top_k: int = 10
 
+    # Relevance judgement. A retrieved chunk counts as relevant to a query when its
+    # span in the document overlaps a gold-annotated relevant clause span by at least
+    # this many characters. Span overlap replaces the old substring/bag-of-words match
+    # against a human paraphrase, which was monotone in chunk length.
+    relevance_min_overlap_chars: int = 100
+
     # Statistical testing
     significance_level: float = 0.05
+    bootstrap_resamples: int = 10000
+    seed: int = 42
 
     # Embedding cache
     cache_dir: str = ".cache/embeddings"
@@ -77,13 +96,15 @@ class BenchmarkConfig:
     # Output formats
     output_formats: list[str] = field(default_factory=lambda: ["cli", "json"])
 
-    # Fixed-size chunking parameters
+    # Fixed-size chunking parameters (this baseline has no overlap by construction)
     fixed_chunk_size: int = 512
-    fixed_chunk_overlap: int = 50
+    fixed_chunk_overlap: int = 0
 
-    # LangChain RCTS parameters
-    rcts_chunk_size: int = 1000
-    rcts_chunk_overlap: int = 200
+    # LangChain RCTS parameters, one set per labelled variant
+    rcts_512_chunk_size: int = 512
+    rcts_512_chunk_overlap: int = 50
+    rcts_1024_chunk_size: int = 1024
+    rcts_1024_chunk_overlap: int = 100
 
     # Sentence splitting parameters
     sentence_min_chunk_size: int = 100
@@ -128,12 +149,28 @@ class BenchmarkConfig:
 
         if self.fixed_chunk_size < 50:
             raise ConfigError("fixed_chunk_size must be >= 50.")
-        if self.fixed_chunk_overlap >= self.fixed_chunk_size:
-            raise ConfigError("fixed_chunk_overlap must be < fixed_chunk_size.")
-        if self.rcts_chunk_size < 100:
-            raise ConfigError("rcts_chunk_size must be >= 100.")
-        if self.rcts_chunk_overlap >= self.rcts_chunk_size:
-            raise ConfigError("rcts_chunk_overlap must be < rcts_chunk_size.")
+        if self.fixed_chunk_overlap != 0:
+            raise ConfigError(
+                "fixed_chunk_overlap must be 0: FixedSizeStrategy cuts on exact character "
+                "boundaries and implements no overlap."
+            )
+        for size_attr, overlap_attr in (
+            ("rcts_512_chunk_size", "rcts_512_chunk_overlap"),
+            ("rcts_1024_chunk_size", "rcts_1024_chunk_overlap"),
+        ):
+            size = int(getattr(self, size_attr))
+            overlap = int(getattr(self, overlap_attr))
+            if size < 100:
+                raise ConfigError(f"{size_attr} must be >= 100.")
+            if overlap >= size:
+                raise ConfigError(f"{overlap_attr} must be < {size_attr}.")
+            if overlap < 0:
+                raise ConfigError(f"{overlap_attr} must be >= 0.")
+
+        if self.relevance_min_overlap_chars < 1:
+            raise ConfigError("relevance_min_overlap_chars must be >= 1.")
+        if self.bootstrap_resamples < 100:
+            raise ConfigError("bootstrap_resamples must be >= 100.")
 
     @classmethod
     def from_yaml(cls, path: str | Path) -> BenchmarkConfig:
@@ -181,11 +218,15 @@ class BenchmarkConfig:
             "SCAFFOLDER_ENABLE_VOYAGE": "enable_voyage",
             "SCAFFOLDER_FIXTURE_DIR": "fixture_dir",
             "SCAFFOLDER_QUERY_DIR": "query_dir",
+            "SCAFFOLDER_GOLD_DIR": "gold_dir",
             "SCAFFOLDER_OUTPUT_DIR": "output_dir",
             "SCAFFOLDER_TOP_K": "top_k",
             "SCAFFOLDER_K_VALUES": "k_values",
             "SCAFFOLDER_OUTPUT_FORMATS": "output_formats",
             "SCAFFOLDER_SIGNIFICANCE_LEVEL": "significance_level",
+            "SCAFFOLDER_RELEVANCE_MIN_OVERLAP_CHARS": "relevance_min_overlap_chars",
+            "SCAFFOLDER_BOOTSTRAP_RESAMPLES": "bootstrap_resamples",
+            "SCAFFOLDER_SEED": "seed",
             "SCAFFOLDER_USE_CACHE": "use_cache",
             "SCAFFOLDER_CACHE_DIR": "cache_dir",
         }
@@ -246,7 +287,14 @@ class BenchmarkConfig:
 
     def resolve_paths(self, root: Path) -> None:
         """Resolve relative paths against the given root directory."""
-        for attr in ("fixture_dir", "query_dir", "output_dir", "template_dir", "cache_dir"):
+        for attr in (
+            "fixture_dir",
+            "query_dir",
+            "gold_dir",
+            "output_dir",
+            "template_dir",
+            "cache_dir",
+        ):
             value = getattr(self, attr)
             p = Path(value)
             if not p.is_absolute():

@@ -9,14 +9,42 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
+from scaffolder.gold import locate_chunks, sanitize
 from scaffolder.models import (
     ChunkingStrategy,
+    ChunkSet,
     Document,
     StrategyName,
     StrategyResult,
 )
 
 logger = logging.getLogger(__name__)
+
+
+def attach_spans(chunk_set: ChunkSet, document: Document) -> ChunkSet:
+    """Return a copy of ``chunk_set`` whose chunks carry their span in the document.
+
+    Localisation is identical for every strategy — the chunk text is matched against the
+    sanitised document — so no strategy is scored on offsets it reported about itself.
+    Chunks that are not a contiguous span of the source (for instance because the chunker
+    prepended a synthesised heading) keep as much of their verbatim body as can be located;
+    chunks that cannot be located at all get ``char_start is None`` and are counted in the
+    localisation rate rather than silently scoring zero.
+    """
+    text = sanitize(document.text)
+    spans = locate_chunks([c.text for c in chunk_set.chunks], text)
+    located = tuple(
+        chunk.with_span(None, None)
+        if span is None
+        else chunk.with_span(span.char_start, span.char_end)
+        for chunk, span in zip(chunk_set.chunks, spans, strict=True)
+    )
+    return ChunkSet(
+        strategy=chunk_set.strategy,
+        document_id=chunk_set.document_id,
+        chunks=located,
+        elapsed_seconds=chunk_set.elapsed_seconds,
+    )
 
 
 class ChunkingPipeline:
@@ -55,7 +83,7 @@ class ChunkingPipeline:
                     doc.id,
                     doc.char_count,
                 )
-                cs = strategy.chunk(doc)
+                cs = attach_spans(strategy.chunk(doc), doc)
                 chunk_sets.append(cs)
                 logger.info(
                     "    -> %d chunks in %.3fs (avg %.0f chars/chunk)",
@@ -84,7 +112,7 @@ class ChunkingPipeline:
                 total_start = time.perf_counter()
                 chunk_sets = []
                 for doc in documents:
-                    chunk_sets.append(strategy.chunk(doc))
+                    chunk_sets.append(attach_spans(strategy.chunk(doc), doc))
                 total_elapsed = time.perf_counter() - total_start
                 return StrategyResult(
                     strategy=strategy.name,

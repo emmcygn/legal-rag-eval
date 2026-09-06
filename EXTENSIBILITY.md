@@ -1,8 +1,8 @@
-# Legacy Diagnostics and Extension Guide
+# Extension Guide
 
-The structural and embedding pipelines predate the anchored-evidence benchmark and remain available for regression testing and implementation experiments. They are separate from the authoritative benchmark described in the [README](README.md) and [methodology](docs/methodology.md).
+How to add a chunking strategy, an embedding adapter, a fixture, or a metric. For what the harness measures and what it does not, start at the [README](README.md), [methodology](docs/methodology.md), [metrics reference](docs/metrics.md) and [limitations](docs/limitations.md).
 
-The legacy fixtures duplicate SDK output, so their structural labels are not independent evidence. Their retrieval metrics and statistical tests must not be used to support legal-validity, customer-performance, or product-superiority claims.
+The structural and embedding pipelines are no longer diagnostics. They are scored against the hand-checked span annotations in [`gold/`](gold/), which are independent of every chunker under test, and they run as `benchmark-structural` and `benchmark-embed` alongside the anchored-evidence `benchmark`. What *is* still a deprecated diagnostic is `benchmark-legacy`: it scores strategies against LexiChunk's own parse, so it is circular by construction and its numbers must never be used to support legal-validity, customer-performance, or product-superiority claims.
 
 ## Architecture
 
@@ -14,35 +14,42 @@ The main extension points are the shared protocols and enums in `src/scaffolder/
 
 ## Commands
 
-Run the structural diagnostic without embeddings:
+Run the gold-scored structural benchmark without embeddings:
 
 ```bash
-python -m scaffolder benchmark-legacy
+python -m scaffolder benchmark-structural --json
 ```
 
-Install the embedding dependencies from the repository root, then run the model-based retrieval diagnostic:
+Install the embedding dependencies from the repository root, then run the full retrieval benchmark:
 
 ```bash
 python -m pip install -e ".[embeddings]"
-python -m scaffolder benchmark-embed
+python -m scaffolder benchmark-embed --json --models all-MiniLM-L6-v2,bge-base-en-v1.5
 ```
 
-The model-based command may download `sentence-transformers/all-MiniLM-L6-v2`. Passing `--enable-voyage` adds `voyage-law-2` and requires both the `voyage` optional dependency and `VOYAGE_API_KEY`; install both extras with `python -m pip install -e ".[embeddings,voyage]"`. The adapter layer also retains `BAAI/bge-base-en-v1.5`, although the current legacy CLI does not select it.
+The model-based command downloads `sentence-transformers/all-MiniLM-L6-v2` and, if selected, `BAAI/bge-base-en-v1.5`; both are selectable through `--models` or `embedding_models` in `scaffolder.yaml`. Paid access to `voyage-law-2` needs **both** `--enable-voyage` and `VOYAGE_API_KEY`, plus `python -m pip install -e ".[embeddings,voyage]"`. An exported key on its own never triggers a paid call.
 
-Use `--json` to write legacy results under `results/`. These outputs use the older report schema and should remain separate from `evidence_benchmark_report_v1` reports.
+The circular diagnostic is still reachable, and warns when it runs:
+
+```bash
+python -m scaffolder benchmark-legacy --json
+```
+
+`--json` writes results under `results/`. These outputs use the benchmark-result schema and are separate from `evidence_benchmark_report_v1` reports, which the anchored-evidence `benchmark` command writes.
 
 ## Test Fixtures and Queries
 
-Legacy fixture documents live in `src/scaffolder/fixtures/documents/`. To add one:
+Fixture documents live in `src/scaffolder/fixtures/documents/`. To add one:
 
 1. Add a UTF-8 `.txt` file.
 2. Add any required `Jurisdiction` or `DocumentType` value in `src/scaffolder/models.py`.
 3. Register the filename in `_FIXTURE_METADATA` in `src/scaffolder/fixtures/__init__.py`.
-4. Add a matching `queries/<document_id>.yaml` file.
+4. Seed a gold annotation with `python scripts/build_gold.py`, then **correct it by hand against the document text** and log every correction in [`gold/CHANGES.md`](gold/CHANGES.md). The seeder is a first pass, not the annotation; see [`gold/README.md`](gold/README.md) and [`gold/SCHEMA.md`](gold/SCHEMA.md).
+5. Add a matching `queries/<document_id>.yaml` file with at least six queries.
 
-`document_id` must match the fixture filename without `.txt`. Each query needs a unique `id`, query `text`, one supported `failure_mode`, and at least one `relevant_sections` entry with a section ID and relevance grade. The supported failure modes, relevance scale, naming convention, and complete YAML shape are documented in [`queries/schema.md`](queries/schema.md).
+`document_id` must match the fixture filename without `.txt`. Each query needs a unique `id`, query `text`, a `category`, and at least one `relevant_clauses` entry naming a gold clause `identifier` with a relevance grade, at least one of which must be grade 3. Query identifiers are resolved against `gold/`, so a query cannot reference a clause that does not exist. `tests/test_query_annotations.py` gates the set in CI: it rejects duplicate ids, unknown categories, unresolvable identifiers, queries whose relevant spans cover more than 25% of a document's characters or 30% of its clauses, and queries whose own text leaks the answer's identifier. The complete YAML shape is documented in [`queries/schema.md`](queries/schema.md).
 
-Legacy fixtures and query annotations are regression assets. New datasets for the primary benchmark must instead use the `anchored_evidence_v1` interface and follow the provenance requirements in the [dataset card](docs/dataset-card.md) and [contribution guide](CONTRIBUTING.md).
+These fixtures and queries are scored ground truth, not regression assets. A dataset for the *anchored-evidence* benchmark is a different thing and uses the `anchored_evidence_v1` interface, following the provenance requirements in the [dataset card](docs/dataset-card.md) and [contribution guide](CONTRIBUTING.md).
 
 ## Chunking Strategies
 

@@ -1,91 +1,88 @@
 document_id: uk_service_agreement
 queries:
   - id: uk_sa_q1
-    text: "What are the termination provisions and notice periods?"
-    failure_mode: clause_fragmentation
-    relevant_sections:
-      - section_id: "clause_termination"
+    text: "How does this agreement define what counts as a party's 'Affiliate'?"
+    category: definition_lookup
+    relevant_clauses:
+      - identifier: "1.1"
         relevance: 3
-        description: "Main termination clause with notice period requirements"
-      - section_id: "clause_termination_effects"
-        relevance: 2
-        description: "Effects of termination and surviving obligations"
-      - section_id: "clause_termination_for_cause"
-        relevance: 2
-        description: "Termination for material breach provisions"
+        description: "Clause 1.1 — the definitions clause, which includes the 'Affiliate' definition (control via >50% ownership or power to direct management)."
     notes: >
-      Tests clause fragmentation. General-purpose chunkers often split the
-      termination clause across multiple chunks, separating the notice period
-      from the grounds for termination. LexiChunk should keep the entire
-      termination clause tree intact.
+      All defined terms in this contract sit inside a single undivided gold clause
+      (1.1), so any definition question resolves to the same identifier. 'Affiliate'
+      is defined by reference to '"control" means the ownership of more than fifty
+      percent (50%) of the voting securities ...'.
 
   - id: uk_sa_q2
-    text: "What happens to Confidential Information after termination?"
-    failure_mode: lost_definitions
-    relevant_sections:
-      - section_id: "clause_confidentiality"
+    text: "If one of the Client's employees misuses the Supplier's services, who is responsible for that?"
+    category: clause_lookup
+    relevant_clauses:
+      - identifier: "2.5(c)"
         relevance: 3
-        description: "Confidentiality obligations and post-termination duties"
-      - section_id: "definition_confidential_information"
-        relevance: 2
-        description: "Definition of Confidential Information"
-      - section_id: "clause_termination_effects"
-        relevance: 2
-        description: "Surviving obligations after termination"
+        description: "Clause 2.5(c) — the Client is responsible for the acts and omissions of Authorised Users."
     notes: >
-      Tests lost definitions. To answer this query, the retriever must surface
-      both the confidentiality clause AND the definition of "Confidential
-      Information." Baseline chunkers lose the definition linkage.
+      Clause 2.5(c) makes the Client "responsible for the acts and omissions of the
+      Authorised Users in relation to the Services". The query uses "employees" and
+      "misuses" rather than the document's own "Authorised Users" / "acts and
+      omissions" so a purely lexical match doesn't trivially win.
 
   - id: uk_sa_q3
-    text: "What limitations apply to liability under this agreement?"
-    failure_mode: orphaned_cross_refs
-    relevant_sections:
-      - section_id: "clause_limitation_liability"
+    text: "How much advance notice must the Supplier give before it can increase its fees, and is there a limit on how big that increase can be?"
+    category: numeric_lookup
+    relevant_clauses:
+      - identifier: "3.7"
         relevance: 3
-        description: "Limitation of liability clause"
-      - section_id: "clause_indemnification"
-        relevance: 2
-        description: "Indemnification obligations (often cross-referenced)"
-      - section_id: "clause_exclusions"
-        relevance: 1
-        description: "Exclusions from limitation caps"
+        description: "Clause 3.7 — Supplier may increase Fees annually on 60 days' notice, capped at the greater of 5% or UK CPI increase."
     notes: >
-      Tests orphaned cross-references. Limitation of liability clauses
-      typically reference other sections (e.g., "except as set out in clause X").
-      Baseline chunkers drop these references.
+      Clause 3.7: "not less than sixty (60) days' prior written notice ... shall not
+      exceed the greater of (i) five percent (5%) or (ii) the percentage increase in
+      the UK Consumer Price Index". Two numbers are needed for a complete answer
+      (notice period and cap), both inside the same clause.
 
   - id: uk_sa_q4
-    text: "What are the obligations of the Service Provider under clause 2?"
-    failure_mode: destroyed_hierarchy
-    relevant_sections:
-      - section_id: "clause_2"
+    text: "If the Client disputes part of an invoice, do they still have to pay the rest of it while the dispute is being sorted out?"
+    category: conditional
+    relevant_clauses:
+      - identifier: "3.6(a)"
         relevance: 3
-        description: "Service provider obligations heading"
-      - section_id: "clause_2.1"
-        relevance: 3
-        description: "Primary service delivery obligation"
-      - section_id: "clause_2.2"
-        relevance: 3
-        description: "Quality and compliance obligation"
-      - section_id: "clause_2.3"
+        description: "Clause 3.6(a) — the Client must pay the undisputed portion of the invoice by the Payment Due Date."
+      - identifier: "3.6(b)"
         relevance: 2
-        description: "Reporting obligations"
+        description: "Clause 3.6(b) — the Client must also notify the Supplier in writing of the grounds for the dispute."
     notes: >
-      Tests destroyed hierarchy. The query asks about a parent clause, so all
-      sub-clauses are relevant. Baseline chunkers may separate 2.1, 2.2, and
-      2.3 from the clause 2 heading, losing the hierarchical relationship.
+      Clause 3.6(a) directly answers "yes, pay the undisputed part by the normal due
+      date"; 3.6(b) is the necessary second half of the good-faith dispute procedure
+      (notifying the grounds for dispute).
 
   - id: uk_sa_q5
-    text: "What are the limitation of liability provisions?"
-    failure_mode: cross_doc_contamination
-    relevant_sections:
-      - section_id: "clause_limitation_liability"
+    text: "If the Client falls behind on payment, can the Supplier stop delivering the services, and could that also lead to the contract being ended altogether?"
+    category: multi_clause
+    relevant_clauses:
+      - identifier: "3.4(b)"
         relevance: 3
-        description: "UK service agreement limitation of liability"
+        description: "Clause 3.4(b) — after 15 Business Days' notice of non-payment, the Supplier may suspend the Services."
+      - identifier: "6.4"
+        relevance: 2
+        description: "Clause 6.4 — the Supplier may terminate the Agreement in accordance with clause 3.4(b) following the Client's failure to pay."
     notes: >
-      Tests cross-document contamination. Both UK and US documents have
-      limitation of liability clauses. The retriever must prefer the UK
-      service agreement clause when this query is asked in the context
-      of the UK document. A jurisdiction-unaware chunker may surface
-      the US clause.
+      Clause 3.4(b) (Fees, clause 3) governs suspension; clause 6.4 (Term and
+      termination, clause 6) explicitly cross-references 3.4(b) to escalate
+      non-payment into a full termination right. The two clauses are not adjacent —
+      one lives under Fees, the other under Termination — so neither alone answers
+      the "could this end the contract" half of the question.
+
+  - id: uk_sa_q6
+    text: "The termination clause says the confidentiality obligations survive the end of the contract — but how long do those obligations actually last once the agreement ends?"
+    category: cross_reference
+    relevant_clauses:
+      - identifier: "4.5"
+        relevance: 3
+        description: "Clause 4.5 — confidentiality obligations survive termination for a period of five (5) years."
+      - identifier: "6.5(d)"
+        relevance: 2
+        description: "Clause 6.5(d) — on termination, provisions intended to survive (including clause 4) continue in force; this is the clause that points the reader to clause 4."
+    notes: >
+      Clause 6.5(d) names clause 4 as one of the clauses surviving termination
+      (matches the gold cross-reference at char 17427, target identifier "4"), but
+      the actual survival period ("a period of five (5) years") is only stated in
+      clause 4.5 itself.

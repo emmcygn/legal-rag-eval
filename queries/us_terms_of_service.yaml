@@ -1,76 +1,86 @@
 document_id: us_terms_of_service
 queries:
   - id: us_tos_q1
-    text: "What is the arbitration process for disputes?"
-    failure_mode: clause_fragmentation
-    relevant_sections:
-      - section_id: "clause_arbitration"
+    text: "How does Strata define 'Personal Information' under these terms?"
+    category: definition_lookup
+    relevant_clauses:
+      - identifier: "section_1.7"
         relevance: 3
-        description: "Mandatory arbitration clause"
-      - section_id: "clause_arbitration_procedure"
-        relevance: 3
-        description: "Arbitration procedure and rules"
-      - section_id: "clause_class_action_waiver"
-        relevance: 2
-        description: "Class action waiver"
-      - section_id: "clause_opt_out"
-        relevance: 1
-        description: "Opt-out procedure for arbitration"
+        description: "Section 1.7 — 'Personal Information' means information identifying a natural person, as defined under applicable privacy laws including CCPA/CPRA."
     notes: >
-      Tests clause fragmentation. US ToS arbitration clauses are notoriously
-      long and complex with multiple sub-sections. Fragmenting them loses
-      critical opt-out and waiver information.
+      Section 1.7 ties the definition to "applicable privacy laws including the
+      California Consumer Privacy Act ... and other applicable federal and state
+      privacy statutes" — each definition here is its own leaf clause, unlike the UK
+      fixtures.
 
   - id: us_tos_q2
-    text: "What content is prohibited under the acceptable use policy?"
-    failure_mode: destroyed_hierarchy
-    relevant_sections:
-      - section_id: "clause_acceptable_use"
+    text: "If I stop using Strata's product, can I still get my data out before it's gone for good?"
+    category: clause_lookup
+    relevant_clauses:
+      - identifier: "section_4.5"
         relevance: 3
-        description: "Acceptable use policy heading"
-      - section_id: "clause_prohibited_content"
-        relevance: 3
-        description: "List of prohibited content types"
-      - section_id: "clause_prohibited_conduct"
-        relevance: 2
-        description: "List of prohibited conduct"
+        description: "Section 4.5 (Data Retention and Deletion) — Customer Content is available for export for 30 days after termination, then may be deleted."
     notes: >
-      Tests destroyed hierarchy. Acceptable use policies often have a parent
-      heading with two sub-lists (prohibited content and prohibited conduct).
-      Baseline chunkers separate these from the heading.
+      Section 4.5: "Strata will make Customer Content available for export for
+      thirty (30) days following termination, after which Strata may delete Customer
+      Content from its systems."
 
   - id: us_tos_q3
-    text: "How does the indemnification obligation work and what does it cover?"
-    failure_mode: orphaned_cross_refs
-    relevant_sections:
-      - section_id: "clause_indemnification"
+    text: "What's the maximum amount Strata could ever be required to pay out if something went wrong, and is there a guaranteed minimum regardless of how little I've spent?"
+    category: numeric_lookup
+    relevant_clauses:
+      - identifier: "section_9.2"
         relevance: 3
-        description: "Indemnification obligation"
-      - section_id: "clause_limitation_liability"
-        relevance: 2
-        description: "Limitation of liability (cross-referenced)"
-      - section_id: "definition_losses"
-        relevance: 1
-        description: "Definition of covered losses"
+        description: "Section 9.2 (Cap on Liability) — liability is capped at the greater of the prior 12 months' Subscription Fees or $100."
     notes: >
-      Tests orphaned cross-references. Indemnification clauses reference
-      both the definition of losses and the limitation of liability section.
-      Without resolving these references, the scope is unclear.
+      Section 9.2 caps liability at "THE GREATER OF: (A) THE TOTAL SUBSCRIPTION FEES
+      ACTUALLY PAID ... OR (B) ONE HUNDRED U.S. DOLLARS ($100)". Both prongs sit
+      inside the same parent clause (9.2(a) and 9.2(b)), so naming the parent gives
+      a complete answer without inflating the relevant span.
 
   - id: us_tos_q4
-    text: "What rights does the user grant to the platform regarding their content?"
-    failure_mode: lost_definitions
-    relevant_sections:
-      - section_id: "clause_user_content_license"
+    text: "If I get sued because content I uploaded infringed someone's copyright, is that something I have to defend myself against or does Strata step in?"
+    category: conditional
+    relevant_clauses:
+      - identifier: "section_10.2"
         relevance: 3
-        description: "License grant for user content"
-      - section_id: "definition_user_content"
-        relevance: 2
-        description: "Definition of User Content"
-      - section_id: "clause_content_ownership"
-        relevance: 2
-        description: "Content ownership clause"
+        description: "Section 10.2 (Indemnification by Customer) — Customer must indemnify Strata for claims arising from Customer Content, including infringement allegations."
     notes: >
-      Tests lost definitions. The license grant clause uses "User Content"
-      which is defined elsewhere. Without the definition, the scope of
-      the license is ambiguous.
+      Section 10.2(a): Customer indemnifies Strata for claims arising from "Customer
+      Content, including any allegation that Customer Content infringes any
+      third-party rights" — i.e. the Customer bears this risk, not Strata.
+
+  - id: us_tos_q5
+    text: "If Strata ends my subscription because I violated the content rules, do I get anything back for the unused part of my term, and which parts of the contract keep applying afterward?"
+    category: multi_clause
+    relevant_clauses:
+      - identifier: "section_5.6"
+        relevance: 3
+        description: "Section 5.6 (No Refunds) — fees are non-refundable except as set out in Section 7.4 (which only applies to Customer-initiated termination for Strata's breach)."
+      - identifier: "section_7.5(d)"
+        relevance: 2
+        description: "Section 7.5(d) — lists which Sections survive termination."
+    notes: >
+      Section 5.6 answers the refund half (no refund; the only carve-out, 7.4, does
+      not apply to a Strata-initiated termination for the Customer's own breach), and
+      7.5(d) answers the survival half. The two clauses are in non-adjacent Sections
+      (5 and 7) and neither alone answers both parts of the question.
+
+  - id: us_tos_q6
+    text: "Termination for cause because I violated the platform's usage rules could be based on two different sets of restrictions elsewhere in the contract — what do those restrictions actually prohibit?"
+    category: cross_reference
+    relevant_clauses:
+      - identifier: "section_3.1"
+        relevance: 3
+        description: "Section 3.1 (Prohibited Content) — one of the two restrictions Section 7.3(c) points to: illegal, infringing, malicious, privacy-violating, or misleading content."
+      - identifier: "section_2.2"
+        relevance: 2
+        description: "Section 2.2 (Restrictions) — the other restriction Section 7.3(c) points to: copying, reverse engineering, reselling, competitive use, etc."
+      - identifier: "section_7.3(c)"
+        relevance: 1
+        description: "Section 7.3(c) — the termination-for-cause ground that cross-references Section 2.2 and Section 3.1."
+    notes: >
+      Section 7.3(c) grounds termination for cause on "Customer violates Section 2.2
+      or Section 3.1" (matching the two gold cross-references at char 14845 and
+      14860). A complete answer needs both referenced sections, not just the
+      triggering clause.

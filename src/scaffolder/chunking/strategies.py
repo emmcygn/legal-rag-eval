@@ -47,6 +47,24 @@ def _build_context_header(legal_chunk: Any) -> str:
     return ""
 
 
+def _xref_target_string(cross_reference: Any) -> str:
+    """Compose the cross-reference target string recorded in chunk metadata.
+
+    LexiChunk reports a reference's numbering (``target_identifier``, e.g. ``"VIII"``)
+    and its label word (``target_kind``, e.g. ``"article"``) as two separate fields.
+    The gold-scored ``xref_target_recall``/``xref_target_precision`` metrics
+    (:mod:`scaffolder.metrics.gold`) compare against a single string via
+    ``normalize_identifier``, which folds a leading label word into the identifier
+    (``"article VIII"`` -> ``"article_8"``) or strips it entirely for a plain clause
+    number (``"clause 12.3"`` -> ``"12.3"``). Emitting only the bare identifier (as
+    before) discards that label, so every article/section-scoped target silently
+    failed to match its gold counterpart.
+    """
+    identifier = str(cross_reference.target_identifier)
+    kind = str(getattr(cross_reference, "target_kind", "") or "").strip()
+    return f"{kind} {identifier}" if kind else identifier
+
+
 class LexiChunkStrategy:
     """Wrapper around LexiChunk's LegalChunker.
 
@@ -56,18 +74,40 @@ class LexiChunkStrategy:
     - defined_terms: list[str]
     - cross_references: list[dict]
     - section_hierarchy: str (e.g. "1 > Definitions.")
+
+    A single strategy instance is reused across every fixture document in a benchmark
+    run (see ``_STRATEGY_REGISTRY``), so the ``LegalChunker`` cannot be built once in
+    ``__init__`` with a fixed jurisdiction -- the fixtures mix UK, US and EU documents,
+    and ``LegalChunker`` defaults to ``jurisdiction="uk"``. Parsing a US document (Roman
+    numeral "Article VIII" headers) under the UK profile fails to recognise the
+    article-level numbering at all, which collapses ``hierarchy_path`` to just the
+    deepest leaf and silently drops every heading/cross-reference claim above it.
+    ``_chunker_for`` builds (and caches) one chunker per jurisdiction, defaulting to
+    each document's own ``document.jurisdiction`` -- unless the caller pinned a
+    jurisdiction explicitly via constructor kwargs, in which case that pin wins for
+    every document, preserving the previous override behaviour.
     """
 
     name = StrategyName.LEXICHUNK
 
     def __init__(self, **kwargs: Any) -> None:
+        self._kwargs = kwargs
+        self._chunkers: dict[str, Any] = {}
+
+    def _chunker_for(self, document: Document) -> Any:
         from lexichunk import LegalChunker
 
-        self._chunker = LegalChunker(**kwargs)
+        jurisdiction = self._kwargs.get("jurisdiction", document.jurisdiction.value)
+        chunker = self._chunkers.get(jurisdiction)
+        if chunker is None:
+            chunker = LegalChunker(**{**self._kwargs, "jurisdiction": jurisdiction})
+            self._chunkers[jurisdiction] = chunker
+        return chunker
 
     def chunk(self, document: Document) -> ChunkSet:
+        chunker = self._chunker_for(document)
         start = time.perf_counter()
-        legal_chunks = self._chunker.chunk(document.text, document_id=document.id)
+        legal_chunks = chunker.chunk(document.text, document_id=document.id)
         elapsed = time.perf_counter() - start
 
         chunks: list[Chunk] = []
@@ -82,7 +122,7 @@ class LexiChunkStrategy:
                 metadata["defined_terms"] = list(lc.defined_terms_used)
             if lc.cross_references:
                 metadata["cross_references"] = [
-                    {"raw_text": str(cr.raw_text), "target": str(cr.target_identifier)}
+                    {"raw_text": str(cr.raw_text), "target": _xref_target_string(cr)}
                     for cr in lc.cross_references
                 ]
             if lc.hierarchy_path:
@@ -118,13 +158,26 @@ class LexiChunkContextualStrategy:
     name = StrategyName.LEXICHUNK_CONTEXTUAL
 
     def __init__(self, **kwargs: Any) -> None:
+        self._kwargs = kwargs
+        self._chunkers: dict[str, Any] = {}
+
+    def _chunker_for(self, document: Document) -> Any:
         from lexichunk import LegalChunker
 
-        self._chunker = LegalChunker(**kwargs)
+        # See LexiChunkStrategy._chunker_for: one strategy instance is reused across
+        # every fixture document, so the chunker's jurisdiction has to be resolved per
+        # document rather than fixed at construction time.
+        jurisdiction = self._kwargs.get("jurisdiction", document.jurisdiction.value)
+        chunker = self._chunkers.get(jurisdiction)
+        if chunker is None:
+            chunker = LegalChunker(**{**self._kwargs, "jurisdiction": jurisdiction})
+            self._chunkers[jurisdiction] = chunker
+        return chunker
 
     def chunk(self, document: Document) -> ChunkSet:
+        chunker = self._chunker_for(document)
         start = time.perf_counter()
-        legal_chunks = self._chunker.chunk(document.text, document_id=document.id)
+        legal_chunks = chunker.chunk(document.text, document_id=document.id)
         elapsed = time.perf_counter() - start
 
         chunks: list[Chunk] = []
@@ -142,7 +195,7 @@ class LexiChunkContextualStrategy:
                 metadata["defined_terms"] = list(lc.defined_terms_used)
             if lc.cross_references:
                 metadata["cross_references"] = [
-                    {"raw_text": str(cr.raw_text), "target": str(cr.target_identifier)}
+                    {"raw_text": str(cr.raw_text), "target": _xref_target_string(cr)}
                     for cr in lc.cross_references
                 ]
             if lc.hierarchy_path:
@@ -172,13 +225,17 @@ class LexiChunkContextualStrategy:
 class RCTSStrategy:
     """Wrapper around LangChain's RecursiveCharacterTextSplitter.
 
-    Default: 512-char chunks with 50-char overlap, splitting on paragraph
-    and sentence boundaries.
+    The chunk size is part of the strategy's identity, not a hidden default: the same
+    splitter at 512 and at 1024 characters is two different baselines, and the second one
+    is the size-matched control for LexiChunk. Pass ``name`` to label the variant.
     """
 
-    name = StrategyName.RCTS
-
-    def __init__(self, chunk_size: int = 512, chunk_overlap: int = 50) -> None:
+    def __init__(
+        self,
+        chunk_size: int = 512,
+        chunk_overlap: int = 50,
+        name: StrategyName = StrategyName.RCTS_512,
+    ) -> None:
         from langchain_text_splitters import RecursiveCharacterTextSplitter
 
         self._splitter = RecursiveCharacterTextSplitter(
@@ -188,6 +245,8 @@ class RCTSStrategy:
             separators=["\n\n", "\n", ". ", " ", ""],
         )
         self._chunk_size = chunk_size
+        self._chunk_overlap = chunk_overlap
+        self.name = name
 
     def chunk(self, document: Document) -> ChunkSet:
         start = time.perf_counter()
@@ -196,12 +255,15 @@ class RCTSStrategy:
 
         chunks = tuple(
             Chunk(
-                id=f"rcts_{document.id}_{i}",
+                id=f"{self.name.value}_{document.id}_{i}",
                 text=t,
                 document_id=document.id,
                 strategy=self.name,
                 index=i,
-                metadata={"chunk_size_param": self._chunk_size},
+                metadata={
+                    "chunk_size_param": self._chunk_size,
+                    "chunk_overlap_param": self._chunk_overlap,
+                },
             )
             for i, t in enumerate(texts)
         )
@@ -283,7 +345,10 @@ class FixedSizeStrategy:
 
     name = StrategyName.FIXED_SIZE
 
-    def __init__(self, chunk_size: int = 512) -> None:
+    def __init__(self, chunk_size: int = 512, chunk_overlap: int = 0) -> None:
+        if chunk_overlap:
+            msg = "FixedSizeStrategy does not implement overlap; pass chunk_overlap=0."
+            raise ValueError(msg)
         self._chunk_size = chunk_size
 
     def chunk(self, document: Document) -> ChunkSet:

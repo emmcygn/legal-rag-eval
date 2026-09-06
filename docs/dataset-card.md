@@ -22,6 +22,20 @@ Questions, answer spans, and evidence spans are stored separately from chunker o
 
 The challenge includes topical unanswerable questions about a service-credit percentage and critical-incident response time, even though nearby text uses those topics. This tests false-positive retrieval behavior more realistically than the zero-overlap tribunal control alone.
 
+## Relationship to the harness's other ground truths
+
+This is one of three, and the only one authored by the same process that wrote the
+benchmark. Read it alongside the other two rather than instead of them:
+
+| Ground truth | Authored by | Scale | Used by |
+|---|---|---|---|
+| `synthetic-contracts-v1` (this card) | AI, unreviewed | 3 docs, 12 evidence spans, 15 queries | `benchmark` |
+| [`gold/`](../gold/) | regex seed over each document's own numbering, then hand-corrected ([`gold/CHANGES.md`](../gold/CHANGES.md)) | 5 docs, 365 clause spans, 90 terms, 171 cross-refs, 30 queries | `benchmark-structural`, `benchmark-embed` |
+| LEDGAR + CUAD ([external_evals.md](external_evals.md)) | independent third parties (LexGLUE annotators; Atticus Project lawyers) | 100 labels; 2,458 verified spans over 100 real SEC contracts | `python -m scaffolder.evals` |
+
+Where a claim needs labels this project did not write, the external evaluations are the
+ones to cite.
+
 ## Intended Use
 
 Use this dataset to smoke-test installation, schema validation, deterministic scoring, reporting, and baseline trade-offs. Do not use it to claim production accuracy, legal validity, customer performance, or general superiority.

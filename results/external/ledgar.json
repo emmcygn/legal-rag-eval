@@ -1,0 +1,866 @@
+{
+  "class_distribution": {
+    "amendment": 133,
+    "assignment": 152,
+    "boilerplate": 854,
+    "conditions": 38,
+    "confidentiality": 74,
+    "covenants": 251,
+    "definitions": 88,
+    "dispute_resolution": 145,
+    "entire_agreement": 232,
+    "governing_law": 316,
+    "indemnification": 82,
+    "insurance": 65,
+    "intellectual_property": 26,
+    "notices": 226,
+    "payment": 379,
+    "representations": 591,
+    "severability": 200,
+    "termination": 50,
+    "warranties": 53
+  },
+  "dataset": {
+    "config": "ledgar",
+    "id": "coastalcph/lex_glue",
+    "revision": "c23fdff1a6bf74e0e1a71cb86f1e781d37da888c",
+    "split": "test",
+    "split_size": 10000
+  },
+  "evaluation": "ledgar",
+  "label_map": {
+    "label_coverage": 0.67,
+    "mapped_labels": 67,
+    "total_labels": 100
+  },
+  "relative_position": 0.5,
+  "sampling": {
+    "evaluated": 3955,
+    "item_coverage": 0.791,
+    "out_of_scope_items": 1045,
+    "requested": 5000,
+    "seed": 0
+  },
+  "systems": [
+    {
+      "accuracy": {
+        "high": 0.4116308470290771,
+        "low": 0.38027812895069535,
+        "n": 3955,
+        "point": 0.3959544879898862
+      },
+      "calibration": {
+        "bins": [
+          {
+            "accuracy": 0.007407407407407408,
+            "count": 675,
+            "high": 0.1,
+            "low": 0.0,
+            "mean_confidence": 0.005895061728395064
+          },
+          {
+            "accuracy": 0.2736156351791531,
+            "count": 307,
+            "high": 0.2,
+            "low": 0.1,
+            "mean_confidence": 0.13658677212219553
+          },
+          {
+            "accuracy": 0.49168053244592347,
+            "count": 1202,
+            "high": 0.3,
+            "low": 0.2,
+            "mean_confidence": 0.24593157217401848
+          },
+          {
+            "accuracy": 0.24740484429065743,
+            "count": 578,
+            "high": 0.4,
+            "low": 0.3,
+            "mean_confidence": 0.3390982575671175
+          },
+          {
+            "accuracy": 0.49333333333333335,
+            "count": 150,
+            "high": 0.5,
+            "low": 0.4,
+            "mean_confidence": 0.44450376856259266
+          },
+          {
+            "accuracy": 0.5341296928327645,
+            "count": 586,
+            "high": 0.6,
+            "low": 0.5,
+            "mean_confidence": 0.5131843175785156
+          },
+          {
+            "accuracy": 0.676923076923077,
+            "count": 65,
+            "high": 0.7,
+            "low": 0.6,
+            "mean_confidence": 0.6488461538461539
+          },
+          {
+            "accuracy": 0.7889447236180904,
+            "count": 199,
+            "high": 0.8,
+            "low": 0.7,
+            "mean_confidence": 0.7474475552365
+          },
+          {
+            "accuracy": 0.7205882352941176,
+            "count": 68,
+            "high": 0.9,
+            "low": 0.8,
+            "mean_confidence": 0.8218253968253965
+          },
+          {
+            "accuracy": 0.848,
+            "count": 125,
+            "high": 1.0,
+            "low": 0.9,
+            "mean_confidence": 1.0
+          }
+        ],
+        "expected_calibration_error": 0.113032421117347,
+        "monotonic": false,
+        "spearman": 0.3747590668655793
+      },
+      "confusions": [
+        {
+          "count": 192,
+          "gold": "representations",
+          "predicted": "unknown"
+        },
+        {
+          "count": 153,
+          "gold": "boilerplate",
+          "predicted": "covenants"
+        },
+        {
+          "count": 146,
+          "gold": "boilerplate",
+          "predicted": "amendment"
+        },
+        {
+          "count": 125,
+          "gold": "boilerplate",
+          "predicted": "unknown"
+        },
+        {
+          "count": 83,
+          "gold": "covenants",
+          "predicted": "unknown"
+        },
+        {
+          "count": 80,
+          "gold": "dispute_resolution",
+          "predicted": "governing_law"
+        },
+        {
+          "count": 67,
+          "gold": "representations",
+          "predicted": "governing_law"
+        },
+        {
+          "count": 60,
+          "gold": "boilerplate",
+          "predicted": "payment"
+        },
+        {
+          "count": 52,
+          "gold": "payment",
+          "predicted": "unknown"
+        },
+        {
+          "count": 51,
+          "gold": "covenants",
+          "predicted": "governing_law"
+        },
+        {
+          "count": 50,
+          "gold": "representations",
+          "predicted": "payment"
+        },
+        {
+          "count": 47,
+          "gold": "representations",
+          "predicted": "amendment"
+        },
+        {
+          "count": 46,
+          "gold": "definitions",
+          "predicted": "unknown"
+        },
+        {
+          "count": 44,
+          "gold": "governing_law",
+          "predicted": "unknown"
+        },
+        {
+          "count": 41,
+          "gold": "boilerplate",
+          "predicted": "definitions"
+        }
+      ],
+      "macro_f1": {
+        "high": 0.44056082739688174,
+        "low": 0.4067141716456251,
+        "n": 3955,
+        "point": 0.4249822436418917
+      },
+      "name": "lexichunk-keyword",
+      "per_class": [
+        {
+          "f1": 0.3202247191011236,
+          "label": "boilerplate",
+          "precision": 0.7990654205607477,
+          "predicted": 214,
+          "recall": 0.20023419203747073,
+          "support": 854
+        },
+        {
+          "f1": 0.17802503477051462,
+          "label": "representations",
+          "precision": 0.5,
+          "predicted": 128,
+          "recall": 0.10829103214890017,
+          "support": 591
+        },
+        {
+          "f1": 0.5581395348837209,
+          "label": "payment",
+          "precision": 0.5468354430379747,
+          "predicted": 395,
+          "recall": 0.5699208443271768,
+          "support": 379
+        },
+        {
+          "f1": 0.5582417582417583,
+          "label": "governing_law",
+          "precision": 0.4276094276094276,
+          "predicted": 594,
+          "recall": 0.8037974683544303,
+          "support": 316
+        },
+        {
+          "f1": 0.09106830122591945,
+          "label": "covenants",
+          "precision": 0.08125,
+          "predicted": 320,
+          "recall": 0.10358565737051793,
+          "support": 251
+        },
+        {
+          "f1": 0.7730673316708231,
+          "label": "entire_agreement",
+          "precision": 0.9171597633136095,
+          "predicted": 169,
+          "recall": 0.6681034482758621,
+          "support": 232
+        },
+        {
+          "f1": 0.7178329571106095,
+          "label": "notices",
+          "precision": 0.7327188940092166,
+          "predicted": 217,
+          "recall": 0.7035398230088495,
+          "support": 226
+        },
+        {
+          "f1": 0.6773162939297125,
+          "label": "severability",
+          "precision": 0.9380530973451328,
+          "predicted": 113,
+          "recall": 0.53,
+          "support": 200
+        },
+        {
+          "f1": 0.6610644257703081,
+          "label": "assignment",
+          "precision": 0.5756097560975609,
+          "predicted": 205,
+          "recall": 0.7763157894736842,
+          "support": 152
+        },
+        {
+          "f1": 0.11764705882352941,
+          "label": "dispute_resolution",
+          "precision": 0.2619047619047619,
+          "predicted": 42,
+          "recall": 0.07586206896551724,
+          "support": 145
+        },
+        {
+          "f1": 0.3490759753593429,
+          "label": "amendment",
+          "precision": 0.2401129943502825,
+          "predicted": 354,
+          "recall": 0.6390977443609023,
+          "support": 133
+        },
+        {
+          "f1": 0.11834319526627217,
+          "label": "definitions",
+          "precision": 0.12345679012345678,
+          "predicted": 81,
+          "recall": 0.11363636363636363,
+          "support": 88
+        },
+        {
+          "f1": 0.6666666666666666,
+          "label": "indemnification",
+          "precision": 0.7966101694915254,
+          "predicted": 59,
+          "recall": 0.573170731707317,
+          "support": 82
+        },
+        {
+          "f1": 0.5333333333333333,
+          "label": "confidentiality",
+          "precision": 0.5263157894736842,
+          "predicted": 76,
+          "recall": 0.5405405405405406,
+          "support": 74
+        },
+        {
+          "f1": 0.7413793103448276,
+          "label": "insurance",
+          "precision": 0.8431372549019608,
+          "predicted": 51,
+          "recall": 0.6615384615384615,
+          "support": 65
+        },
+        {
+          "f1": 0.022988505747126436,
+          "label": "warranties",
+          "precision": 0.029411764705882353,
+          "predicted": 34,
+          "recall": 0.018867924528301886,
+          "support": 53
+        },
+        {
+          "f1": 0.375,
+          "label": "termination",
+          "precision": 0.2619047619047619,
+          "predicted": 126,
+          "recall": 0.66,
+          "support": 50
+        },
+        {
+          "f1": 0.08333333333333333,
+          "label": "conditions",
+          "precision": 0.2,
+          "predicted": 10,
+          "recall": 0.05263157894736842,
+          "support": 38
+        },
+        {
+          "f1": 0.5319148936170213,
+          "label": "intellectual_property",
+          "precision": 0.36764705882352944,
+          "predicted": 68,
+          "recall": 0.9615384615384616,
+          "support": 26
+        }
+      ],
+      "seconds": 0.359057000001485
+    },
+    {
+      "accuracy": {
+        "high": 0.22831858407079647,
+        "low": 0.20328697850821745,
+        "n": 3955,
+        "point": 0.215929203539823
+      },
+      "calibration": null,
+      "confusions": [
+        {
+          "count": 591,
+          "gold": "representations",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 379,
+          "gold": "payment",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 316,
+          "gold": "governing_law",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 251,
+          "gold": "covenants",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 232,
+          "gold": "entire_agreement",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 226,
+          "gold": "notices",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 200,
+          "gold": "severability",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 152,
+          "gold": "assignment",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 145,
+          "gold": "dispute_resolution",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 133,
+          "gold": "amendment",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 88,
+          "gold": "definitions",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 82,
+          "gold": "indemnification",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 74,
+          "gold": "confidentiality",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 65,
+          "gold": "insurance",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 53,
+          "gold": "warranties",
+          "predicted": "boilerplate"
+        }
+      ],
+      "macro_f1": {
+        "high": 0.019601472817847087,
+        "low": 0.017746700153789985,
+        "n": 3955,
+        "point": 0.018693020761510762
+      },
+      "name": "majority (boilerplate)",
+      "per_class": [
+        {
+          "f1": 0.3551673944687045,
+          "label": "boilerplate",
+          "precision": 0.215929203539823,
+          "predicted": 3955,
+          "recall": 1.0,
+          "support": 854
+        },
+        {
+          "f1": 0.0,
+          "label": "representations",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 591
+        },
+        {
+          "f1": 0.0,
+          "label": "payment",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 379
+        },
+        {
+          "f1": 0.0,
+          "label": "governing_law",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 316
+        },
+        {
+          "f1": 0.0,
+          "label": "covenants",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 251
+        },
+        {
+          "f1": 0.0,
+          "label": "entire_agreement",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 232
+        },
+        {
+          "f1": 0.0,
+          "label": "notices",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 226
+        },
+        {
+          "f1": 0.0,
+          "label": "severability",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 200
+        },
+        {
+          "f1": 0.0,
+          "label": "assignment",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 152
+        },
+        {
+          "f1": 0.0,
+          "label": "dispute_resolution",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 145
+        },
+        {
+          "f1": 0.0,
+          "label": "amendment",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 133
+        },
+        {
+          "f1": 0.0,
+          "label": "definitions",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 88
+        },
+        {
+          "f1": 0.0,
+          "label": "indemnification",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 82
+        },
+        {
+          "f1": 0.0,
+          "label": "confidentiality",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 74
+        },
+        {
+          "f1": 0.0,
+          "label": "insurance",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 65
+        },
+        {
+          "f1": 0.0,
+          "label": "warranties",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 53
+        },
+        {
+          "f1": 0.0,
+          "label": "termination",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 50
+        },
+        {
+          "f1": 0.0,
+          "label": "conditions",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 38
+        },
+        {
+          "f1": 0.0,
+          "label": "intellectual_property",
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "support": 26
+        }
+      ],
+      "seconds": 0.0
+    },
+    {
+      "accuracy": {
+        "high": 0.9168141592920354,
+        "low": 0.8986093552465234,
+        "n": 3955,
+        "point": 0.9079646017699115
+      },
+      "calibration": null,
+      "confusions": [
+        {
+          "count": 25,
+          "gold": "assignment",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 20,
+          "gold": "representations",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 19,
+          "gold": "boilerplate",
+          "predicted": "representations"
+        },
+        {
+          "count": 18,
+          "gold": "covenants",
+          "predicted": "representations"
+        },
+        {
+          "count": 18,
+          "gold": "warranties",
+          "predicted": "representations"
+        },
+        {
+          "count": 16,
+          "gold": "boilerplate",
+          "predicted": "payment"
+        },
+        {
+          "count": 12,
+          "gold": "amendment",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 11,
+          "gold": "covenants",
+          "predicted": "payment"
+        },
+        {
+          "count": 11,
+          "gold": "dispute_resolution",
+          "predicted": "governing_law"
+        },
+        {
+          "count": 9,
+          "gold": "notices",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 9,
+          "gold": "entire_agreement",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 8,
+          "gold": "termination",
+          "predicted": "boilerplate"
+        },
+        {
+          "count": 8,
+          "gold": "boilerplate",
+          "predicted": "entire_agreement"
+        },
+        {
+          "count": 7,
+          "gold": "governing_law",
+          "predicted": "dispute_resolution"
+        },
+        {
+          "count": 7,
+          "gold": "payment",
+          "predicted": "boilerplate"
+        }
+      ],
+      "macro_f1": {
+        "high": 0.9101189139245974,
+        "low": 0.8851525009800308,
+        "n": 3955,
+        "point": 0.8988064908543765
+      },
+      "name": "tfidf+logreg (supervised)",
+      "per_class": [
+        {
+          "f1": 0.8821510297482836,
+          "label": "boilerplate",
+          "precision": 0.8624161073825504,
+          "predicted": 894,
+          "recall": 0.9028103044496487,
+          "support": 854
+        },
+        {
+          "f1": 0.9028571428571428,
+          "label": "representations",
+          "precision": 0.8722397476340694,
+          "predicted": 634,
+          "recall": 0.9357021996615905,
+          "support": 591
+        },
+        {
+          "f1": 0.9304677623261695,
+          "label": "payment",
+          "precision": 0.8932038834951457,
+          "predicted": 412,
+          "recall": 0.9709762532981531,
+          "support": 379
+        },
+        {
+          "f1": 0.9526813880126183,
+          "label": "governing_law",
+          "precision": 0.949685534591195,
+          "predicted": 318,
+          "recall": 0.9556962025316456,
+          "support": 316
+        },
+        {
+          "f1": 0.8939708939708939,
+          "label": "covenants",
+          "precision": 0.9347826086956522,
+          "predicted": 230,
+          "recall": 0.8565737051792829,
+          "support": 251
+        },
+        {
+          "f1": 0.9444444444444444,
+          "label": "entire_agreement",
+          "precision": 0.9364406779661016,
+          "predicted": 236,
+          "recall": 0.9525862068965517,
+          "support": 232
+        },
+        {
+          "f1": 0.9330254041570438,
+          "label": "notices",
+          "precision": 0.9758454106280193,
+          "predicted": 207,
+          "recall": 0.8938053097345132,
+          "support": 226
+        },
+        {
+          "f1": 0.9607843137254902,
+          "label": "severability",
+          "precision": 0.9423076923076923,
+          "predicted": 208,
+          "recall": 0.98,
+          "support": 200
+        },
+        {
+          "f1": 0.8723404255319149,
+          "label": "assignment",
+          "precision": 0.9461538461538461,
+          "predicted": 130,
+          "recall": 0.8092105263157895,
+          "support": 152
+        },
+        {
+          "f1": 0.9052631578947368,
+          "label": "dispute_resolution",
+          "precision": 0.9214285714285714,
+          "predicted": 140,
+          "recall": 0.8896551724137931,
+          "support": 145
+        },
+        {
+          "f1": 0.8582995951417005,
+          "label": "amendment",
+          "precision": 0.9298245614035088,
+          "predicted": 114,
+          "recall": 0.7969924812030075,
+          "support": 133
+        },
+        {
+          "f1": 0.9540229885057472,
+          "label": "definitions",
+          "precision": 0.9651162790697675,
+          "predicted": 86,
+          "recall": 0.9431818181818182,
+          "support": 88
+        },
+        {
+          "f1": 0.9290322580645162,
+          "label": "indemnification",
+          "precision": 0.9863013698630136,
+          "predicted": 73,
+          "recall": 0.8780487804878049,
+          "support": 82
+        },
+        {
+          "f1": 0.9054054054054054,
+          "label": "confidentiality",
+          "precision": 0.9054054054054054,
+          "predicted": 74,
+          "recall": 0.9054054054054054,
+          "support": 74
+        },
+        {
+          "f1": 0.9384615384615385,
+          "label": "insurance",
+          "precision": 0.9384615384615385,
+          "predicted": 65,
+          "recall": 0.9384615384615385,
+          "support": 65
+        },
+        {
+          "f1": 0.6904761904761905,
+          "label": "warranties",
+          "precision": 0.9354838709677419,
+          "predicted": 31,
+          "recall": 0.5471698113207547,
+          "support": 53
+        },
+        {
+          "f1": 0.7659574468085107,
+          "label": "termination",
+          "precision": 0.8181818181818182,
+          "predicted": 44,
+          "recall": 0.72,
+          "support": 50
+        },
+        {
+          "f1": 0.9142857142857143,
+          "label": "conditions",
+          "precision": 1.0,
+          "predicted": 32,
+          "recall": 0.8421052631578947,
+          "support": 38
+        },
+        {
+          "f1": 0.9433962264150944,
+          "label": "intellectual_property",
+          "precision": 0.9259259259259259,
+          "predicted": 27,
+          "recall": 0.9615384615384616,
+          "support": 26
+        }
+      ],
+      "seconds": 18.517735000001267
+    }
+  ]
+}

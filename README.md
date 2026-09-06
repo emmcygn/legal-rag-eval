@@ -2,7 +2,7 @@
 
 Legal RAG Eval is a deterministic, offline benchmark for comparing chunk boundaries under a controlled retrieval and context budget. It scores retrieved source spans against independently stored evidence annotations instead of treating chunker output as gold.
 
-The primary benchmark compares LexiChunk, fixed token windows, and LangChain RecursiveCharacterTextSplitter using the same lexical cosine term-frequency ranker. It does not call an embedding model or paid API.
+The primary benchmark compares [LexiChunk](https://github.com/emmcygn/lexichunk), fixed token windows, and LangChain RecursiveCharacterTextSplitter using the same lexical cosine term-frequency ranker. It does not call an embedding model or paid API.
 
 ## Quick Start
 
@@ -83,7 +83,7 @@ Datasets use schema `anchored_evidence_v1` and declare:
 - source-exact evidence spans with grades;
 - answerability, answer spans, and one or more referenced evidence IDs.
 
-Metadata is dataset-declared and is not independently certified by the evaluator. See `docs/dataset-card.md` and `docs/methodology.md` before authoring or interpreting a dataset.
+Metadata is dataset-declared and is not independently certified by the evaluator. See the [dataset card](docs/dataset-card.md) and [methodology](docs/methodology.md) before authoring or interpreting a dataset.
 
 ## Reports and Dashboard
 
@@ -115,7 +115,7 @@ make test
 .venv/bin/python -m build
 ```
 
-See `CONTRIBUTING.md`, `SECURITY.md`, `docs/methodology.md`, `docs/dataset-card.md`, and `docs/limitations.md`.
+See [Contributing](CONTRIBUTING.md), [Security](SECURITY.md), [Methodology](docs/methodology.md), [Dataset Card](docs/dataset-card.md), [Limitations](docs/limitations.md), and [Legacy Diagnostics](EXTENSIBILITY.md).
 
 ## License
 

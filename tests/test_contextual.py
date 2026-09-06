@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from scaffolder.chunking import get_all_strategies, get_strategy
-from scaffolder.chunking.strategies import (
+from legal_rag_eval.chunking import get_all_strategies, get_strategy
+from legal_rag_eval.chunking.strategies import (
     LexiChunkContextualStrategy,
     LexiChunkStrategy,
     _build_context_header,
 )
-from scaffolder.models import (
+from legal_rag_eval.models import (
     Document,
     DocumentType,
     Jurisdiction,

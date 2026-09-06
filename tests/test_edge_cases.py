@@ -1,6 +1,6 @@
 """Tests for edge cases: empty docs, single clause, no definitions, etc.
 
-Exercises the legacy structural metrics (``scaffolder.metrics.structural``) against
+Exercises the legacy structural metrics (``legal_rag_eval.metrics.structural``) against
 degenerate documents and chunk sets. See ``test_structural_metrics.py`` for why these
 are legacy; the reported metrics are covered separately in ``test_gold_metrics.py``.
 """
@@ -9,12 +9,12 @@ from __future__ import annotations
 
 import pytest
 
-from scaffolder.chunking.strategies import (
+from legal_rag_eval.chunking.strategies import (
     FixedSizeStrategy,
     RCTSStrategy,
     SentenceSplitStrategy,
 )
-from scaffolder.metrics.structural import (
+from legal_rag_eval.metrics.structural import (
     compute_legacy_structural_metrics,
     legacy_chunk_size_cv,
     legacy_clause_fragmentation_rate,
@@ -22,7 +22,7 @@ from scaffolder.metrics.structural import (
     legacy_definition_preservation_rate,
     legacy_hierarchy_depth_retained,
 )
-from scaffolder.models import (
+from legal_rag_eval.models import (
     Chunk,
     ChunkSet,
     Document,

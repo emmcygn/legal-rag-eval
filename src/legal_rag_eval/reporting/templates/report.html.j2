@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexiChunk Benchmark Report</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --bg: #ffffff;
+            --text: #1f2937;
+            --border: #e5e7eb;
+            --code-bg: #f3f4f6;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            color: var(--text);
+            line-height: 1.6;
+        }
+        h1 { color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; }
+        h2 { color: var(--primary); margin-top: 2rem; }
+        h3 { color: #4b5563; }
+        table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.9rem; }
+        th { background: var(--primary); color: white; padding: 0.6rem; text-align: left; white-space: nowrap; }
+        td { padding: 0.6rem; border-bottom: 1px solid var(--border); }
+        tr:hover { background: #f9fafb; }
+        .metric-good { color: var(--success); font-weight: bold; }
+        .metric-bad { color: var(--danger); font-weight: bold; }
+        .metric-ok { color: var(--warning); }
+        .na { color: #9ca3af; }
+        .summary-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .warning-box {
+            background: #fffbeb;
+            border-left: 4px solid var(--warning);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .superseded-box {
+            background: #fef2f2;
+            border-left: 4px solid var(--danger);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .chart-container { margin: 2rem 0; }
+        .timestamp { color: #6b7280; font-size: 0.875rem; }
+        .provenance { color: #6b7280; font-size: 0.9rem; }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .badge-sig { background: #dcfce7; color: #166534; }
+        .badge-nosig { background: #fee2e2; color: #991b1b; }
+        .control-row { background: #eef2ff; }
+        dt { margin-top: 1rem; }
+        dd { margin-left: 1.5rem; color: #4b5563; }
+        code { background: var(--code-bg); padding: 0.1rem 0.35rem; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>LexiChunk Benchmark Report</h1>
+    <p class="timestamp">Generated: {{ timestamp }}</p>
+    <p class="provenance">
+        LexiChunk <code>{{ lexichunk_version }}</code> (commit <code>{{ lexichunk_commit }}</code>)
+        &middot; seed <code>{{ seed }}</code>
+        &middot; Strategies: {{ strategies | join(', ') }}
+        &middot; Documents: {{ documents | length }}
+        {% if models %}&middot; Embedding models: {{ models | join(', ') }}{% endif %}
+    </p>
+
+    <div class="summary-box">
+        <strong>Summary:</strong> This report compares LexiChunk's legal document chunking
+        against general-purpose alternatives across structural quality (scored against
+        hand-checked gold annotations) and retrieval metrics.
+    </div>
+
+    <h2>Structural Quality Metrics (gold-scored)</h2>
+    <div class="chart-container">
+        {{ structural_chart_html | safe }}
+    </div>
+
+    <h3>Strategy x Document Heatmap</h3>
+    <div class="chart-container">
+        {{ structural_heatmap_html | safe }}
+    </div>
+
+    <h3>Detailed Structural Metrics (macro-averaged over n={{ n_structural_documents }} documents)</h3>
+    {% if structural_rows %}
+    <table>
+        <thead>
+            <tr>
+                <th>Strategy</th>
+                <th>Located</th>
+                <th>Leaf Frag &darr;</th>
+                <th>Over-merge &darr;</th>
+                <th>Sub-clause Grp</th>
+                <th>Head R</th>
+                <th>Head P</th>
+                <th>Def Attach &uarr;</th>
+                <th>XRef R</th>
+                <th>XRef P</th>
+                <th>Size CV</th>
+                <th>Avg Chars</th>
+                <th>Chunks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in structural_rows %}
+            <tr>
+                <td>{{ row.strategy }}</td>
+                <td>{{ row.located }}</td>
+                <td>{{ row.leaf_frag }}</td>
+                <td>{{ row.over_merge }}</td>
+                <td>{{ row.sub_clause_grp }}</td>
+                <td class="{{ 'na' if row.head_r == 'n/a' }}">{{ row.head_r }}</td>
+                <td class="{{ 'na' if row.head_p == 'n/a' }}">{{ row.head_p }}</td>
+                <td>{{ row.def_attach }}</td>
+                <td class="{{ 'na' if row.xref_r == 'n/a' }}">{{ row.xref_r }}</td>
+                <td class="{{ 'na' if row.xref_p == 'n/a' }}">{{ row.xref_p }}</td>
+                <td>{{ row.size_cv }}</td>
+                <td>{{ row.avg_chars }}</td>
+                <td>{{ row.chunks }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p><em>No structural metrics available.</em></p>
+    {% endif %}
+
+    {% if has_legacy_structural %}
+    <h3>Legacy Structural Metrics — SUPERSEDED</h3>
+    <div class="superseded-box">
+        <strong>Do not cite as evidence about LexiChunk.</strong> These metrics derive their
+        ground truth from LexiChunk's own parse of the document, so LexiChunk is graded
+        against itself and scores well by construction, while the baselines' scores move
+        whenever LexiChunk's parser changes even though the baselines have not. Retained
+        for provenance only.
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Strategy</th>
+                <th>Clause Frag.</th>
+                <th>Def. Preserv.</th>
+                <th>XRef Resol.</th>
+                <th>Hierarchy</th>
+                <th>Size CV</th>
+                <th>Avg Chars</th>
+                <th>Chunks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in legacy_structural_rows %}
+            <tr>
+                <td>{{ row.strategy }}</td>
+                <td>{{ row.clause_frag }}</td>
+                <td>{{ row.def_preserv }}</td>
+                <td>{{ row.xref_resol }}</td>
+                <td>{{ row.hierarchy }}</td>
+                <td>{{ row.size_cv }}</td>
+                <td>{{ row.avg_chars }}</td>
+                <td>{{ row.chunks }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p><em>n = {{ n_legacy_documents }} documents.</em></p>
+    {% endif %}
+
+    {% if has_retrieval %}
+    <h2>Retrieval Quality Metrics</h2>
+    <p>NDCG@10 is a compatibility field. Metric versions:
+    {{ retrieval_metrics | map(attribute='ndcg_metric') | unique | join(', ') }}.
+    Evidence-assignment scores are not classical chunk NDCG. Do not compare
+    different versions or infer validated gains from unanchored annotations.</p>
+
+    {% for model, chart_html in retrieval_charts.items() %}
+    <h3>{{ model }}</h3>
+    <div class="chart-container">
+        {{ chart_html | safe }}
+    </div>
+    {% if retrieval_by_model[model] %}
+    <table>
+        <thead>
+            <tr>
+                <th>Strategy</th>
+                <th>P@1</th>
+                <th>P@3</th>
+                <th>P@5</th>
+                <th>P@10</th>
+                <th>MRR</th>
+                <th>NDCG@10</th>
+                <th>DRM rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in retrieval_by_model[model].rows %}
+            <tr>
+                <td>{{ row.strategy }}</td>
+                <td>{{ row.p1 }}</td>
+                <td>{{ row.p3 }}</td>
+                <td>{{ row.p5 }}</td>
+                <td>{{ row.p10 }}</td>
+                <td>{{ row.mrr }}</td>
+                <td class="{{ 'metric-good' if row.ndcg10 | float > 0.8 else ('metric-bad' if row.ndcg10 | float < 0.4 else '') }}">
+                    {{ row.ndcg10 }}
+                </td>
+                <td>{{ row.drm_rate }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p><em>n = {{ retrieval_by_model[model].n_queries }} queries.</em></p>
+    {% endif %}
+    {% endfor %}
+
+    <h3>Embedding Model Comparison</h3>
+    <div class="chart-container">
+        {{ model_comparison_html | safe }}
+    </div>
+
+    <h3>Document Retrieval Mismatch</h3>
+    <div class="chart-container">
+        {{ drm_chart_html | safe }}
+    </div>
+    {% endif %}
+
+    {% if has_comparisons %}
+    <h2>Statistical Comparisons</h2>
+    <div class="summary-box">
+        The absolute delta and its bootstrap 95% CI are the headline figures — not a
+        percentage improvement. A row is significant only if it survives Holm correction
+        across the whole family of tests run in this comparison
+        (see <code>p (Holm)</code> / <code>Holm sig</code>); the raw t-test and Wilcoxon
+        p-values are shown for reference only. <code>rcts_1024</code> is the
+        <strong>size-matched control</strong>.
+    </div>
+    {% for model, rows in comparisons_by_model.items() %}
+    <h3>{{ model }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Metric</th>
+                <th>A</th>
+                <th>B</th>
+                <th>n</th>
+                <th>Mean A</th>
+                <th>Mean B</th>
+                <th>&Delta;</th>
+                <th>95% CI</th>
+                <th>p (t)</th>
+                <th>p (Wilcoxon)</th>
+                <th>p (Holm)</th>
+                <th>Holm sig?</th>
+                <th>Cohen's d</th>
+                <th>LODO range</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr class="{{ 'control-row' if row.b == 'rcts_1024' }}">
+                <td>{{ row.metric }}</td>
+                <td>{{ row.a }}</td>
+                <td>{{ row.b }}{% if row.b == 'rcts_1024' %} <strong>(size-matched control)</strong>{% endif %}</td>
+                <td>{{ row.n }}</td>
+                <td>{{ row.mean_a }}</td>
+                <td>{{ row.mean_b }}</td>
+                <td>{{ row.delta }}</td>
+                <td>{{ row.ci }}</td>
+                <td>{{ row.p_t }}</td>
+                <td>{{ row.p_wilcoxon }}</td>
+                <td>{{ row.p_holm }}</td>
+                <td><span class="badge {{ 'badge-sig' if row.significant_holm else 'badge-nosig' }}">
+                    {{ "YES" if row.significant_holm else "NO" }}
+                </span></td>
+                <td>{{ row.cohens_d }}</td>
+                <td>{{ row.lodo }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endfor %}
+    {% elif has_legacy_significance_fallback %}
+    <h2>Statistical Significance</h2>
+    <div class="warning-box">
+        <strong>Warning:</strong> this run has no <code>ComparisonResult</code> data — showing
+        single-test, uncorrected p-values with no bootstrap CI, no multiple-comparison
+        correction, and no leave-one-document-out sensitivity.
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Metric</th>
+                <th>Baseline</th>
+                <th>Mean A</th>
+                <th>Mean B</th>
+                <th>p-value</th>
+                <th>Significant?</th>
+                <th>Effect Size (d)</th>
+                <th>n</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in legacy_significance_rows %}
+            <tr>
+                <td>{{ row.metric }}</td>
+                <td>{{ row.baseline }}</td>
+                <td>{{ row.mean_a }}</td>
+                <td>{{ row.mean_b }}</td>
+                <td>{{ row.p_value }}</td>
+                <td><span class="badge {{ 'badge-sig' if row.significant else 'badge-nosig' }}">
+                    {{ "YES" if row.significant else "NO" }}
+                </span></td>
+                <td>{{ row.effect_size }}</td>
+                <td>{{ row.n_queries }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <h2>Methodology</h2>
+    <div class="summary-box">
+        Ground truth for structural quality is hand-checked span annotations in
+        <code>gold/</code> (see <code>GoldStructuralMetrics</code>) — not LexiChunk's own
+        parse of the document. What these metrics do <strong>not</strong> measure: they say
+        nothing about answer quality once a chunk is retrieved, nothing about latency or
+        indexing cost, and nothing about documents or jurisdictions outside this fixture set.
+        <code>heading_recall</code>/<code>heading_precision</code> and
+        <code>xref_target_recall</code>/<code>xref_target_precision</code> are <code>n/a</code>
+        (not <code>0</code>) for any strategy whose chunks expose no headings or
+        cross-references — that is "not applicable," not "failed."
+    </div>
+    <h3>Metrics Definitions</h3>
+    <dl>
+        <dt><strong>Located</strong></dt>
+        <dd>Fraction of a strategy's chunks that could be matched back to a contiguous span
+        of the source document. A chunk that cannot be located is excluded from every other
+        structural metric for that document.</dd>
+
+        <dt><strong>Leaf Frag. (clause fragmentation rate)</strong></dt>
+        <dd>Fraction of gold leaf clauses that are NOT &ge;80% contained inside a single
+        chunk. Lower is better.</dd>
+
+        <dt><strong>Over-merge (top-level over-merge rate)</strong></dt>
+        <dd>Fraction of chunks that span more than one top-level gold clause. Lower is
+        better.</dd>
+
+        <dt><strong>Sub-clause Grp (sub-clause grouping rate)</strong></dt>
+        <dd>Informational only — no "better" direction is asserted.</dd>
+
+        <dt><strong>Head R / Head P (heading recall / precision)</strong></dt>
+        <dd><code>n/a</code> for a strategy that exposes no headings in its chunk
+        metadata.</dd>
+
+        <dt><strong>Def Attach (definition attachment recall)</strong></dt>
+        <dd>Fraction of defined-term uses whose definition is attached in the same or an
+        adjacent chunk. Higher is better.</dd>
+
+        <dt><strong>XRef R / XRef P (cross-reference target recall / precision)</strong></dt>
+        <dd><code>n/a</code> for a strategy that emits no cross-references.</dd>
+
+        <dt><strong>Precision@k / Recall@k</strong></dt>
+        <dd>Fraction of top-k retrieved chunks that are relevant / fraction of all relevant
+        chunks found in top-k, judged by span overlap with a gold relevant section — not by
+        searching for its description text inside the chunk.</dd>
+
+        <dt><strong>MRR (Mean Reciprocal Rank)</strong></dt>
+        <dd>1 / rank of the first relevant result, averaged across queries.</dd>
+
+        <dt><strong>NDCG@10</strong></dt>
+        <dd>Graded-relevance ranking metric (3=exact, 2=same section, 1=related). Formula:
+        DCG@k / IDCG@k.</dd>
+
+        <dt><strong>DRM rate (Document Retrieval Mismatch)</strong></dt>
+        <dd>Fraction of top-k results from documents other than the query's target. With one
+        shared index across all documents this is usually non-zero for every query, so the
+        rate (not the boolean hit) is what carries information.</dd>
+    </dl>
+
+    <h3>Statistical Testing</h3>
+    <p>Each comparison reports a paired bootstrap 95% CI on the mean delta, a paired t-test
+    and Cohen's d, a Wilcoxon signed-rank test and matched-pairs rank-biserial correlation,
+    and a leave-one-document-out (LODO) sensitivity range — recomputing the delta with each
+    document's queries removed, to show how much the headline result depends on any single
+    document. The Holm correction is applied across the whole family of tests run together
+    (every metric, baseline, and embedding model), not per baseline.</p>
+
+    <h3>References</h3>
+    <ul>
+        <li>Anthropic. "Contextual Retrieval." 2024.</li>
+        <li>Manning, Raghavan, Schutze. "Introduction to Information Retrieval." Cambridge UP.</li>
+        <li>Jarvelin, Kekalainen. "Cumulated Gain-Based Evaluation of IR Techniques." ACM TOIS, 2002.</li>
+        <li>Holm, S. "A Simple Sequentially Rejective Multiple Test Procedure." Scand. J. Statist., 1979.</li>
+    </ul>
+
+    <footer style="margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); color: #6b7280; font-size: 0.875rem;">
+        Generated by legal-rag-eval | LexiChunk Evaluation Harness
+    </footer>
+</body>
+</html>

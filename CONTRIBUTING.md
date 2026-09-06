@@ -11,8 +11,8 @@ make PYTHON=.venv/bin/python ci
 ```
 
 On Windows, use `.venv\Scripts\python.exe` instead of `.venv/bin/python`.
-Without Make, run that interpreter with `-m ruff check src/scaffolder tests`,
-`-m ruff format --check src/scaffolder tests`, `-m mypy src/scaffolder`, and
+Without Make, run that interpreter with `-m ruff check src/legal_rag_eval tests`,
+`-m ruff format --check src/legal_rag_eval tests`, `-m mypy src/legal_rag_eval`, and
 `-m pytest`.
 
 ## Dataset Contributions

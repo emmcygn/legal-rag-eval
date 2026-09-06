@@ -31,8 +31,8 @@ Final counts after correction:
 
 ## eu_gdpr_excerpt
 
-Correction pass performed by reading `src/scaffolder/fixtures/documents/eu_gdpr_excerpt.txt`
-(sanitised via `scaffolder.gold.sanitize`) against the seeded `gold/eu_gdpr_excerpt.json`,
+Correction pass performed by reading `src/legal_rag_eval/fixtures/documents/eu_gdpr_excerpt.txt`
+(sanitised via `legal_rag_eval.gold.sanitize`) against the seeded `gold/eu_gdpr_excerpt.json`,
 line by line, using a throwaway inspection script (printed every clause span's boundary
 context, every defined-term span, and a regex sweep for candidate cross-references).
 
@@ -108,9 +108,9 @@ Verification: `pytest tests/test_gold_annotations.py -q --no-cov -k eu_gdpr` —
 
 ## uk_service_agreement
 
-Correction pass against `src/scaffolder/fixtures/documents/uk_service_agreement.txt`
+Correction pass against `src/legal_rag_eval/fixtures/documents/uk_service_agreement.txt`
 (sanitised, 25187 chars, sha256 `3676cfa0ce34b08675a537847b4c955266c0aebbbe0ed4ab5a573422a64a9ef9`,
-unchanged by this pass). Method: `scaffolder.gold.sanitize()` + a throwaway inspection
+unchanged by this pass). Method: `legal_rag_eval.gold.sanitize()` + a throwaway inspection
 script that printed every clause/term/reference with surrounding context, read line by
 line against the source text.
 
@@ -226,8 +226,8 @@ Full `tests/test_gold_annotations.py` (all 5 fixtures) — 66 passed.
 
 ## uk_terms_conditions
 
-Correction pass performed by reading `src/scaffolder/fixtures/documents/uk_terms_conditions.txt`
-(sanitised via `scaffolder.gold.sanitize`) against the seeded `gold/uk_terms_conditions.json`,
+Correction pass performed by reading `src/legal_rag_eval/fixtures/documents/uk_terms_conditions.txt`
+(sanitised via `legal_rag_eval.gold.sanitize`) against the seeded `gold/uk_terms_conditions.json`,
 using a throwaway inspection script that printed every clause span's boundary context, every
 defined-term span in full, and every cross-reference's 60-character context, plus targeted
 regex sweeps (`^\d+\.\s`, `^\d+\.\d+\s`, `^\s*\([a-z]\)\s`, quoted-phrase scan, `Article/section/
@@ -347,8 +347,8 @@ uk_terms` — 13 passed, 0 failed (including `test_no_seed_markers_remain`).
 
 ## us_msa
 
-Correction pass performed by reading `src/scaffolder/fixtures/documents/us_msa.txt`
-(sanitised via `scaffolder.gold.sanitize`) against the seeded `gold/us_msa.json`, clause by
+Correction pass performed by reading `src/legal_rag_eval/fixtures/documents/us_msa.txt`
+(sanitised via `legal_rag_eval.gold.sanitize`) against the seeded `gold/us_msa.json`, clause by
 clause, using a throwaway inspection script (printed every clause span's boundary context,
 every defined-term span, and a regex sweep for candidate cross-references), and by reading
 `scripts/build_gold.py`'s `seed_us_article_section` / `seed_defined_terms` /
@@ -544,10 +544,10 @@ Verification: `.venv/Scripts/python.exe -m pytest tests/test_gold_annotations.py
 
 ## us_terms_of_service
 
-Correction pass against `src/scaffolder/fixtures/documents/us_terms_of_service.txt`
+Correction pass against `src/legal_rag_eval/fixtures/documents/us_terms_of_service.txt`
 (sanitised, 25743 chars, sha256
 `ef6b36ea2bf8d647a946b141ca6c3d690aad566e0dc2067c9951e03503c1df62`, unchanged by this
-pass). Method: `scaffolder.gold.sanitize()` + a throwaway inspection script that printed
+pass). Method: `legal_rag_eval.gold.sanitize()` + a throwaway inspection script that printed
 every clause/term/reference with surrounding context, read line by line against the
 source text, plus targeted `text.find()` probes to pin exact offsets before writing them.
 

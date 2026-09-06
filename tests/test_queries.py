@@ -12,9 +12,9 @@ from typing import TYPE_CHECKING
 import pytest
 import yaml
 
-from scaffolder.gold import GoldAnnotation, GoldClause
-from scaffolder.models import Jurisdiction, RelevanceGrade
-from scaffolder.queries import (
+from legal_rag_eval.gold import GoldAnnotation, GoldClause
+from legal_rag_eval.models import Jurisdiction, RelevanceGrade
+from legal_rag_eval.queries import (
     AnnotatedQuery,
     QueryError,
     RelevantSection,

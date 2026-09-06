@@ -1,7 +1,7 @@
 .PHONY: help install install-all lint format typecheck test test-fast gold gold-check benchmark benchmark-structural benchmark-embed benchmark-legacy evals evals-smoke readme readme-check compare-builds report dashboard clean ci
 
 PYTHON ?= python
-SRC = src/scaffolder
+SRC = src/legal_rag_eval
 TESTS = tests
 
 help:  ## Show this help message
@@ -38,24 +38,24 @@ gold-check:  ## Report where the committed gold annotations differ from a fresh 
 	$(PYTHON) scripts/build_gold.py --check
 
 benchmark:  ## Deterministic anchored-evidence benchmark (offline, seconds)
-	$(PYTHON) -m scaffolder benchmark
+	$(PYTHON) -m legal_rag_eval benchmark
 
 benchmark-structural:  ## Structural metrics against the gold annotations (offline, seconds)
-	$(PYTHON) -m scaffolder benchmark-structural --json
+	$(PYTHON) -m legal_rag_eval benchmark-structural --json
 
 benchmark-embed:  ## Full benchmark: chunking + embedding + retrieval + statistics (minutes)
-	$(PYTHON) -m scaffolder benchmark-embed --json
+	$(PYTHON) -m legal_rag_eval benchmark-embed --json
 
 benchmark-legacy:  ## Superseded LexiChunk-derived structural diagnostics (circular, provenance only)
-	$(PYTHON) -m scaffolder benchmark-legacy --json
+	$(PYTHON) -m legal_rag_eval benchmark-legacy --json
 
 evals:  ## External LEDGAR + CUAD evaluations (downloads public datasets)
-	$(PYTHON) -m scaffolder.evals ledgar
-	$(PYTHON) -m scaffolder.evals cuad
+	$(PYTHON) -m legal_rag_eval.evals ledgar
+	$(PYTHON) -m legal_rag_eval.evals cuad
 
 evals-smoke:  ## Offline smoke run of the external evaluations (synthetic data, meaningless numbers)
-	$(PYTHON) -m scaffolder.evals ledgar --smoke
-	$(PYTHON) -m scaffolder.evals cuad --smoke
+	$(PYTHON) -m legal_rag_eval.evals ledgar --smoke
+	$(PYTHON) -m legal_rag_eval.evals cuad --smoke
 
 readme:  ## Regenerate the README results section from the committed fixed-build run
 	$(PYTHON) scripts/update_readme.py --results results/lexichunk_fixed/full_benchmark.json
@@ -67,7 +67,7 @@ compare-builds:  ## Side-by-side table for the two committed LexiChunk builds
 	$(PYTHON) scripts/compare_builds.py 		--before results/lexichunk_baseline/full_benchmark.json --before-name baseline 		--after results/lexichunk_fixed/full_benchmark.json --after-name fixed
 
 report:  ## Generate HTML report from benchmark results
-	$(PYTHON) -m scaffolder report
+	$(PYTHON) -m legal_rag_eval report
 
 dashboard:  ## Launch Streamlit dashboard
 	$(PYTHON) -m streamlit run $(SRC)/dashboard/app.py

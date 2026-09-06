@@ -14,8 +14,8 @@ import os
 import subprocess
 import sys
 
-from scaffolder.metrics.retrieval import mrr, ndcg_at_k, precision_at_k, recall_at_k
-from scaffolder.models import Chunk, RelevanceGrade, RelevantSection, RetrievalHit, StrategyName
+from legal_rag_eval.metrics.retrieval import mrr, ndcg_at_k, precision_at_k, recall_at_k
+from legal_rag_eval.models import Chunk, RelevanceGrade, RelevantSection, RetrievalHit, StrategyName
 
 # Small enough that the fixtures below stay readable, large enough that the
 # short-section branch of `matched_sections` (overlap >= 50% of a sub-threshold
@@ -148,8 +148,8 @@ def test_ndcg_is_invariant_to_gold_permutation() -> None:
 
 def test_ndcg_is_invariant_to_python_hash_seed() -> None:
     program = """
-from scaffolder.metrics.retrieval import ndcg_at_k
-from scaffolder.models import Chunk, RelevanceGrade, RelevantSection, RetrievalHit, StrategyName
+from legal_rag_eval.metrics.retrieval import ndcg_at_k
+from legal_rag_eval.models import Chunk, RelevanceGrade, RelevantSection, RetrievalHit, StrategyName
 
 sections = (
     RelevantSection('doc1', 'clause_alpha', 0, 200, RelevanceGrade.EXACT),

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Seed gold annotation JSON files from each fixture document's own numbering.
 
-Standalone, stdlib-only. Never imports lexichunk or scaffolder. See gold/README.md
+Standalone, stdlib-only. Never imports lexichunk or legal_rag_eval. See gold/README.md
 and gold/SCHEMA.md for the contract this script implements.
 
 Usage:
@@ -21,7 +21,7 @@ import unicodedata
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-FIXTURES_DIR = REPO_ROOT / "src" / "scaffolder" / "fixtures" / "documents"
+FIXTURES_DIR = REPO_ROOT / "src" / "legal_rag_eval" / "fixtures" / "documents"
 GOLD_DIR = REPO_ROOT / "gold"
 
 DOCS = {
@@ -771,7 +771,7 @@ def seed_cross_references(
 
 def build_gold_for_doc(doc_id: str) -> dict:
     numbering_style = DOCS[doc_id]
-    source_file_rel = f"src/scaffolder/fixtures/documents/{doc_id}.txt"
+    source_file_rel = f"src/legal_rag_eval/fixtures/documents/{doc_id}.txt"
     raw_bytes = (FIXTURES_DIR / f"{doc_id}.txt").read_bytes()
     raw_text = raw_bytes.decode("utf-8")
     text = sanitize(raw_text)

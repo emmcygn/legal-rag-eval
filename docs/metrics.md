@@ -2,9 +2,9 @@
 
 This document describes what the harness actually computes today, not what any docstring
 aspires to. Every formula below was checked against the implementation in
-`src/scaffolder/metrics/gold.py`, `src/scaffolder/metrics/retrieval.py`,
-`src/scaffolder/metrics/statistical.py`, `src/scaffolder/metrics/structural.py`,
-`src/scaffolder/gold.py` and `src/scaffolder/models.py`. Where a docstring and its code
+`src/legal_rag_eval/metrics/gold.py`, `src/legal_rag_eval/metrics/retrieval.py`,
+`src/legal_rag_eval/metrics/statistical.py`, `src/legal_rag_eval/metrics/structural.py`,
+`src/legal_rag_eval/gold.py` and `src/legal_rag_eval/models.py`. Where a docstring and its code
 disagreed, this document follows the code and the disagreement is called out explicitly.
 
 If you take one thing from this document: **read `localization_rate` and
@@ -21,14 +21,14 @@ are never mixed, and no metric is defined against a chunker's own output.
 | | `benchmark` (anchored evidence) | `benchmark-structural` / `benchmark-embed` (gold) |
 |---|---|---|
 | Question | Does retrieval put the *answer text* in the context budget? | Do chunk boundaries respect the document's *clause structure*? |
-| Ground truth | `src/scaffolder/data/synthetic_contracts_v1.json` | `gold/<document_id>.json` |
+| Ground truth | `src/legal_rag_eval/data/synthetic_contracts_v1.json` | `gold/<document_id>.json` |
 | Unit | evidence spans (char offsets) for 15 queries | 365 clause spans, 90 defined terms, 171 cross-references |
 | Corpus | 3 synthetic AI-authored contracts | 5 fixture documents (98,365 chars) |
 | Provenance | authored directly as spans, never derived from a chunker; SHA-256 pinned to the document text | regex-seeded from each document's own numbering, then hand-corrected with every change logged in `gold/CHANGES.md`; SHA-256 pinned |
 | Ranker | lexical cosine term-frequency, offline and deterministic | MiniLM / BGE embeddings over a FAISS index |
 | Metrics | source-span evidence recall/precision, abstention accuracy | sections 2-4 below |
 
-### Anchored-evidence metrics (`scaffolder.evidence.benchmark`)
+### Anchored-evidence metrics (`legal_rag_eval.evidence.benchmark`)
 
 Computed once in `score_selected_spans()` and consumed unchanged by the CLI, the JSON
 report and the dashboard viewer.
@@ -60,12 +60,12 @@ described in full in `gold/SCHEMA.md`. The short version:
   in `gold/CHANGES.md`. No LexiChunk output is consulted at any point in producing them —
   they are independent of every chunker under test, LexiChunk included.
 - Every offset (`char_start`/`char_end`) indexes into the **sanitised** text:
-  `scaffolder.gold.sanitize()` strips `U+FEFF` BOMs, normalises `\r\n`/`\r` to `\n`, then
+  `legal_rag_eval.gold.sanitize()` strips `U+FEFF` BOMs, normalises `\r\n`/`\r` to `\n`, then
   applies Unicode NFC normalisation, in that order. This mirrors
   `LegalChunker._sanitize_input` exactly and is the single implementation used by the
   seeder, the loader, the validator, and every metric in this document.
 - Each annotation file is pinned to an exact fixture revision by `text_sha256` (a SHA-256
-  of the sanitised text). `scaffolder.gold.verify_document()` is called at the start of
+  of the sanitised text). `legal_rag_eval.gold.verify_document()` is called at the start of
   `compute_gold_structural_metrics` and raises `GoldError` if the fixture no longer hashes
   to that value, so a fixture edit can never silently invalidate the gold spans it is
   compared against.
@@ -91,7 +91,7 @@ Stated plainly, because it bounds every recall number that follows:
 A `clauses` entry's own span (`char_start`/`char_end`) runs from the clause's own
 number/heading up to the first character of the next clause at *any* level, so it
 **excludes descendant clauses**. `GoldAnnotation.subtree_span(clause)`
-(`src/scaffolder/gold.py`) extends that to the end of the clause's last descendant — "the
+(`src/legal_rag_eval/gold.py`) extends that to the end of the clause's last descendant — "the
 whole of clause 7, including 7.1, 7.2, ...". `GoldAnnotation.leaf_clauses` is every clause
 with no children. Metrics that need an atomic unit (fragmentation) use leaf clauses;
 metrics that need "does this chunk swallow a whole top-level clause" (over-merge) use
@@ -100,14 +100,14 @@ subtree spans.
 ## 2. How a chunk is located in the document
 
 Chunk spans are **never** taken from a chunker's self-reported offsets. Instead
-`scaffolder.gold.locate_chunks()` matches every chunk's raw text against the sanitised
+`legal_rag_eval.gold.locate_chunks()` matches every chunk's raw text against the sanitised
 document, uniformly across strategies, for two reasons stated in the module docstring:
 some strategies (LexiChunk's contextual variant, in particular) prepend synthesised text —
 a heading breadcrumb — that is not verbatim in the source, and a chunker's own offsets have
 at least once been wrong for a LexiChunk build. Locating chunks by text, the same way for
 every strategy, means a bug in one chunker's bookkeeping cannot corrupt its own scores.
 
-For each chunk, `locate_chunks` (`src/scaffolder/gold.py::_locate_one`) tries, in order:
+For each chunk, `locate_chunks` (`src/legal_rag_eval/gold.py::_locate_one`) tries, in order:
 
 1. **Exact match** — the chunk's full text found verbatim in the document (searching from
    a cursor that advances past the previous chunk, falling back to a search from the start
@@ -126,7 +126,7 @@ For each chunk, `locate_chunks` (`src/scaffolder/gold.py::_locate_one`) tries, i
    occurrence, so the harness trusts whichever covers more of the chunk's own text.
 
 A chunk that matches none of the above — including any chunk that is entirely whitespace —
-is **unlocated**: `ChunkSpan` is `None`, and `Chunk.located` (`src/scaffolder/models.py`) is
+is **unlocated**: `ChunkSpan` is `None`, and `Chunk.located` (`src/legal_rag_eval/models.py`) is
 `False`. Unlocated chunks are excluded from every span-based numerator and denominator in
 `metrics/gold.py` and `metrics/retrieval.py`. They are **reported**, via
 `localization_rate`, and never silently counted as a scoring failure against some other
@@ -150,8 +150,8 @@ and there is no guarantee the excluded 40% resembles the included 60%.
 ## 3. Reported structural metrics
 
 All of these are computed by `compute_gold_structural_metrics`
-(`src/scaffolder/metrics/gold.py`) into a `GoldStructuralMetrics`
-(`src/scaffolder/models.py`). Fields that can be `None` are documented as such below; `None`
+(`src/legal_rag_eval/metrics/gold.py`) into a `GoldStructuralMetrics`
+(`src/legal_rag_eval/models.py`). Fields that can be `None` are documented as such below; `None`
 means *not applicable to this strategy* and must never be rendered as `0` — a strategy that
 exposes no heading metadata has not scored zero on heading recall, it has not been tested on
 it at all.
@@ -335,8 +335,8 @@ it at all.
 ## 4. Retrieval metrics
 
 All retrieval metrics share **one** relevance definition,
-`matched_sections()` (`src/scaffolder/metrics/retrieval.py`), also used by
-`scaffolder.retrieval.simulator`. This replaces a prior version of the harness that defined
+`matched_sections()` (`src/legal_rag_eval/metrics/retrieval.py`), also used by
+`legal_rag_eval.retrieval.simulator`. This replaces a prior version of the harness that defined
 relevance independently in three places — once for P@k/R@k, once in the simulator, and a
 third, stricter way inside NDCG's own `elif` chain — so a chunk could be graded relevant for
 P@5 and simultaneously irrelevant for the NDCG number printed beside it. That is fixed now:
@@ -352,7 +352,7 @@ P@k, R@k, MRR and NDCG@10 all call one of those two.
 > ```
 > where `min_overlap_chars` defaults to `DEFAULT_MIN_OVERLAP_CHARS = 100`, mirroring
 > `BenchmarkConfig.relevance_min_overlap_chars` (also `100` by default,
-> `src/scaffolder/config.py`). The 50%-of-own-length fallback exists so a short clause (e.g.
+> `src/legal_rag_eval/config.py`). The 50%-of-own-length fallback exists so a short clause (e.g.
 > a 40-character definition) is not unmatchable purely because it is shorter than the
 > absolute threshold. `is_relevant()` is the boolean view; `relevance_grade()` returns the
 > maximum `RelevanceGrade` (`EXACT=3, SAME_SECTION=2, RELATED=1, IRRELEVANT=0`) among the
@@ -451,7 +451,7 @@ Span-overlap relevance is not immune to chunk size the way the old text-similari
 was, but it is not immune to it either: a chunk large enough to straddle a relevant clause's
 boundary matches under `matched_sections` even when most of its text is about something
 else. This is why `rcts_1024` exists in `BenchmarkConfig.strategies`
-(`src/scaffolder/config.py`) — a fixed-size baseline sized to match LexiChunk's own typical
+(`src/legal_rag_eval/config.py`) — a fixed-size baseline sized to match LexiChunk's own typical
 output (documented in `config.py` as "the size-matched control for lexichunk (~790-char
 chunks)") — and why mean chunk length must be printed next to every retrieval table, not
 just the metric values. A strategy that wins on P@k/R@k/NDCG purely by emitting larger
@@ -459,7 +459,7 @@ chunks than its comparator is not shown to chunk better; it is shown to be large
 
 ## 5. Statistics
 
-Computed by `src/scaffolder/metrics/statistical.py::compute_all_comparisons`, into a list of
+Computed by `src/legal_rag_eval/metrics/statistical.py::compute_all_comparisons`, into a list of
 `ComparisonResult`. This module replaces a prior implementation described in its own
 docstring as "indefensible": 21 uncorrected two-tailed paired t-tests at n=22, no confidence
 intervals, no distribution-free test, a Cohen's d that silently returned `0.0` for a
@@ -525,11 +525,11 @@ built on queries that are not really independent draws.
 
 ## 6. Superseded metrics
 
-`src/scaffolder/metrics/structural.py` holds the `legacy_*` metrics
+`src/legal_rag_eval/metrics/structural.py` holds the `legacy_*` metrics
 (`legacy_clause_fragmentation_rate`, `legacy_definition_preservation_rate`,
 `legacy_cross_ref_resolution_rate`, `legacy_hierarchy_depth_retained`,
 `legacy_chunk_size_cv`), assembled into `LegacyStructuralMetrics`
-(`src/scaffolder/models.py`, aliased as `StructuralMetrics` for backward compatibility). The
+(`src/legal_rag_eval/models.py`, aliased as `StructuralMetrics` for backward compatibility). The
 module's own docstring calls them retained "for provenance; not part of the default
 report", and the reasons are structural, not incidental:
 
@@ -544,7 +544,7 @@ report", and the reasons are structural, not incidental:
   chunk carries a `hierarchy_path` at all). For LexiChunk and LexiChunk-contextual, the
   numerator's `chunk.metadata["section_hierarchy"]` is set by the chunking wrapper itself
   to `str(lc.hierarchy_path)` (in both LexiChunk strategy wrappers in
-  `src/scaffolder/chunking/strategies.py`) — **literally the same field**, computed by two
+  `src/legal_rag_eval/chunking/strategies.py`) — **literally the same field**, computed by two
   separate invocations of the same
   chunker over the same text, so the ratio is close to `1.0` almost by definition. Baseline
   strategies carry no such metadata and fall back to a plain regex
@@ -569,7 +569,7 @@ report", and the reasons are structural, not incidental:
   yardstick moved under it.
 
 These are computed only when the CLI is run with `--legacy-metrics`
-(`src/scaffolder/__main__.py`) and are excluded from the default report entirely.
+(`src/legal_rag_eval/__main__.py`) and are excluded from the default report entirely.
 
 ## 7. Reading a results table
 

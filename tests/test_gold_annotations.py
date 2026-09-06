@@ -17,11 +17,11 @@ from pathlib import Path
 
 import pytest
 
-from scaffolder.gold import GoldAnnotation, load_gold, sanitize, verify_document
+from legal_rag_eval.gold import GoldAnnotation, load_gold, sanitize, verify_document
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 GOLD_DIR = REPO_ROOT / "gold"
-FIXTURE_DIR = REPO_ROOT / "src" / "scaffolder" / "fixtures" / "documents"
+FIXTURE_DIR = REPO_ROOT / "src" / "legal_rag_eval" / "fixtures" / "documents"
 
 DOCUMENT_IDS = [
     "eu_gdpr_excerpt",

@@ -4,7 +4,7 @@ The hosted Streamlit application is an evidence-report viewer. It reads `evidenc
 
 ```bash
 python -m pip install -e ".[dashboard]"
-python -m scaffolder benchmark
+python -m legal_rag_eval benchmark
 streamlit run streamlit_app.py
 ```
 

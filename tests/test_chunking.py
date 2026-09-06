@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from scaffolder.chunking import (
+from legal_rag_eval.chunking import (
     DEFAULT_STRATEGIES,
     ChunkingPipeline,
     FixedSizeStrategy,
@@ -15,8 +15,8 @@ from scaffolder.chunking import (
     get_strategy,
     strategy_params,
 )
-from scaffolder.fixtures import FixtureManager
-from scaffolder.models import (
+from legal_rag_eval.fixtures import FixtureManager
+from legal_rag_eval.models import (
     Document,
     DocumentType,
     Jurisdiction,

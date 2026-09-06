@@ -7,15 +7,15 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from scaffolder.metrics.statistical import ComparisonResult
-from scaffolder.models import (
+from legal_rag_eval.metrics.statistical import ComparisonResult
+from legal_rag_eval.models import (
     BenchmarkResult,
     EmbeddingModelName,
     GoldStructuralMetrics,
     RetrievalMetrics,
     StrategyName,
 )
-from scaffolder.reporting.markdown import (
+from legal_rag_eval.reporting.markdown import (
     render_results_markdown,
     update_readme,
     write_results_markdown,
@@ -309,7 +309,7 @@ class TestUpdateReadme:
 
 class TestJsonRoundTripWithComparisons:
     def test_export_load_reconstruct_does_not_raise(self, tmp_path: Path) -> None:
-        from scaffolder.reporting.json_export import (
+        from legal_rag_eval.reporting.json_export import (
             export_json,
             load_json,
             reconstruct_benchmark_result,

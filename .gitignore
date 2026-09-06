@@ -51,7 +51,7 @@ results/*/*
 .cache/
 *.faiss
 requirements.lock
-scaffolder.yaml
+legal-rag-eval.yaml
 
 # Internal build artifacts (agent plans, research, task tracking)
 plans/

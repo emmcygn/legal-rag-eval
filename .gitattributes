@@ -1,2 +1,2 @@
-src/scaffolder/data/*.json text eol=lf
-src/scaffolder/data/documents/*.txt text eol=lf
+src/legal_rag_eval/data/*.json text eol=lf
+src/legal_rag_eval/data/documents/*.txt text eol=lf

@@ -1,6 +1,6 @@
 {
   "document_id": "uk_service_agreement",
-  "source_file": "src/scaffolder/fixtures/documents/uk_service_agreement.txt",
+  "source_file": "src/legal_rag_eval/fixtures/documents/uk_service_agreement.txt",
   "text_sha256": "3676cfa0ce34b08675a537847b4c955266c0aebbbe0ed4ab5a573422a64a9ef9",
   "n_chars": 25187,
   "numbering_style": "uk_decimal",

@@ -1,0 +1,69 @@
+# legal-rag-eval Benchmark Configuration
+# Copy to legal-rag-eval.yaml and customize as needed. The CLI reads this file
+# (or the one passed to --config), so every value here actually takes effect;
+# the run's resolved configuration is written into the exported results JSON.
+
+# Chunking strategies to compare.
+#   rcts_1024 is the size-matched control: LexiChunk emits ~790-char chunks, so
+#   comparing it only against rcts_512 measures chunk size as much as anything else.
+strategies:
+  - lexichunk
+  - lexichunk_contextual
+  - rcts_512
+  - rcts_1024
+  - sentence_split
+  - fixed_size
+
+# Embedding models for retrieval evaluation
+# Local models (no API key needed):
+#   - all-MiniLM-L6-v2 (fast, 384 dims)
+#   - bge-base-en-v1.5 (768 dims, slower, larger download)
+# Paid models (requires API key):
+#   - voyage-law-2 (legal-specialised, requires VOYAGE_API_KEY)
+embedding_models:
+  - all-MiniLM-L6-v2
+  # - bge-base-en-v1.5
+  # - voyage-law-2
+
+# Voyage AI settings
+# Set VOYAGE_API_KEY env var to enable automatically
+enable_voyage: false
+
+# Retrieval evaluation parameters
+k_values: [1, 3, 5, 10]
+top_k: 10
+
+# Relevance judgement: a retrieved chunk counts as relevant when its span in the
+# document overlaps a gold-annotated relevant clause span by at least this many
+# characters.
+relevance_min_overlap_chars: 100
+
+# Statistics
+significance_level: 0.05
+bootstrap_resamples: 10000
+seed: 42
+
+# Output formats: cli, json, html
+output_formats:
+  - cli
+  - json
+
+# Directories (relative to repo root)
+fixture_dir: src/legal_rag_eval/fixtures/documents
+query_dir: queries
+gold_dir: gold
+output_dir: results
+
+# Embedding cache (set use_cache: false to disable)
+use_cache: true
+cache_dir: .cache/embeddings
+
+# Chunking parameters for the baselines. Changing these changes the strategy,
+# so the exported results record the values that ran.
+fixed_chunk_size: 512
+fixed_chunk_overlap: 0        # FixedSizeStrategy implements no overlap
+rcts_512_chunk_size: 512
+rcts_512_chunk_overlap: 50
+rcts_1024_chunk_size: 1024
+rcts_1024_chunk_overlap: 100
+sentence_min_chunk_size: 100

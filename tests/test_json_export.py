@@ -6,7 +6,7 @@ import json
 from dataclasses import replace
 from typing import TYPE_CHECKING
 
-from scaffolder.models import (
+from legal_rag_eval.models import (
     BenchmarkResult,
     EmbeddingModelName,
     GoldStructuralMetrics,
@@ -18,8 +18,8 @@ from scaffolder.models import (
 
 if TYPE_CHECKING:
     from pathlib import Path
-from scaffolder.reporting.cli import ComparisonLike
-from scaffolder.reporting.json_export import (
+from legal_rag_eval.reporting.cli import ComparisonLike
+from legal_rag_eval.reporting.json_export import (
     export_json,
     export_json_string,
     load_json,
@@ -337,7 +337,7 @@ class TestReconstructBenchmarkResult:
         `comparisons` on reconstruction silently published tables with no uncertainty in
         them at all. Reconstruction yields `ReconstructedComparison`, not `ComparisonResult`
         — the reporting layer reads the shape, not the class."""
-        from scaffolder.metrics.statistical import ComparisonResult
+        from legal_rag_eval.metrics.statistical import ComparisonResult
 
         original = _make_result()
         original.comparisons = [

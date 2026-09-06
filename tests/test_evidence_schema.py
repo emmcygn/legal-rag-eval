@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from scaffolder.evidence.schema import DatasetError, load_dataset
+from legal_rag_eval.evidence.schema import DatasetError, load_dataset
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -92,7 +92,7 @@ def test_load_dataset_validates_and_resolves_anchored_spans(tmp_path: Path) -> N
 
 
 def test_bundled_challenge_has_substantive_query_controls() -> None:
-    dataset = load_dataset("src/scaffolder/data/synthetic_contracts_v1.json")
+    dataset = load_dataset("src/legal_rag_eval/data/synthetic_contracts_v1.json")
 
     assert len(dataset.queries) >= 12
     assert sum(query.answerable for query in dataset.queries) >= 10

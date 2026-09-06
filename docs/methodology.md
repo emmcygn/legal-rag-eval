@@ -1,6 +1,6 @@
 # Methodology
 
-This document covers the **anchored-evidence benchmark** (`python -m scaffolder benchmark`).
+This document covers the **anchored-evidence benchmark** (`python -m legal_rag_eval benchmark`).
 The gold-scored structural and retrieval benchmarks are a separate evaluation against a
 separate ground truth; their methodology is in [metrics.md](metrics.md) sections 1-5 and
 [`gold/SCHEMA.md`](../gold/SCHEMA.md). The external LEDGAR and CUAD evaluations are in

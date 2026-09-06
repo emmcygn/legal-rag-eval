@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import os
+import warnings
 from pathlib import Path
 from unittest.mock import patch
 
 import pytest
 import yaml
 
-from scaffolder.config import BenchmarkConfig, ConfigError
+from legal_rag_eval.config import BenchmarkConfig, ConfigError, env_override
 
 
 class TestBenchmarkConfigDefaults:
@@ -217,36 +218,69 @@ class TestBenchmarkConfigEnv:
     def test_strategies_from_env(self) -> None:
         with patch.dict(
             os.environ,
-            {"SCAFFOLDER_STRATEGIES": "lexichunk,fixed_size"},
+            {"LEGAL_RAG_EVAL_STRATEGIES": "lexichunk,fixed_size"},
             clear=False,
         ):
             config = BenchmarkConfig.from_env()
             assert config.strategies == ["lexichunk", "fixed_size"]
 
     def test_top_k_from_env(self) -> None:
-        with patch.dict(os.environ, {"SCAFFOLDER_TOP_K": "20"}, clear=False):
+        with patch.dict(os.environ, {"LEGAL_RAG_EVAL_TOP_K": "20"}, clear=False):
             config = BenchmarkConfig.from_env()
             assert config.top_k == 20
 
     def test_gold_dir_from_env(self) -> None:
-        with patch.dict(os.environ, {"SCAFFOLDER_GOLD_DIR": "/tmp/gold"}, clear=False):
+        with patch.dict(os.environ, {"LEGAL_RAG_EVAL_GOLD_DIR": "/tmp/gold"}, clear=False):
             config = BenchmarkConfig.from_env()
             assert config.gold_dir == "/tmp/gold"
 
     def test_relevance_min_overlap_chars_from_env(self) -> None:
-        with patch.dict(os.environ, {"SCAFFOLDER_RELEVANCE_MIN_OVERLAP_CHARS": "50"}, clear=False):
+        env = {"LEGAL_RAG_EVAL_RELEVANCE_MIN_OVERLAP_CHARS": "50"}
+        with patch.dict(os.environ, env, clear=False):
             config = BenchmarkConfig.from_env()
             assert config.relevance_min_overlap_chars == 50
 
     def test_bootstrap_resamples_from_env(self) -> None:
-        with patch.dict(os.environ, {"SCAFFOLDER_BOOTSTRAP_RESAMPLES": "500"}, clear=False):
+        with patch.dict(os.environ, {"LEGAL_RAG_EVAL_BOOTSTRAP_RESAMPLES": "500"}, clear=False):
             config = BenchmarkConfig.from_env()
             assert config.bootstrap_resamples == 500
 
     def test_seed_from_env(self) -> None:
-        with patch.dict(os.environ, {"SCAFFOLDER_SEED": "7"}, clear=False):
+        with patch.dict(os.environ, {"LEGAL_RAG_EVAL_SEED": "7"}, clear=False):
             config = BenchmarkConfig.from_env()
             assert config.seed == 7
+
+
+class TestDeprecatedEnvPrefix:
+    """The pre-rename SCAFFOLDER_ prefix still works, and says it is going away."""
+
+    def test_deprecated_prefix_still_read(self) -> None:
+        with patch.dict(os.environ, {"SCAFFOLDER_TOP_K": "17"}, clear=True):
+            with pytest.warns(DeprecationWarning, match="SCAFFOLDER_TOP_K"):
+                config = BenchmarkConfig.from_env()
+            assert config.top_k == 17
+
+    def test_deprecated_prefix_applied_by_load(self) -> None:
+        with patch.dict(os.environ, {"SCAFFOLDER_SEED": "11"}, clear=True):
+            with pytest.warns(DeprecationWarning):
+                config = BenchmarkConfig.load()
+            assert config.seed == 11
+
+    def test_current_prefix_wins_over_deprecated(self) -> None:
+        env = {"LEGAL_RAG_EVAL_TOP_K": "5", "SCAFFOLDER_TOP_K": "17"}
+        with patch.dict(os.environ, env, clear=True):
+            config = BenchmarkConfig.from_env()
+            assert config.top_k == 5
+
+    def test_no_warning_without_deprecated_names(self) -> None:
+        env = {"LEGAL_RAG_EVAL_TOP_K": "5"}
+        with patch.dict(os.environ, env, clear=True), warnings.catch_warnings():
+            warnings.simplefilter("error", DeprecationWarning)
+            assert BenchmarkConfig.from_env().top_k == 5
+
+    def test_env_override_returns_none_when_unset(self) -> None:
+        with patch.dict(os.environ, {}, clear=True):
+            assert env_override("TOP_K") is None
 
 
 class TestBenchmarkConfigResolvePaths:
@@ -256,7 +290,7 @@ class TestBenchmarkConfigResolvePaths:
         config = BenchmarkConfig()
         root = Path("/home/user/project")
         config.resolve_paths(root)
-        assert config.fixture_dir == str(root / "src/scaffolder/fixtures/documents")
+        assert config.fixture_dir == str(root / "src/legal_rag_eval/fixtures/documents")
         assert config.output_dir == str(root / "results")
         assert config.gold_dir == str(root / "gold")
 

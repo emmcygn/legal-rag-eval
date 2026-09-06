@@ -16,8 +16,8 @@ import argparse
 import sys
 from pathlib import Path
 
-from scaffolder.reporting.json_export import load_json, reconstruct_benchmark_result
-from scaffolder.reporting.markdown import (
+from legal_rag_eval.reporting.json_export import load_json, reconstruct_benchmark_result
+from legal_rag_eval.reporting.markdown import (
     END_MARKER,
     START_MARKER,
     render_results_markdown,

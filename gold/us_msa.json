@@ -1,6 +1,6 @@
 {
   "document_id": "us_msa",
-  "source_file": "src/scaffolder/fixtures/documents/us_msa.txt",
+  "source_file": "src/legal_rag_eval/fixtures/documents/us_msa.txt",
   "text_sha256": "cd8fc71920ad254f1f5adfd844c71af5461c5bb663fda85e5d13fb6b456402f5",
   "n_chars": 25346,
   "numbering_style": "us_article_section",

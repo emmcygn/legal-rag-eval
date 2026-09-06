@@ -3,6 +3,6 @@ recursive-include docs *.md
 recursive-include queries *.yaml *.md
 recursive-include gold *.json *.md
 recursive-include evals *.yaml
-recursive-include src/scaffolder/data *.json *.txt
-recursive-include src/scaffolder/fixtures/documents *.txt
-recursive-include src/scaffolder/reporting/templates *.j2
+recursive-include src/legal_rag_eval/data *.json *.txt
+recursive-include src/legal_rag_eval/fixtures/documents *.txt
+recursive-include src/legal_rag_eval/reporting/templates *.j2

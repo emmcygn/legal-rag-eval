@@ -30,7 +30,7 @@ queries:
 
 `identifier` names a clause in the document's **gold annotation**, using the
 document's own printed numbering (`"3.6(a)"`, `"section_1.01(a)"`, `"article_5_1"`,
-`"recital_1"`). `scaffolder.queries.resolve_queries` turns each identifier into the
+`"recital_1"`). `legal_rag_eval.queries.resolve_queries` turns each identifier into the
 character span of that clause's *subtree* — the clause plus its descendants — so
 naming a parent clause counts its sub-clauses' text too. Nothing here is derived from
 any chunker: the gold annotations were seeded from each document's numbering and then

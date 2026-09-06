@@ -1,7 +1,7 @@
 """CLI argument parsing and the offline ``--smoke`` path.
 
 Nothing here touches the network: the smoke path swaps in the synthetic corpora
-from ``scaffolder.evals.smoke``, so the whole pipeline (sampling, mapping,
+from ``legal_rag_eval.evals.smoke``, so the whole pipeline (sampling, mapping,
 scoring, bootstrap, export, rendering) is exercised end to end offline.
 """
 
@@ -12,26 +12,26 @@ from pathlib import Path
 
 import pytest
 
-from scaffolder.evals.__main__ import build_parser, run
-from scaffolder.evals.cuad import (
+from legal_rag_eval.evals.__main__ import build_parser, run
+from legal_rag_eval.evals.cuad import (
     StrategySpec,
     evaluate_strategy,
     evaluate_structure,
     run_cuad,
 )
-from scaffolder.evals.cuad import (
+from legal_rag_eval.evals.cuad import (
     render_markdown as render_cuad,
 )
-from scaffolder.evals.label_map import DEFAULT_MAP_PATH
-from scaffolder.evals.ledgar import (
+from legal_rag_eval.evals.label_map import DEFAULT_MAP_PATH
+from legal_rag_eval.evals.ledgar import (
     map_items,
     predict_lexichunk,
     run_ledgar,
 )
-from scaffolder.evals.ledgar import (
+from legal_rag_eval.evals.ledgar import (
     render_markdown as render_ledgar,
 )
-from scaffolder.evals.smoke import smoke_cuad_contracts, smoke_ledgar_split
+from legal_rag_eval.evals.smoke import smoke_cuad_contracts, smoke_ledgar_split
 
 
 class TestArgumentParsing:
@@ -125,7 +125,9 @@ class TestCuadMechanics:
         _, _, contracts = smoke_cuad_contracts()
         whole = StrategySpec(
             "whole-doc",
-            lambda t: [__import__("scaffolder.evals.chunkers", fromlist=["Span"]).Span(0, len(t))],
+            lambda t: [
+                __import__("legal_rag_eval.evals.chunkers", fromlist=["Span"]).Span(0, len(t))
+            ],
         )
         result = evaluate_strategy(whole, contracts, n_boot=20)
         # Containment is trivially perfect, and the length-matched grid says so:
@@ -180,7 +182,7 @@ class TestLedgarSmoke:
     def test_out_of_scope_rows_are_excluded_and_counted(self) -> None:
         if not DEFAULT_MAP_PATH.is_file():
             pytest.skip(f"{DEFAULT_MAP_PATH} not present")
-        from scaffolder.evals.label_map import load_label_map
+        from legal_rag_eval.evals.label_map import load_label_map
 
         split = smoke_ledgar_split("test")
         items, dropped = map_items(split.texts, split.labels, load_label_map(DEFAULT_MAP_PATH))
@@ -215,7 +217,7 @@ class TestLedgarSmoke:
 
 class TestClassifierAdapter:
     def test_predictions_and_confidences_align(self) -> None:
-        from scaffolder.evals.ledgar import LedgarItem
+        from legal_rag_eval.evals.ledgar import LedgarItem
 
         items = [
             LedgarItem(

@@ -1,7 +1,7 @@
 # Gold annotations
 
 This directory holds the gold-standard clause/defined-term/cross-reference annotations for
-the five fixture documents in `src/scaffolder/fixtures/documents/`. See `SCHEMA.md` for the
+the five fixture documents in `src/legal_rag_eval/fixtures/documents/`. See `SCHEMA.md` for the
 binding JSON contract.
 
 ## Where these come from

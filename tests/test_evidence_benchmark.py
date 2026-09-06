@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 import lexichunk
 
-from scaffolder.evidence.benchmark import (
+from legal_rag_eval.evidence.benchmark import (
     EvidenceBenchmarkConfig,
     SelectedSpan,
     _lexichunk_candidates,
@@ -16,8 +16,8 @@ from scaffolder.evidence.benchmark import (
     run_benchmark,
     score_selected_spans,
 )
-from scaffolder.evidence.lexical import RankedCandidate, SpanCandidate
-from scaffolder.evidence.schema import DocumentRecord, EvidenceSpan
+from legal_rag_eval.evidence.lexical import RankedCandidate, SpanCandidate
+from legal_rag_eval.evidence.schema import DocumentRecord, EvidenceSpan
 
 if TYPE_CHECKING:
     import pytest

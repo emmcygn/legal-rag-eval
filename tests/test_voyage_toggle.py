@@ -1,6 +1,6 @@
 """Tests for embedding model resolution, including the Voyage availability toggle.
 
-``scaffolder.__main__._get_available_models`` was replaced by ``_resolve_models(config)``,
+``legal_rag_eval.__main__._get_available_models`` was replaced by ``_resolve_models(config)``,
 which reads the model list straight out of ``BenchmarkConfig.embedding_models`` instead of
 hand-listing what's "available": it raises ``ConfigError`` if nothing usable is left, and --
 the actual point of the rewrite -- makes ``bge-base-en-v1.5`` selectable through
@@ -16,9 +16,9 @@ from __future__ import annotations
 
 import pytest
 
-from scaffolder.__main__ import _resolve_models
-from scaffolder.config import BenchmarkConfig, ConfigError
-from scaffolder.models import EmbeddingModelName
+from legal_rag_eval.__main__ import _resolve_models
+from legal_rag_eval.config import BenchmarkConfig, ConfigError
+from legal_rag_eval.models import EmbeddingModelName
 
 
 def test_voyage_skipped_without_key(monkeypatch: pytest.MonkeyPatch) -> None:

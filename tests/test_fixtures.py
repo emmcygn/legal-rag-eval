@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from scaffolder.fixtures import FixtureManager
-from scaffolder.models import DocumentType, Jurisdiction
+from legal_rag_eval.fixtures import FixtureManager
+from legal_rag_eval.models import DocumentType, Jurisdiction
 
 
 class TestFixtureManager:

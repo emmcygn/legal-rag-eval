@@ -1,12 +1,12 @@
 # Anchored-evidence benchmark configuration.
-# Read by `python -m scaffolder benchmark --config evidence-benchmark.yaml`.
+# Read by `python -m legal_rag_eval benchmark --config evidence-benchmark.yaml`.
 # Unknown keys are rejected, so this file lists every knob there is.
 #
-# This is a SEPARATE file from scaffolder.yaml: the evidence benchmark has a
+# This is a SEPARATE file from legal-rag-eval.yaml: the evidence benchmark has a
 # disjoint key set from the structural/retrieval benchmark and validates its own
 # config strictly rather than ignoring keys it does not recognise.
 
-dataset_path: src/scaffolder/data/synthetic_contracts_v1.json
+dataset_path: src/legal_rag_eval/data/synthetic_contracts_v1.json
 output_path: results/evidence-benchmark.json
 strategies:
   - lexichunk

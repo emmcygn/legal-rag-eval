@@ -5,7 +5,7 @@ against three separate ground truths, none of which is derived from a chunker's 
 
 | Command | Question | Ground truth | Cost |
 |---|---|---|---|
-| `make benchmark` | Does retrieval put the answer text inside a fixed context budget? | [`src/scaffolder/data/synthetic_contracts_v1.json`](src/scaffolder/data/synthetic_contracts_v1.json) — 15 questions, 12 char-offset evidence spans, AI-authored | offline, seconds |
+| `make benchmark` | Does retrieval put the answer text inside a fixed context budget? | [`src/legal_rag_eval/data/synthetic_contracts_v1.json`](src/legal_rag_eval/data/synthetic_contracts_v1.json) — 15 questions, 12 char-offset evidence spans, AI-authored | offline, seconds |
 | `make benchmark-structural` / `make benchmark-embed` | Do chunk boundaries respect the document's own clause structure, and do the chunks support retrieval? | [`gold/`](gold/) — 365 hand-checked clause spans, 90 defined terms, 171 cross-references, 30 queries | offline seconds / model weights, minutes |
 | `make evals` | How does the SDK do on data nobody here wrote? | LEDGAR (LexGLUE) + CUAD (Atticus Project) — see [docs/external_evals.md](docs/external_evals.md) | downloads public datasets |
 
@@ -392,8 +392,8 @@ The cross-reference target recall row (0.139 -> 0.774) additionally mixes two di
 things: a chunker version change *and* a harness scoring fix landed in this same branch (the
 gold identifier normaliser now folds a roman-numeral article/section number to its arabic
 form, and the strategy adapter now emits a cross-reference's label together with its
-identifier — see the commit fixing `scaffolder.metrics.gold.normalize_identifier` and
-`scaffolder.chunking.strategies._xref_target_string`). Some of this row's movement is a real
+identifier — see the commit fixing `legal_rag_eval.metrics.gold.normalize_identifier` and
+`legal_rag_eval.chunking.strategies._xref_target_string`). Some of this row's movement is a real
 LexiChunk improvement and some is the harness no longer mis-scoring a correct answer as
 wrong; this run does not separate the two.
 
@@ -464,8 +464,8 @@ gold/          GoldStructural                            RetrievalSimulator
 ### Source layout
 
 ```
-src/scaffolder/
-  config.py              # BenchmarkConfig -- YAML + SCAFFOLDER_* env vars, wired into the CLI
+src/legal_rag_eval/
+  config.py              # BenchmarkConfig -- YAML + LEGAL_RAG_EVAL_* env vars, wired into the CLI
   models.py              # Shared data contracts
   gold.py                # Gold annotation loader, sanitisation, chunk span localisation
   queries.py             # Query loader; resolves clause identifiers to gold spans
@@ -495,7 +495,7 @@ scripts/build_gold.py    # Seeds gold annotations from document numbering
 | `sentence_split` | Sentence boundaries, fragments under 100 chars merged forward | Sentence boundaries |
 | `fixed_size` | 512-character windows, **no overlap** | Character count |
 
-The parameters above are the defaults in `scaffolder.yaml.example`; the values that
+The parameters above are the defaults in `legal-rag-eval.yaml.example`; the values that
 actually ran are recorded in the results JSON and printed in the generated tables. RCTS
 appears twice on purpose: LexiChunk emits chunks roughly twice the length of `rcts_512`, and
 a comparison against an unmatched baseline measures chunk size as much as anything else.
@@ -568,7 +568,7 @@ clean install — and therefore CI — could not succeed at all.
 
 Every result file also records `lexichunk_version` and `lexichunk_commit`, the committed
 runs live in directories named after the build, and `make compare-builds` diffs two of them.
-Set `SCAFFOLDER_LEXICHUNK_COMMIT` when running against a local checkout, which records no
+Set `LEGAL_RAG_EVAL_LEXICHUNK_COMMIT` when running against a local checkout, which records no
 VCS metadata of its own.
 
 The local-editable route is for **comparing builds** — measuring a LexiChunk working tree
@@ -609,14 +609,14 @@ are written to build-named directories instead, so a local run never overwrites 
 behind the tables above:
 
 ```bash
-SCAFFOLDER_LEXICHUNK_COMMIT=$(git -C /path/to/lexichunk rev-parse --short HEAD)   python -m scaffolder benchmark-embed --json --seed 0   --models all-MiniLM-L6-v2,bge-base-en-v1.5   --output-dir results/lexichunk_fixed
+LEGAL_RAG_EVAL_LEXICHUNK_COMMIT=$(git -C /path/to/lexichunk rev-parse --short HEAD)   python -m legal_rag_eval benchmark-embed --json --seed 0   --models all-MiniLM-L6-v2,bge-base-en-v1.5   --output-dir results/lexichunk_fixed
 ```
 
 Select a different embedding model or strategy set without editing source:
 
 ```bash
-python -m scaffolder benchmark-embed --models bge-base-en-v1.5 --json
-python -m scaffolder benchmark-embed --strategies lexichunk,rcts_1024 --top-k 20 --seed 7
+python -m legal_rag_eval benchmark-embed --models bge-base-en-v1.5 --json
+python -m legal_rag_eval benchmark-embed --strategies lexichunk,rcts_1024 --top-k 20 --seed 7
 ```
 
 `voyage-law-2` needs **both** `--enable-voyage` and `VOYAGE_API_KEY`. An exported key on its
@@ -633,7 +633,7 @@ make evals-smoke     # offline synthetic path; the numbers are meaningless by de
 ### Superseded circular diagnostics
 
 ```bash
-python -m scaffolder benchmark-legacy --json
+python -m legal_rag_eval benchmark-legacy --json
 ```
 
 Scores strategies against LexiChunk's own parse, so LexiChunk's fragmentation is 0 by
@@ -678,7 +678,7 @@ The dashboard is a viewer for committed report JSON. It does not recompute scori
 | `dashboard` | streamlit | Interactive dashboard (plotly is a core dependency) |
 | `all` | Everything above | Full installation |
 
-`faiss-cpu` is a core dependency, not an extra: `scaffolder.retrieval.index` imports it at
+`faiss-cpu` is a core dependency, not an extra: `legal_rag_eval.retrieval.index` imports it at
 module scope and the query-annotation checks import that, so `pip install -e ".[dev]" &&
 make test` — the documented developer setup, and what CI runs — could not otherwise collect
 three test modules. The five tests that load a real sentence-transformer model skip when the
@@ -687,17 +687,17 @@ three test modules. The five tests that load a real sentence-transformer model s
 ## Configuration
 
 ```bash
-cp scaffolder.yaml.example scaffolder.yaml
+cp legal-rag-eval.yaml.example legal-rag-eval.yaml
 ```
 
-The CLI reads this file (or `--config PATH`), applies `SCAFFOLDER_*` environment overrides
+The CLI reads this file (or `--config PATH`), applies `LEGAL_RAG_EVAL_*` environment overrides
 on top, then CLI flags, and writes the resolved configuration into the results JSON. Every
 documented key takes effect.
 
 ```bash
-export SCAFFOLDER_STRATEGIES="lexichunk,rcts_1024"
-export SCAFFOLDER_TOP_K=20
-export SCAFFOLDER_RELEVANCE_MIN_OVERLAP_CHARS=150
+export LEGAL_RAG_EVAL_STRATEGIES="lexichunk,rcts_1024"
+export LEGAL_RAG_EVAL_TOP_K=20
+export LEGAL_RAG_EVAL_RELEVANCE_MIN_OVERLAP_CHARS=150
 export VOYAGE_API_KEY=your-key-here    # enables voyage-law-2
 ```
 
@@ -763,13 +763,13 @@ This repository was built by AI agents, independently audited — the audit foun
 methodology circular and the original headline claims unsupported — and then rebuilt twice in
 parallel by two different tools. What is here now reconciles both rebuilds:
 
-- The **anchored-evidence benchmark** (`src/scaffolder/evidence/`), its dataset interface,
+- The **anchored-evidence benchmark** (`src/legal_rag_eval/evidence/`), its dataset interface,
   the report hashing, the wheel/offline CI smoke tests and the honesty framing come from the
   overhaul merged as PRs #1 and #2.
 - The **gold annotations** (`gold/`), the span-overlap metrics, the statistics module, the
   size-matched `rcts_1024` control, the 30-query gold-anchored set and the generated results
   tables come from the parallel audit-fix branch.
-- The **external LEDGAR and CUAD evaluations** (`src/scaffolder/evals/`) come from a third
+- The **external LEDGAR and CUAD evaluations** (`src/legal_rag_eval/evals/`) come from a third
   branch and are the only ground truth in this repository that neither rebuild authored.
 
 Where the two rebuilds disagreed on the same point, the reconciliation kept the one with

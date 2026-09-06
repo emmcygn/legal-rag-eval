@@ -1,6 +1,6 @@
 {
   "document_id": "uk_terms_conditions",
-  "source_file": "src/scaffolder/fixtures/documents/uk_terms_conditions.txt",
+  "source_file": "src/legal_rag_eval/fixtures/documents/uk_terms_conditions.txt",
   "text_sha256": "a9b38a99a3f80a998021f8656319e43de95b7e2898695e7855a4f35d8548d44e",
   "n_chars": 16948,
   "numbering_style": "uk_decimal",

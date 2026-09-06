@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import pytest
 
-from scaffolder.evals.chunkers import (
+from legal_rag_eval.evals.chunkers import (
     Span,
     lexichunk_spans,
     locate_sequentially,

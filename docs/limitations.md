@@ -35,7 +35,7 @@ differ, so they are listed separately.
 - With n = 30 queries, no retrieval comparison in the published run survives Holm
   correction in either direction.
 
-## External evaluations (`python -m scaffolder.evals`)
+## External evaluations (`python -m legal_rag_eval.evals`)
 
 - LEDGAR and CUAD carry independent human labels, which is their point, but neither was
   designed to evaluate chunking. LEDGAR provisions arrive isolated with no document

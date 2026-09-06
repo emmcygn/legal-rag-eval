@@ -4,18 +4,18 @@ on:
   push:
     branches: [master, main]
     paths:
-      - "src/scaffolder/dashboard/**"
-      - "src/scaffolder/evidence/**"
-      - "src/scaffolder/data/**"
+      - "src/legal_rag_eval/dashboard/**"
+      - "src/legal_rag_eval/evidence/**"
+      - "src/legal_rag_eval/data/**"
       - "pyproject.toml"
       - "streamlit_app.py"
       - "requirements-dashboard.txt"
   pull_request:
     branches: [master, main]
     paths:
-      - "src/scaffolder/dashboard/**"
-      - "src/scaffolder/evidence/**"
-      - "src/scaffolder/data/**"
+      - "src/legal_rag_eval/dashboard/**"
+      - "src/legal_rag_eval/evidence/**"
+      - "src/legal_rag_eval/data/**"
       - "pyproject.toml"
       - "streamlit_app.py"
       - "requirements-dashboard.txt"
@@ -35,12 +35,12 @@ jobs:
 
       - name: Import check
         run: |
-          python -c "from scaffolder.dashboard.app import main; print('app OK')"
-          python -c "from scaffolder.dashboard.page_compare import render_page; print('compare OK')"
-          python -c "from scaffolder.dashboard.page_retrieval import render_page; print('retrieval OK')"
-          python -c "from scaffolder.dashboard.page_metrics import render_page; print('metrics OK')"
-          python -c "from scaffolder.dashboard.components import render_chunk_card; print('components OK')"
-          python -c "from scaffolder.dashboard.compat import get_available_features; print('compat OK')"
+          python -c "from legal_rag_eval.dashboard.app import main; print('app OK')"
+          python -c "from legal_rag_eval.dashboard.page_compare import render_page; print('compare OK')"
+          python -c "from legal_rag_eval.dashboard.page_retrieval import render_page; print('retrieval OK')"
+          python -c "from legal_rag_eval.dashboard.page_metrics import render_page; print('metrics OK')"
+          python -c "from legal_rag_eval.dashboard.components import render_chunk_card; print('components OK')"
+          python -c "from legal_rag_eval.dashboard.compat import get_available_features; print('compat OK')"
 
       - name: Streamlit health check
         run: |

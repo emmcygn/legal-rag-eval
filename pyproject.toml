@@ -24,13 +24,22 @@ classifiers = [
 ]
 
 dependencies = [
-    "lexichunk>=0.1.0,<1.0",
+    # LexiChunk is not published on PyPI. Installing it by version specifier
+    # ("lexichunk>=0.1.0,<1.0") fails with 404, which breaks `pip install -e .`
+    # and every CI job. Pull it from source instead. To develop against a local
+    # checkout, install it editable first and this direct reference is satisfied:
+    #     pip install -e ../lexichunk && pip install -e ".[dev]"
+    "lexichunk @ git+https://github.com/emmcygn/lexichunk.git@master",
     "langchain-text-splitters>=0.2.0,<1.0",
     "rich>=13.0,<14.0",
     "pyyaml>=6.0,<7.0",
     "numpy>=1.24,<2.0",
     "scipy>=1.10,<2.0",
     "jinja2>=3.1,<4.0",
+    # scaffolder.reporting.html imports plotly at module scope and `scaffolder
+    # report` is a documented command, so plotly is a core dependency, not a
+    # dashboard-only one.
+    "plotly>=5.18",
 ]
 
 [project.optional-dependencies]
@@ -43,7 +52,6 @@ voyage = [
 ]
 dashboard = [
     "streamlit>=1.30",
-    "plotly>=5.18",
 ]
 dev = [
     "ruff>=0.4",

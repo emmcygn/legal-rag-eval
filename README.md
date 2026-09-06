@@ -66,9 +66,14 @@ src/scaffolder/
 |----------|-------------|----------------|
 | `lexichunk` | Clause-aware legal chunking | Legal clause boundaries |
 | `lexichunk_contextual` | LexiChunk + context headers | Clause boundaries + context prefix |
-| `rcts` | LangChain RecursiveCharacterTextSplitter (1000/200) | Character count with overlap |
-| `sentence_split` | Sentence boundary splitting | Sentence boundaries |
-| `fixed_size` | Fixed 512-char windows with 50-char overlap | Character count |
+| `rcts` | LangChain RecursiveCharacterTextSplitter (512-char chunks, 50-char overlap) | Character count with overlap |
+| `sentence_split` | Sentence boundary splitting (fragments under 100 chars merged forward) | Sentence boundaries |
+| `fixed_size` | Fixed 512-char windows, no overlap | Character count |
+
+> **Chunk sizes are not matched across strategies.** LexiChunk emits chunks
+> averaging ~790 characters against RCTS's ~360. Several metrics below are
+> sensitive to chunk length, so treat cross-strategy comparisons at these
+> defaults as confounded by chunk size.
 
 ### Embedding Models
 
@@ -95,6 +100,16 @@ See [docs/metrics.md](docs/metrics.md) for formulas, ranges, and interpretation.
 ```bash
 git clone https://github.com/emmcygn/legal-rag-eval.git
 cd legal-rag-eval
+pip install -e ".[dev]"
+```
+
+**Note on `lexichunk`.** LexiChunk is not published on PyPI, so it is declared as a
+direct reference to its git repository and pip will clone it during install. If you
+are developing against a local LexiChunk checkout, install that first and the
+requirement is satisfied from your environment:
+
+```bash
+pip install -e /path/to/lexichunk
 pip install -e ".[dev]"
 ```
 
@@ -144,7 +159,7 @@ Three pages at http://localhost:8501:
 | `dev` | ruff, mypy, pytest, pytest-cov | Linting, type checking, testing |
 | `embeddings` | sentence-transformers, faiss-cpu | Local embedding models |
 | `voyage` | voyageai | Voyage AI legal embeddings |
-| `dashboard` | streamlit, plotly | Interactive dashboard |
+| `dashboard` | streamlit | Interactive dashboard (plotly is a core dependency) |
 | `all` | Everything above | Full installation |
 
 ```bash

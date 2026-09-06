@@ -24,7 +24,7 @@ def _build_structural_result() -> BenchmarkResult:
     strategy_results = pipeline.run(documents)
 
     result = BenchmarkResult(
-        timestamp=datetime.datetime.now(datetime.UTC).isoformat(),
+        timestamp=datetime.datetime.now(datetime.timezone.utc).isoformat(),
         strategies=[sr.strategy for sr in strategy_results],
         documents=[d.id for d in documents],
         strategy_results=strategy_results,

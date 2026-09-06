@@ -340,8 +340,8 @@
     },
     {
       "identifier": "section_6.01(b)",
-      "level": 3,
-      "parent": "section_6.01",
+      "level": 2,
+      "parent": "article_6",
       "char_start": 14300,
       "char_end": 14836,
       "is_top_level": false,
@@ -514,12 +514,54 @@
       "level": 2,
       "parent": "article_9",
       "char_start": 22698,
-      "char_end": 25346,
+      "char_end": 22957,
       "is_top_level": false,
       "heading": "Counterparts"
     }
   ],
   "defined_terms": [
+    {
+      "term": "Agreement",
+      "definition_span": [
+        27,
+        76
+      ]
+    },
+    {
+      "term": "Effective Date",
+      "definition_span": [
+        93,
+        139
+      ]
+    },
+    {
+      "term": "Provider",
+      "definition_span": [
+        157,
+        325
+      ]
+    },
+    {
+      "term": "Customer",
+      "definition_span": [
+        333,
+        496
+      ]
+    },
+    {
+      "term": "Party",
+      "definition_span": [
+        499,
+        573
+      ]
+    },
+    {
+      "term": "Parties",
+      "definition_span": [
+        578,
+        608
+      ]
+    },
     {
       "term": "Affiliate",
       "definition_span": [
@@ -546,6 +588,20 @@
       "definition_span": [
         2144,
         3020
+      ]
+    },
+    {
+      "term": "Disclosing Party",
+      "definition_span": [
+        2177,
+        2250
+      ]
+    },
+    {
+      "term": "Receiving Party",
+      "definition_span": [
+        2251,
+        2293
       ]
     },
     {
@@ -584,6 +640,13 @@
       ]
     },
     {
+      "term": "Statement of Work",
+      "definition_span": [
+        4822,
+        5052
+      ]
+    },
+    {
       "term": "SOW",
       "definition_span": [
         4845,
@@ -596,9 +659,92 @@
         5064,
         5220
       ]
+    },
+    {
+      "term": "Fees",
+      "definition_span": [
+        7920,
+        8009
+      ]
+    },
+    {
+      "term": "Payment Due Date",
+      "definition_span": [
+        8363,
+        8454
+      ]
+    },
+    {
+      "term": "Taxes",
+      "definition_span": [
+        9055,
+        9267
+      ]
+    },
+    {
+      "term": "Customer Data",
+      "definition_span": [
+        12279,
+        12446
+      ]
+    },
+    {
+      "term": "Feedback",
+      "definition_span": [
+        13331,
+        13446
+      ]
+    },
+    {
+      "term": "Customer Indemnitees",
+      "definition_span": [
+        15378,
+        15528
+      ]
+    },
+    {
+      "term": "Losses",
+      "definition_span": [
+        15546,
+        15699
+      ]
+    },
+    {
+      "term": "Provider Indemnitees",
+      "definition_span": [
+        16027,
+        16177
+      ]
+    },
+    {
+      "term": "Indemnified Party",
+      "definition_span": [
+        16520,
+        16579
+      ]
+    },
+    {
+      "term": "Indemnifying Party",
+      "definition_span": [
+        16591,
+        16656
+      ]
+    },
+    {
+      "term": "Force Majeure Event",
+      "definition_span": [
+        22065,
+        22441
+      ]
     }
   ],
   "cross_references": [
+    {
+      "raw_text": "Exhibit A",
+      "char_start": 4588,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
     {
       "raw_text": "an Order Form",
       "char_start": 4857,
@@ -614,6 +760,30 @@
     {
       "raw_text": "the applicable Order Form",
       "char_start": 5852,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "a SOW",
+      "char_start": 6336,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "the SOW",
+      "char_start": 6411,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "a SOW",
+      "char_start": 6574,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "a SOW",
+      "char_start": 6676,
       "target_identifier": null,
       "kind": "external_document"
     },
@@ -675,6 +845,24 @@
       "raw_text": "Article IV",
       "char_start": 11294,
       "target_identifier": "article_4",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "a Statement of Work",
+      "char_start": 12885,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "a\nSOW",
+      "char_start": 12990,
+      "target_identifier": null,
+      "kind": "external_document"
+    },
+    {
+      "raw_text": "SECTION 6.02",
+      "char_start": 14346,
+      "target_identifier": "section_6.02",
       "kind": "internal_clause"
     },
     {

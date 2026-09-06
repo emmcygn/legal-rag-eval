@@ -1,0 +1,2820 @@
+{
+  "aggregates": {
+    "lexichunk": {
+      "abstention_accuracy": 0.3333333333333333,
+      "answerable_query_count": 12,
+      "mean_evidence_precision": 0.16385670353767506,
+      "mean_evidence_recall": 0.8922764227642276,
+      "unanswerable_query_count": 3
+    },
+    "rcts": {
+      "abstention_accuracy": 0.3333333333333333,
+      "answerable_query_count": 12,
+      "mean_evidence_precision": 0.1331881458816794,
+      "mean_evidence_recall": 1.0,
+      "unanswerable_query_count": 3
+    },
+    "token_window": {
+      "abstention_accuracy": 0.3333333333333333,
+      "answerable_query_count": 12,
+      "mean_evidence_precision": 0.1336196294868763,
+      "mean_evidence_recall": 1.0,
+      "unanswerable_query_count": 3
+    }
+  },
+  "comparisons": [
+    {
+      "baseline": "token_window",
+      "lexichunk_precision_delta": 0.030237074050798757,
+      "lexichunk_recall_delta": -0.10772357723577242,
+      "outcome": "mixed"
+    },
+    {
+      "baseline": "rcts",
+      "lexichunk_precision_delta": 0.03066855765599566,
+      "lexichunk_recall_delta": -0.10772357723577242,
+      "outcome": "mixed"
+    }
+  ],
+  "config": {
+    "context_budget_tokens": 128,
+    "dataset_id": "synthetic-contracts-v1",
+    "lexichunk_max_tokens": 512,
+    "output_filename": "evidence_benchmark.json",
+    "rcts_chunk_chars": 512,
+    "rcts_chunk_overlap": 50,
+    "retrieval_depth": 5,
+    "strategies": [
+      "lexichunk",
+      "token_window",
+      "rcts"
+    ],
+    "token_budget_unit": "whitespace_tokens_regex_\\S+",
+    "token_window_overlap": 8,
+    "token_window_tokens": 64
+  },
+  "corpus": {
+    "authorship": "ai_authored",
+    "customer_proof": false,
+    "description": "Three compact AI-authored contract-like texts with fifteen source-anchored questions covering single evidence, multi-evidence, exceptions, cross-document distractors, and unanswerable cases. This corpus is not legal advice, law-validated, held out, or customer proof.",
+    "documents": [
+      {
+        "id": "synthetic_supply_agreement",
+        "jurisdiction": "uk",
+        "license_identifier": "MIT",
+        "license_status": "project_license",
+        "path": "documents/synthetic_supply_agreement.txt",
+        "provenance": {
+          "kind": "synthetic",
+          "source_url": null
+        },
+        "review_status": "not_human_reviewed",
+        "sha256": "0f322ff4097e4de1d73c61d7cb16ab2dc9d72b068636167399d740c114f79608"
+      },
+      {
+        "id": "synthetic_service_credit_addendum",
+        "jurisdiction": "uk",
+        "license_identifier": "MIT",
+        "license_status": "project_license",
+        "path": "documents/synthetic_service_credit_addendum.txt",
+        "provenance": {
+          "kind": "synthetic",
+          "source_url": null
+        },
+        "review_status": "not_human_reviewed",
+        "sha256": "8850e6797ccf8ab0d70981c2819cedacf0df187cff2911d1774bd066e82355ca"
+      },
+      {
+        "id": "synthetic_support_terms",
+        "jurisdiction": "uk",
+        "license_identifier": "MIT",
+        "license_status": "project_license",
+        "path": "documents/synthetic_support_terms.txt",
+        "provenance": {
+          "kind": "synthetic",
+          "source_url": null
+        },
+        "review_status": "not_human_reviewed",
+        "sha256": "7b4535e1c7ff7173e6dda94a7dfe6424804d415dd7445e51700ac3df5182bf85"
+      }
+    ],
+    "held_out": false,
+    "id": "synthetic-contracts-v1",
+    "legal_validation": "not_human_reviewed",
+    "manifest_sha256": "92693cddd587dca0cd6e9f3d545918357f5ffe6c424d7a2606c2f0b151674f04",
+    "title": "Synthetic contract evidence challenge"
+  },
+  "evaluator": {
+    "package_tree_sha256": "7f630301b57e66551311192b008c3a073c0bcdb0e1d28470c618ee7f50d2521f",
+    "version": "1.0.0"
+  },
+  "lexichunk": {
+    "package_tree_sha256": "20f1ad778496b2e58c9deefd130faa295c620f17a2c1577f11c2216181d8f505",
+    "version": "0.8.0b1"
+  },
+  "metric_versions": {
+    "evidence_coverage": "source_span_coverage_v1",
+    "lexical_ranker": "cosine_term_frequency_v1"
+  },
+  "payload_sha256": "a54984dd1108afe508753d4cd35ab249de34331cc2364840f6805410b4e4de46",
+  "report_version": "evidence_benchmark_report_v1",
+  "results": {
+    "lexichunk": [
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 81,
+        "evidence_precision": 0.12857142857142856,
+        "evidence_recall": 1.0,
+        "query_id": "invoice_due_date",
+        "retrieved": [
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:2",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 1,
+            "score": 0.472455591261534,
+            "source_end": 135,
+            "source_start": 48
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:1",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 2,
+            "score": 0.4029114820126901,
+            "source_end": 135,
+            "source_start": 38
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:5",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.17342199390482396,
+            "source_end": 323,
+            "source_start": 222
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:3",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 4,
+            "score": 0.11572751247156893,
+            "source_end": 401,
+            "source_start": 135
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:7",
+            "document_id": "synthetic_support_terms",
+            "rank": 5,
+            "score": 0.0975900072948533,
+            "source_end": 379,
+            "source_start": 292
+          }
+        ],
+        "selected_context_chars": 630,
+        "selected_context_tokens": 98,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 133,
+            "start": 48
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 133,
+            "start": 38
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 322,
+            "start": 222
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 399,
+            "start": 135
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 292
+          }
+        ],
+        "total_evidence_chars": 81
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 71,
+        "evidence_precision": 0.1143317230273752,
+        "evidence_recall": 1.0,
+        "query_id": "shipment_dispatch_date",
+        "retrieved": [
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:4",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 1,
+            "score": 0.7071067811865475,
+            "source_end": 222,
+            "source_start": 146
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:3",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 2,
+            "score": 0.3969283100678677,
+            "source_end": 401,
+            "source_start": 135
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:7",
+            "document_id": "synthetic_support_terms",
+            "rank": 3,
+            "score": 0.27386127875258304,
+            "source_end": 379,
+            "source_start": 292
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:5",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 4,
+            "score": 0.24333213169614376,
+            "source_end": 323,
+            "source_start": 222
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:6",
+            "document_id": "synthetic_support_terms",
+            "rank": 5,
+            "score": 0.24333213169614376,
+            "source_end": 379,
+            "source_start": 282
+          }
+        ],
+        "selected_context_chars": 621,
+        "selected_context_tokens": 97,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 221,
+            "start": 146
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 399,
+            "start": 135
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 292
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 322,
+            "start": 222
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 282
+          }
+        ],
+        "total_evidence_chars": 71
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 96,
+        "evidence_precision": 0.1411764705882353,
+        "evidence_recall": 1.0,
+        "query_id": "delayed_delivery_report_deadline",
+        "retrieved": [
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:5",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 1,
+            "score": 0.40555355282690625,
+            "source_end": 323,
+            "source_start": 222
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:3",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 2,
+            "score": 0.36084391824351614,
+            "source_end": 401,
+            "source_start": 135
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:6",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.27386127875258304,
+            "source_end": 401,
+            "source_start": 323
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:2",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 4,
+            "score": 0.2581988897471611,
+            "source_end": 183,
+            "source_start": 49
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:3",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 5,
+            "score": 0.23717082451262844,
+            "source_end": 291,
+            "source_start": 183
+          }
+        ],
+        "selected_context_chars": 680,
+        "selected_context_tokens": 107,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 322,
+            "start": 222
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 399,
+            "start": 135
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 399,
+            "start": 323
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 182,
+            "start": 49
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 290,
+            "start": 183
+          }
+        ],
+        "total_evidence_chars": 96
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 72,
+        "evidence_precision": 0.08866995073891626,
+        "evidence_recall": 1.0,
+        "query_id": "routine_notice_exception",
+        "retrieved": [
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:6",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 1,
+            "score": 0.7006490497453707,
+            "source_end": 401,
+            "source_start": 323
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:3",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 2,
+            "score": 0.5539117094069974,
+            "source_end": 401,
+            "source_start": 135
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:5",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.3458572319330373,
+            "source_end": 323,
+            "source_start": 222
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:2",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 4,
+            "score": 0.3302891295379082,
+            "source_end": 183,
+            "source_start": 49
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:1",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 5,
+            "score": 0.31622776601683794,
+            "source_end": 340,
+            "source_start": 35
+          }
+        ],
+        "selected_context_chars": 812,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 399,
+            "start": 323
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 399,
+            "start": 135
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 322,
+            "start": 222
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 182,
+            "start": 49
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 274,
+            "start": 35
+          }
+        ],
+        "total_evidence_chars": 72
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 70,
+        "evidence_precision": 0.18087855297157623,
+        "evidence_recall": 1.0,
+        "query_id": "failed_inspection_replacement",
+        "retrieved": [
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:8",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 1,
+            "score": 0.6030226891555273,
+            "source_end": 490,
+            "source_start": 415
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:7",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 2,
+            "score": 0.5163977794943222,
+            "source_end": 490,
+            "source_start": 401
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:4",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.08333333333333333,
+            "source_end": 222,
+            "source_start": 146
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:2",
+            "document_id": "synthetic_support_terms",
+            "rank": 4,
+            "score": 0.07856742013183861,
+            "source_end": 110,
+            "source_start": 41
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:1",
+            "document_id": "synthetic_support_terms",
+            "rank": 5,
+            "score": 0.06415002990995841,
+            "source_end": 110,
+            "source_start": 25
+          }
+        ],
+        "selected_context_chars": 387,
+        "selected_context_tokens": 60,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 415
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 401
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 221,
+            "start": 146
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 108,
+            "start": 41
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 108,
+            "start": 25
+          }
+        ],
+        "total_evidence_chars": 70
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 232,
+        "evidence_precision": 0.39057239057239057,
+        "evidence_recall": 0.7073170731707317,
+        "query_id": "delayed_delivery_credit_requirements",
+        "retrieved": [
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:1",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.4162475610565923,
+            "source_end": 340,
+            "source_start": 35
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.36380343755449945,
+            "source_end": 35,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:2",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 3,
+            "score": 0.3542459542160381,
+            "source_end": 183,
+            "source_start": 49
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:4",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 4,
+            "score": 0.35007002100700246,
+            "source_end": 340,
+            "source_start": 291
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:6",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 5,
+            "score": 0.3131121455425747,
+            "source_end": 401,
+            "source_start": 323
+          }
+        ],
+        "selected_context_chars": 594,
+        "selected_context_tokens": 94,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 35
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 33,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 182,
+            "start": 49
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 291
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 399,
+            "start": 323
+          }
+        ],
+        "total_evidence_chars": 328
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 103,
+        "evidence_precision": 0.1606864274570983,
+        "evidence_recall": 1.0,
+        "query_id": "credit_request_contents_and_deadline",
+        "retrieved": [
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:3",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.43412157106222965,
+            "source_end": 291,
+            "source_start": 183
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:1",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.3437758254761643,
+            "source_end": 340,
+            "source_start": 35
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:4",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 3,
+            "score": 0.3202563076101743,
+            "source_end": 340,
+            "source_start": 291
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:7",
+            "document_id": "synthetic_support_terms",
+            "rank": 4,
+            "score": 0.2864459496157732,
+            "source_end": 379,
+            "source_start": 292
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:6",
+            "document_id": "synthetic_support_terms",
+            "rank": 5,
+            "score": 0.2545139051903111,
+            "source_end": 379,
+            "source_start": 282
+          }
+        ],
+        "selected_context_chars": 641,
+        "selected_context_tokens": 101,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 290,
+            "start": 183
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 35
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 291
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 292
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 282
+          }
+        ],
+        "total_evidence_chars": 103
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 44,
+        "evidence_precision": 0.06528189910979229,
+        "evidence_recall": 1.0,
+        "query_id": "general_complaint_exception",
+        "retrieved": [
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:4",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.7833494518006403,
+            "source_end": 340,
+            "source_start": 291
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:1",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.4312196809320517,
+            "source_end": 340,
+            "source_start": 35
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:6",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.3113995776646092,
+            "source_end": 401,
+            "source_start": 323
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:4",
+            "document_id": "synthetic_support_terms",
+            "rank": 4,
+            "score": 0.3113995776646092,
+            "source_end": 199,
+            "source_start": 122
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:3",
+            "document_id": "synthetic_support_terms",
+            "rank": 5,
+            "score": 0.2955402316445243,
+            "source_end": 282,
+            "source_start": 110
+          }
+        ],
+        "selected_context_chars": 674,
+        "selected_context_tokens": 108,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 291
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 35
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 399,
+            "start": 323
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 198,
+            "start": 122
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 280,
+            "start": 110
+          }
+        ],
+        "total_evidence_chars": 44
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 63,
+        "evidence_precision": 0.1880597014925373,
+        "evidence_recall": 1.0,
+        "query_id": "support_hours",
+        "retrieved": [
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:1",
+            "document_id": "synthetic_support_terms",
+            "rank": 1,
+            "score": 0.29095718698132317,
+            "source_end": 110,
+            "source_start": 25
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 2,
+            "score": 0.2182178902359924,
+            "source_end": 25,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:2",
+            "document_id": "synthetic_support_terms",
+            "rank": 3,
+            "score": 0.1781741612749496,
+            "source_end": 110,
+            "source_start": 41
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:6",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 4,
+            "score": 0.0975900072948533,
+            "source_end": 401,
+            "source_start": 323
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:7",
+            "document_id": "synthetic_support_terms",
+            "rank": 5,
+            "score": 0.0975900072948533,
+            "source_end": 379,
+            "source_start": 292
+          }
+        ],
+        "selected_context_chars": 335,
+        "selected_context_tokens": 51,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 108,
+            "start": 25
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 23,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 108,
+            "start": 41
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 399,
+            "start": 323
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 292
+          }
+        ],
+        "total_evidence_chars": 63
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 149,
+        "evidence_precision": 0.21944035346097202,
+        "evidence_recall": 1.0,
+        "query_id": "critical_incident_definition_and_exception",
+        "retrieved": [
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:5",
+            "document_id": "synthetic_support_terms",
+            "rank": 1,
+            "score": 0.48536267169707553,
+            "source_end": 282,
+            "source_start": 199
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:3",
+            "document_id": "synthetic_support_terms",
+            "rank": 2,
+            "score": 0.4272046005593395,
+            "source_end": 282,
+            "source_start": 110
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:4",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 3,
+            "score": 0.3202563076101743,
+            "source_end": 340,
+            "source_start": 291
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:4",
+            "document_id": "synthetic_support_terms",
+            "rank": 4,
+            "score": 0.2864459496157732,
+            "source_end": 199,
+            "source_start": 122
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:1",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 5,
+            "score": 0.21155435413917803,
+            "source_end": 340,
+            "source_start": 35
+          }
+        ],
+        "selected_context_chars": 679,
+        "selected_context_tokens": 110,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 280,
+            "start": 199
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 280,
+            "start": 110
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 291
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 198,
+            "start": 122
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 35
+          }
+        ],
+        "total_evidence_chars": 149
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 0,
+        "evidence_precision": 0.0,
+        "evidence_recall": 0.0,
+        "query_id": "support_request_fields",
+        "retrieved": [
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:4",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.3273268353539886,
+            "source_end": 340,
+            "source_start": 291
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 2,
+            "score": 0.2182178902359924,
+            "source_end": 25,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:1",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 3,
+            "score": 0.21622499104693416,
+            "source_end": 340,
+            "source_start": 35
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:6",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 4,
+            "score": 0.1951800145897066,
+            "source_end": 401,
+            "source_start": 323
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:4",
+            "document_id": "synthetic_support_terms",
+            "rank": 5,
+            "score": 0.1951800145897066,
+            "source_end": 199,
+            "source_start": 122
+          }
+        ],
+        "selected_context_chars": 527,
+        "selected_context_tokens": 84,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 291
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 23,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 35
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 399,
+            "start": 323
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 198,
+            "start": 122
+          }
+        ],
+        "total_evidence_chars": 82
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 185,
+        "evidence_precision": 0.28861154446177845,
+        "evidence_recall": 1.0,
+        "query_id": "cross_document_request_requirements",
+        "retrieved": [
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:1",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.4403855060505442,
+            "source_end": 340,
+            "source_start": 35
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:3",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.4303314829119352,
+            "source_end": 291,
+            "source_start": 183
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:7",
+            "document_id": "synthetic_support_terms",
+            "rank": 3,
+            "score": 0.3975231959999626,
+            "source_end": 379,
+            "source_start": 292
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:4",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 4,
+            "score": 0.3888888888888889,
+            "source_end": 340,
+            "source_start": 291
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:6",
+            "document_id": "synthetic_support_terms",
+            "rank": 5,
+            "score": 0.3532086285506783,
+            "source_end": 379,
+            "source_start": 282
+          }
+        ],
+        "selected_context_chars": 641,
+        "selected_context_tokens": 101,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 35
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 290,
+            "start": 183
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 292
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 291
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 282
+          }
+        ],
+        "total_evidence_chars": 185
+      },
+      {
+        "abstention_correct": false,
+        "answerable": false,
+        "query_id": "service_credit_percentage_absent",
+        "retrieved": [
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:2",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.4403855060505443,
+            "source_end": 183,
+            "source_start": 49
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:1",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.40247170220324824,
+            "source_end": 340,
+            "source_start": 35
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 3,
+            "score": 0.30151134457776363,
+            "source_end": 35,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:3",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 4,
+            "score": 0.26967994498529685,
+            "source_end": 291,
+            "source_start": 183
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:3",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 5,
+            "score": 0.2461829819586655,
+            "source_end": 401,
+            "source_start": 135
+          }
+        ],
+        "selected_context_chars": 799,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 182,
+            "start": 49
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 35
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 33,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 290,
+            "start": 183
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 357,
+            "start": 135
+          }
+        ]
+      },
+      {
+        "abstention_correct": false,
+        "answerable": false,
+        "query_id": "critical_incident_response_time_absent",
+        "retrieved": [
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:4",
+            "document_id": "synthetic_support_terms",
+            "rank": 1,
+            "score": 0.3442651863295481,
+            "source_end": 199,
+            "source_start": 122
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:3",
+            "document_id": "synthetic_support_terms",
+            "rank": 2,
+            "score": 0.32673201960653564,
+            "source_end": 282,
+            "source_start": 110
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_support_terms:5",
+            "document_id": "synthetic_support_terms",
+            "rank": 3,
+            "score": 0.25,
+            "source_end": 282,
+            "source_start": 199
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_service_credit_addendum:4",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 4,
+            "score": 0.19245008972987526,
+            "source_end": 340,
+            "source_start": 291
+          },
+          {
+            "candidate_id": "lexichunk:synthetic_supply_agreement:6",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 5,
+            "score": 0.17213259316477406,
+            "source_end": 401,
+            "source_start": 323
+          }
+        ],
+        "selected_context_chars": 451,
+        "selected_context_tokens": 72,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 198,
+            "start": 122
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 280,
+            "start": 110
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 280,
+            "start": 199
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 291
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 399,
+            "start": 323
+          }
+        ]
+      },
+      {
+        "abstention_correct": true,
+        "answerable": false,
+        "query_id": "governing_tribunal_absent",
+        "retrieved": [],
+        "selected_context_chars": 0,
+        "selected_context_tokens": 0,
+        "selected_source_spans": []
+      }
+    ],
+    "rcts": [
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 81,
+        "evidence_precision": 0.09585798816568047,
+        "evidence_recall": 1.0,
+        "query_id": "invoice_due_date",
+        "retrieved": [
+          {
+            "candidate_id": "rcts:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 1,
+            "score": 0.23122932520643197,
+            "source_end": 489,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.06843859108291549,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 3,
+            "score": 0.03289758474798845,
+            "source_end": 378,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 845,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 17,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 81
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 71,
+        "evidence_precision": 0.08402366863905325,
+        "evidence_recall": 1.0,
+        "query_id": "shipment_dispatch_date",
+        "retrieved": [
+          {
+            "candidate_id": "rcts:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 1,
+            "score": 0.37851664930511253,
+            "source_end": 489,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.19205531989934396,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 3,
+            "score": 0.12309149097933272,
+            "source_end": 378,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 845,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 17,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 71
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 96,
+        "evidence_precision": 0.1136094674556213,
+        "evidence_recall": 1.0,
+        "query_id": "delayed_delivery_report_deadline",
+        "retrieved": [
+          {
+            "candidate_id": "rcts:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 1,
+            "score": 0.32444284226152503,
+            "source_end": 489,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.22406453988256794,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 3,
+            "score": 0.06154574548966636,
+            "source_end": 378,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 845,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 17,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 96
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 72,
+        "evidence_precision": 0.08520710059171598,
+        "evidence_recall": 1.0,
+        "query_id": "routine_notice_exception",
+        "retrieved": [
+          {
+            "candidate_id": "rcts:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 1,
+            "score": 0.4150286783196448,
+            "source_end": 489,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.30027309973793775,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 3,
+            "score": 0.18370235837851728,
+            "source_end": 378,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 845,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 17,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 72
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 70,
+        "evidence_precision": 0.08333333333333333,
+        "evidence_recall": 1.0,
+        "query_id": "failed_inspection_replacement",
+        "retrieved": [
+          {
+            "candidate_id": "rcts:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 1,
+            "score": 0.17843445967710359,
+            "source_end": 489,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 2,
+            "score": 0.029012942659282972,
+            "source_end": 378,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 840,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 351,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 70
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 328,
+        "evidence_precision": 0.3881656804733728,
+        "evidence_recall": 1.0,
+        "query_id": "delayed_delivery_credit_requirements",
+        "retrieved": [
+          {
+            "candidate_id": "rcts:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.46112101884561174,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 2,
+            "score": 0.16692446522239715,
+            "source_end": 489,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 3,
+            "score": 0.10555008273018728,
+            "source_end": 378,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 845,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 17,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 328
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 103,
+        "evidence_precision": 0.12189349112426036,
+        "evidence_recall": 1.0,
+        "query_id": "credit_request_contents_and_deadline",
+        "retrieved": [
+          {
+            "candidate_id": "rcts:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.3515413726662778,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 2,
+            "score": 0.16967593679354076,
+            "source_end": 489,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 3,
+            "score": 0.16898159235484367,
+            "source_end": 378,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 845,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 17,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 103
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 44,
+        "evidence_precision": 0.05269461077844311,
+        "evidence_recall": 1.0,
+        "query_id": "general_complaint_exception",
+        "retrieved": [
+          {
+            "candidate_id": "rcts:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.4367608723460913,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 2,
+            "score": 0.18370235837851728,
+            "source_end": 378,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.09222859518214328,
+            "source_end": 489,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 835,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 118,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 44
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 63,
+        "evidence_precision": 0.07526881720430108,
+        "evidence_recall": 1.0,
+        "query_id": "support_hours",
+        "retrieved": [
+          {
+            "candidate_id": "rcts:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 1,
+            "score": 0.19738550848793068,
+            "source_end": 378,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 2,
+            "score": 0.028903665650803996,
+            "source_end": 489,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 837,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 459,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 63
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 149,
+        "evidence_precision": 0.1784431137724551,
+        "evidence_recall": 1.0,
+        "query_id": "critical_incident_definition_and_exception",
+        "retrieved": [
+          {
+            "candidate_id": "rcts:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 1,
+            "score": 0.2896827297511606,
+            "source_end": 378,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.20088078438073015,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.04241898419838519,
+            "source_end": 489,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 835,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 118,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 149
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 82,
+        "evidence_precision": 0.09820359281437126,
+        "evidence_recall": 1.0,
+        "query_id": "support_request_fields",
+        "retrieved": [
+          {
+            "candidate_id": "rcts:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 1,
+            "score": 0.2631806779839076,
+            "source_end": 378,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.20531577324874645,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.14451832825401997,
+            "source_end": 489,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 835,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 118,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 82
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 185,
+        "evidence_precision": 0.2215568862275449,
+        "evidence_recall": 1.0,
+        "query_id": "cross_document_request_requirements",
+        "retrieved": [
+          {
+            "candidate_id": "rcts:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.4355903112410972,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 2,
+            "score": 0.335012605086404,
+            "source_end": 378,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.16188728808572755,
+            "source_end": 489,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 835,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 118,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 185
+      },
+      {
+        "abstention_correct": false,
+        "answerable": false,
+        "query_id": "service_credit_percentage_absent",
+        "retrieved": [
+          {
+            "candidate_id": "rcts:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.4367608723460913,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 2,
+            "score": 0.18445719036428657,
+            "source_end": 489,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 3,
+            "score": 0.1574591643244434,
+            "source_end": 378,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 845,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 17,
+            "start": 0
+          }
+        ]
+      },
+      {
+        "abstention_correct": false,
+        "answerable": false,
+        "query_id": "critical_incident_response_time_absent",
+        "retrieved": [
+          {
+            "candidate_id": "rcts:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 1,
+            "score": 0.23210354127426377,
+            "source_end": 378,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.09053574604251853,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "rcts:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.050981274193458166,
+            "source_end": 489,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 835,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 118,
+            "start": 0
+          }
+        ]
+      },
+      {
+        "abstention_correct": true,
+        "answerable": false,
+        "query_id": "governing_tribunal_absent",
+        "retrieved": [],
+        "selected_context_chars": 0,
+        "selected_context_tokens": 0,
+        "selected_source_spans": []
+      }
+    ],
+    "token_window": [
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 81,
+        "evidence_precision": 0.09735576923076923,
+        "evidence_recall": 1.0,
+        "query_id": "invoice_due_date",
+        "retrieved": [
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 1,
+            "score": 0.24055391172970542,
+            "source_end": 418,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.06843859108291549,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 3,
+            "score": 0.03289758474798845,
+            "source_end": 378,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 832,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 418,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 75,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 81
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 71,
+        "evidence_precision": 0.08482676224611709,
+        "evidence_recall": 1.0,
+        "query_id": "shipment_dispatch_date",
+        "retrieved": [
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 1,
+            "score": 0.33752637027780713,
+            "source_end": 418,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.19205531989934396,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:1",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.1543033499620919,
+            "source_end": 489,
+            "source_start": 358
+          },
+          {
+            "candidate_id": "token_window:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 4,
+            "score": 0.12309149097933272,
+            "source_end": 378,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 837,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 418,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 438,
+            "start": 358
+          }
+        ],
+        "total_evidence_chars": 71
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 96,
+        "evidence_precision": 0.11254396248534584,
+        "evidence_recall": 1.0,
+        "query_id": "delayed_delivery_report_deadline",
+        "retrieved": [
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 1,
+            "score": 0.33752637027780713,
+            "source_end": 418,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:1",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 2,
+            "score": 0.23145502494313785,
+            "source_end": 489,
+            "source_start": 358
+          },
+          {
+            "candidate_id": "token_window:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 3,
+            "score": 0.22406453988256794,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 4,
+            "score": 0.06154574548966636,
+            "source_end": 378,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 853,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 418,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 358
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 304,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 96
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 72,
+        "evidence_precision": 0.08602150537634409,
+        "evidence_recall": 1.0,
+        "query_id": "routine_notice_exception",
+        "retrieved": [
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 1,
+            "score": 0.431765183592825,
+            "source_end": 418,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.30027309973793775,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:1",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.2631806779839076,
+            "source_end": 489,
+            "source_start": 358
+          },
+          {
+            "candidate_id": "token_window:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 4,
+            "score": 0.18370235837851728,
+            "source_end": 378,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 837,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 418,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 438,
+            "start": 358
+          }
+        ],
+        "total_evidence_chars": 72
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 70,
+        "evidence_precision": 0.08284023668639054,
+        "evidence_recall": 1.0,
+        "query_id": "failed_inspection_replacement",
+        "retrieved": [
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:1",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 1,
+            "score": 0.4364357804719847,
+            "source_end": 489,
+            "source_start": 358
+          },
+          {
+            "candidate_id": "token_window:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 2,
+            "score": 0.029012942659282972,
+            "source_end": 378,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.026518576139190998,
+            "source_end": 418,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 845,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 358
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 336,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 70
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 328,
+        "evidence_precision": 0.38954869358669836,
+        "evidence_recall": 1.0,
+        "query_id": "delayed_delivery_credit_requirements",
+        "retrieved": [
+          {
+            "candidate_id": "token_window:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.46112101884561174,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:1",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 2,
+            "score": 0.21170244960998524,
+            "source_end": 489,
+            "source_start": 358
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.1736558848527914,
+            "source_end": 418,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 4,
+            "score": 0.10555008273018728,
+            "source_end": 378,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 842,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 358
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 372,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 328
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 103,
+        "evidence_precision": 0.12379807692307693,
+        "evidence_recall": 1.0,
+        "query_id": "credit_request_contents_and_deadline",
+        "retrieved": [
+          {
+            "candidate_id": "token_window:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.3515413726662778,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 2,
+            "score": 0.17651831265627513,
+            "source_end": 418,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 3,
+            "score": 0.16898159235484367,
+            "source_end": 378,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:1",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 4,
+            "score": 0.060522753266880246,
+            "source_end": 489,
+            "source_start": 358
+          }
+        ],
+        "selected_context_chars": 832,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 418,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 75,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 103
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 44,
+        "evidence_precision": 0.05188679245283019,
+        "evidence_recall": 1.0,
+        "query_id": "general_complaint_exception",
+        "retrieved": [
+          {
+            "candidate_id": "token_window:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.4367608723460913,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 2,
+            "score": 0.18370235837851728,
+            "source_end": 378,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:1",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.1315903389919538,
+            "source_end": 489,
+            "source_start": 358
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 4,
+            "score": 0.09594781857618334,
+            "source_end": 418,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 848,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 358
+          }
+        ],
+        "total_evidence_chars": 44
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 63,
+        "evidence_precision": 0.07914572864321608,
+        "evidence_recall": 1.0,
+        "query_id": "support_hours",
+        "retrieved": [
+          {
+            "candidate_id": "token_window:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 1,
+            "score": 0.19738550848793068,
+            "source_end": 378,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 2,
+            "score": 0.030069238966213177,
+            "source_end": 418,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 796,
+        "selected_context_tokens": 122,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 418,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 63
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 149,
+        "evidence_precision": 0.17570754716981132,
+        "evidence_recall": 1.0,
+        "query_id": "critical_incident_definition_and_exception",
+        "retrieved": [
+          {
+            "candidate_id": "token_window:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 1,
+            "score": 0.2896827297511606,
+            "source_end": 378,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.20088078438073015,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:1",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.060522753266880246,
+            "source_end": 489,
+            "source_start": 358
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 4,
+            "score": 0.04412957816406878,
+            "source_end": 418,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 848,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 358
+          }
+        ],
+        "total_evidence_chars": 149
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 82,
+        "evidence_precision": 0.09820359281437126,
+        "evidence_recall": 1.0,
+        "query_id": "support_request_fields",
+        "retrieved": [
+          {
+            "candidate_id": "token_window:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 1,
+            "score": 0.2631806779839076,
+            "source_end": 378,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.20531577324874645,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.1503461948310659,
+            "source_end": 418,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:1",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 4,
+            "score": 0.08247860988423225,
+            "source_end": 489,
+            "source_start": 358
+          }
+        ],
+        "selected_context_chars": 835,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 118,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 82
+      },
+      {
+        "abstention_correct": true,
+        "answerable": true,
+        "covered_evidence_chars": 185,
+        "evidence_precision": 0.2215568862275449,
+        "evidence_recall": 1.0,
+        "query_id": "cross_document_request_requirements",
+        "retrieved": [
+          {
+            "candidate_id": "token_window:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.4355903112410972,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 2,
+            "score": 0.335012605086404,
+            "source_end": 378,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.1684155777973626,
+            "source_end": 418,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:1",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 4,
+            "score": 0.0839921051131616,
+            "source_end": 489,
+            "source_start": 358
+          }
+        ],
+        "selected_context_chars": 835,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 118,
+            "start": 0
+          }
+        ],
+        "total_evidence_chars": 185
+      },
+      {
+        "abstention_correct": false,
+        "answerable": false,
+        "query_id": "service_credit_percentage_absent",
+        "retrieved": [
+          {
+            "candidate_id": "token_window:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 1,
+            "score": 0.4367608723460913,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 2,
+            "score": 0.19189563715236668,
+            "source_end": 418,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 3,
+            "score": 0.1574591643244434,
+            "source_end": 378,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:1",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 4,
+            "score": 0.1315903389919538,
+            "source_end": 489,
+            "source_start": 358
+          }
+        ],
+        "selected_context_chars": 832,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 418,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 75,
+            "start": 0
+          }
+        ]
+      },
+      {
+        "abstention_correct": false,
+        "answerable": false,
+        "query_id": "critical_incident_response_time_absent",
+        "retrieved": [
+          {
+            "candidate_id": "token_window:synthetic_support_terms:0",
+            "document_id": "synthetic_support_terms",
+            "rank": 1,
+            "score": 0.23210354127426377,
+            "source_end": 378,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_service_credit_addendum:0",
+            "document_id": "synthetic_service_credit_addendum",
+            "rank": 2,
+            "score": 0.09053574604251853,
+            "source_end": 339,
+            "source_start": 0
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:1",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 3,
+            "score": 0.07273929674533079,
+            "source_end": 489,
+            "source_start": 358
+          },
+          {
+            "candidate_id": "token_window:synthetic_supply_agreement:0",
+            "document_id": "synthetic_supply_agreement",
+            "rank": 4,
+            "score": 0.053037152278381995,
+            "source_end": 418,
+            "source_start": 0
+          }
+        ],
+        "selected_context_chars": 848,
+        "selected_context_tokens": 128,
+        "selected_source_spans": [
+          {
+            "document_id": "synthetic_support_terms",
+            "end": 378,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_service_credit_addendum",
+            "end": 339,
+            "start": 0
+          },
+          {
+            "document_id": "synthetic_supply_agreement",
+            "end": 489,
+            "start": 358
+          }
+        ]
+      },
+      {
+        "abstention_correct": true,
+        "answerable": false,
+        "query_id": "governing_tribunal_absent",
+        "retrieved": [],
+        "selected_context_chars": 0,
+        "selected_context_tokens": 0,
+        "selected_source_spans": []
+      }
+    ]
+  },
+  "scope": {
+    "cross_reference_expansion": "not_evaluated",
+    "definition_expansion": "not_evaluated",
+    "generated_context_headers": "not_evaluated",
+    "lexichunk_mode": "boundary_only_source_spans",
+    "retrieval": "deterministic lexical cosine term-frequency ranking"
+  }
+}

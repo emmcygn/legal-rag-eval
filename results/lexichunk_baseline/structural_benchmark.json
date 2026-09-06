@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-06T16:20:37.694780+00:00",
+  "timestamp": "2026-09-06T17:19:34.112416+00:00",
   "strategies": [
     "lexichunk",
     "lexichunk_contextual",
@@ -939,7 +939,7 @@
               "char_end": null
             }
           ],
-          "elapsed_seconds": 0.005551900001592003
+          "elapsed_seconds": 0.006158900003356393
         },
         {
           "strategy": "lexichunk",
@@ -2470,7 +2470,7 @@
               "char_end": 25187
             }
           ],
-          "elapsed_seconds": 0.026656999994884245
+          "elapsed_seconds": 0.027599699998972937
         },
         {
           "strategy": "lexichunk",
@@ -3368,7 +3368,7 @@
               "char_end": null
             }
           ],
-          "elapsed_seconds": 0.01420269999653101
+          "elapsed_seconds": 0.01421190000110073
         },
         {
           "strategy": "lexichunk",
@@ -4116,7 +4116,7 @@
               "char_end": 25346
             }
           ],
-          "elapsed_seconds": 0.02615719999448629
+          "elapsed_seconds": 0.039703099995676894
         },
         {
           "strategy": "lexichunk",
@@ -4876,10 +4876,10 @@
               "char_end": null
             }
           ],
-          "elapsed_seconds": 0.025512699998216704
+          "elapsed_seconds": 0.02680720000353176
         }
       ],
-      "total_elapsed_seconds": 0.11229570000432432
+      "total_elapsed_seconds": 0.1298291999992216
     },
     {
       "strategy": "lexichunk_contextual",
@@ -5131,7 +5131,7 @@
               "char_end": null
             }
           ],
-          "elapsed_seconds": 0.0030939000062062405
+          "elapsed_seconds": 0.003185299996403046
         },
         {
           "strategy": "lexichunk_contextual",
@@ -6770,7 +6770,7 @@
               "char_end": 25187
             }
           ],
-          "elapsed_seconds": 0.02436190000298666
+          "elapsed_seconds": 0.025689199996122625
         },
         {
           "strategy": "lexichunk_contextual",
@@ -7744,7 +7744,7 @@
               "char_end": null
             }
           ],
-          "elapsed_seconds": 0.01346670000202721
+          "elapsed_seconds": 0.013179200002923608
         },
         {
           "strategy": "lexichunk_contextual",
@@ -8542,7 +8542,7 @@
               "char_end": null
             }
           ],
-          "elapsed_seconds": 0.04056119999586372
+          "elapsed_seconds": 0.02637999999569729
         },
         {
           "strategy": "lexichunk_contextual",
@@ -9336,10 +9336,10 @@
               "char_end": null
             }
           ],
-          "elapsed_seconds": 0.029936999999335967
+          "elapsed_seconds": 0.02583040000172332
         }
       ],
-      "total_elapsed_seconds": 0.13318730000173673
+      "total_elapsed_seconds": 0.1135539000024437
     },
     {
       "strategy": "rcts_512",
@@ -9559,7 +9559,7 @@
               "char_end": 5140
             }
           ],
-          "elapsed_seconds": 0.0002559000058681704
+          "elapsed_seconds": 0.00023099999816622585
         },
         {
           "strategy": "rcts_512",
@@ -10518,7 +10518,7 @@
               "char_end": 25186
             }
           ],
-          "elapsed_seconds": 0.0002842999965650961
+          "elapsed_seconds": 0.0002373000024817884
         },
         {
           "strategy": "rcts_512",
@@ -11183,7 +11183,7 @@
               "char_end": 16947
             }
           ],
-          "elapsed_seconds": 0.00012689999857684597
+          "elapsed_seconds": 0.00012059999426128343
         },
         {
           "strategy": "rcts_512",
@@ -12184,7 +12184,7 @@
               "char_end": 25345
             }
           ],
-          "elapsed_seconds": 0.0006031000011716969
+          "elapsed_seconds": 0.00029260000155773014
         },
         {
           "strategy": "rcts_512",
@@ -13213,10 +13213,10 @@
               "char_end": 25742
             }
           ],
-          "elapsed_seconds": 0.0003079000016441569
+          "elapsed_seconds": 0.00023209999926621094
         }
       ],
-      "total_elapsed_seconds": 0.0045596999989356846
+      "total_elapsed_seconds": 0.0034917999946628697
     },
     {
       "strategy": "rcts_1024",
@@ -13310,7 +13310,7 @@
               "char_end": 5140
             }
           ],
-          "elapsed_seconds": 4.11000000895001e-05
+          "elapsed_seconds": 3.4500000765547156e-05
         },
         {
           "strategy": "rcts_1024",
@@ -13751,7 +13751,7 @@
               "char_end": 25186
             }
           ],
-          "elapsed_seconds": 0.00020309999672463164
+          "elapsed_seconds": 0.0001813000053516589
         },
         {
           "strategy": "rcts_1024",
@@ -14038,7 +14038,7 @@
               "char_end": 16947
             }
           ],
-          "elapsed_seconds": 0.0001199000034830533
+          "elapsed_seconds": 0.00011870000162161887
         },
         {
           "strategy": "rcts_1024",
@@ -14493,7 +14493,7 @@
               "char_end": 25345
             }
           ],
-          "elapsed_seconds": 0.00014709999959450215
+          "elapsed_seconds": 0.00013480000052368268
         },
         {
           "strategy": "rcts_1024",
@@ -14962,10 +14962,10 @@
               "char_end": 25742
             }
           ],
-          "elapsed_seconds": 0.0001520000005257316
+          "elapsed_seconds": 0.00015549999807262793
         }
       ],
-      "total_elapsed_seconds": 0.002316500002052635
+      "total_elapsed_seconds": 0.002270899996801745
     },
     {
       "strategy": "sentence_split",
@@ -15129,7 +15129,7 @@
               "char_end": 5140
             }
           ],
-          "elapsed_seconds": 0.00011050000466639176
+          "elapsed_seconds": 0.00011030000314349309
         },
         {
           "strategy": "sentence_split",
@@ -16302,7 +16302,7 @@
               "char_end": 25186
             }
           ],
-          "elapsed_seconds": 0.0005591000008280389
+          "elapsed_seconds": 0.0005390000005718321
         },
         {
           "strategy": "sentence_split",
@@ -17156,7 +17156,7 @@
               "char_end": 16947
             }
           ],
-          "elapsed_seconds": 0.0004025999951409176
+          "elapsed_seconds": 0.00035819999902741984
         },
         {
           "strategy": "sentence_split",
@@ -18142,7 +18142,7 @@
               "char_end": 25345
             }
           ],
-          "elapsed_seconds": 0.0005870999957551248
+          "elapsed_seconds": 0.0005601999946520664
         },
         {
           "strategy": "sentence_split",
@@ -19392,10 +19392,10 @@
               "char_end": 25742
             }
           ],
-          "elapsed_seconds": 0.0005260000034468248
+          "elapsed_seconds": 0.0005302000063238665
         }
       ],
-      "total_elapsed_seconds": 0.013825399997585919
+      "total_elapsed_seconds": 0.013273999997181818
     },
     {
       "strategy": "fixed_size",
@@ -19548,7 +19548,7 @@
               "char_end": 5141
             }
           ],
-          "elapsed_seconds": 2.010000025620684e-05
+          "elapsed_seconds": 9.499999578110874e-06
         },
         {
           "strategy": "fixed_size",
@@ -20205,7 +20205,7 @@
               "char_end": 25187
             }
           ],
-          "elapsed_seconds": 2.909999602707103e-05
+          "elapsed_seconds": 4.269999772077426e-05
         },
         {
           "strategy": "fixed_size",
@@ -20654,7 +20654,7 @@
               "char_end": 16948
             }
           ],
-          "elapsed_seconds": 1.6500001947861165e-05
+          "elapsed_seconds": 2.4499997380189598e-05
         },
         {
           "strategy": "fixed_size",
@@ -21311,7 +21311,7 @@
               "char_end": 25346
             }
           ],
-          "elapsed_seconds": 3.7699996028095484e-05
+          "elapsed_seconds": 3.190000279573724e-05
         },
         {
           "strategy": "fixed_size",
@@ -21981,10 +21981,10 @@
               "char_end": 25743
             }
           ],
-          "elapsed_seconds": 1.5600002370774746e-05
+          "elapsed_seconds": 4.039999475935474e-05
         }
       ],
-      "total_elapsed_seconds": 0.001916900000651367
+      "total_elapsed_seconds": 0.0019104000020888634
     }
   ],
   "config": {
@@ -22016,7 +22016,7 @@
     "relevance_min_overlap_chars": 100,
     "significance_level": 0.05,
     "bootstrap_resamples": 10000,
-    "seed": 0,
+    "seed": 42,
     "cache_dir": ".cache/embeddings",
     "use_cache": true,
     "output_formats": [
@@ -22049,7 +22049,7 @@
       }
     }
   },
-  "seed": 0,
+  "seed": 42,
   "lexichunk_version": "0.8.0b1",
   "lexichunk_commit": "32078cd"
 }

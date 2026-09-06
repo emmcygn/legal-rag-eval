@@ -1,5 +1,11 @@
 # Methodology
 
+This document covers the **anchored-evidence benchmark** (`python -m scaffolder benchmark`).
+The gold-scored structural and retrieval benchmarks are a separate evaluation against a
+separate ground truth; their methodology is in [metrics.md](metrics.md) sections 1-5 and
+[`gold/SCHEMA.md`](../gold/SCHEMA.md). The external LEDGAR and CUAD evaluations are in
+[external_evals.md](external_evals.md).
+
 ## Evaluation Unit
 
 Each query is evaluated against exact character intervals in canonical UTF-8 source documents. Document bytes are protected by SHA-256 values in the dataset manifest. A label is invalid if its stored text is not exactly `source[start:end]`.
@@ -31,5 +37,9 @@ Evidence grade is preserved as annotation metadata in schema v1 but is not used 
 ## Interpretation
 
 Reports include per-query results and unfiltered win, loss, tie, or mixed aggregate comparisons. A larger chunk cannot win merely by containing evidence because all extra selected source characters reduce precision and the same token budget applies to every strategy.
+
+That equalises the **selection** budget. It is not a control for chunk length itself: nothing here matches a baseline's chunk size to LexiChunk's, so a strategy whose chunks happen to sit closer to the evidence granularity is advantaged before selection begins. The gold-scored benchmark carries an explicit size-matched control (`rcts_1024`) for exactly this reason; read the two together rather than either alone.
+
+There are no confidence intervals here. Aggregates are plain means over 12 answerable and 3 unanswerable queries, and comparisons are unadjusted deltas with a win/loss/tie/mixed label. At that sample size a delta is a direction, not a measurement. The gold-scored retrieval benchmark is where bootstrap intervals, Wilcoxon tests, Holm correction and leave-one-document-out figures live.
 
 The bundled corpus is suitable for evaluator regression and demonstration only. Any product or scientific claim requires a separately authored, documented, reviewed, representative dataset.

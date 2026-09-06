@@ -47,7 +47,7 @@
         "n": 100,
         "point": 0.98573683937781
       },
-      "seconds_per_contract": 0.7137561169999753,
+      "seconds_per_contract": 0.4265193230001751,
       "spans_evaluated": 2458
     },
     {
@@ -78,7 +78,7 @@
         "n": 100,
         "point": 0.9914069763599254
       },
-      "seconds_per_contract": 0.6704942149998897,
+      "seconds_per_contract": 0.37312385199969866,
       "spans_evaluated": 2458
     },
     {
@@ -109,7 +109,7 @@
         "n": 100,
         "point": 0.8864782132561134
       },
-      "seconds_per_contract": 0.6557182360000298,
+      "seconds_per_contract": 0.3435972200000106,
       "spans_evaluated": 2458
     },
     {
@@ -140,7 +140,7 @@
         "n": 100,
         "point": 0.773251822056871
       },
-      "seconds_per_contract": 0.0068227360000673795,
+      "seconds_per_contract": 0.00604547700000694,
       "spans_evaluated": 2458
     },
     {
@@ -171,7 +171,7 @@
         "n": 100,
         "point": 0.9120190948131724
       },
-      "seconds_per_contract": 0.004894356000004336,
+      "seconds_per_contract": 0.003429679000546457,
       "spans_evaluated": 2458
     },
     {
@@ -202,7 +202,7 @@
         "n": 100,
         "point": 0.9901290745006273
       },
-      "seconds_per_contract": 0.0012273900001309812,
+      "seconds_per_contract": 0.0007396739999967394,
       "spans_evaluated": 2458
     }
   ],

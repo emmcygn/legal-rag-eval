@@ -341,7 +341,7 @@ README. Every number is from this document.
 > your contracts use that style, try both profiles.
 >
 > Full methodology, per-class numbers and reproduction commands:
-> [`docs/external_evals.md`](docs/external_evals.md).
+> `docs/external_evals.md` (this file).
 
 
 ## Reproduction

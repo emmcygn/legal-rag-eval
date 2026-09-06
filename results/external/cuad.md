@@ -6,11 +6,11 @@ Dataset `theatticusproject/cuad-qa` at revision `refs/convert/parquet`, split `t
 
 | Strategy          | Containment (95% CI) | Mean chunk chars | Chunks/contract | Length-matched grid | Lift    | s/contract |
 | ----------------- | -------------------- | ---------------- | --------------- | ------------------- | ------- | ---------- |
-| lexichunk-512tok  | 98.1% [97.5, 98.6]   | 1,306            | 36.3            | 81.8%               | +16.3pp | 0.714      |
-| lexichunk-1024tok | 98.9% [98.5, 99.3]   | 2,044            | 23.2            | 88.2%               | +10.7pp | 0.670      |
-| lexichunk-128tok  | 83.7% [82.2, 85.2]   | 346              | 137.1           | 47.0%               | +36.7pp | 0.656      |
-| rcts-512          | 72.1% [70.2, 74.0]   | 382              | 123.0           | 49.9%               | +22.2pp | 0.007      |
-| rcts-1024         | 89.3% [88.1, 90.6]   | 744              | 63.4            | 69.5%               | +19.9pp | 0.005      |
+| lexichunk-512tok  | 98.1% [97.5, 98.6]   | 1,306            | 36.3            | 81.8%               | +16.3pp | 0.427      |
+| lexichunk-1024tok | 98.9% [98.5, 99.3]   | 2,044            | 23.2            | 88.2%               | +10.7pp | 0.373      |
+| lexichunk-128tok  | 83.7% [82.2, 85.2]   | 346              | 137.1           | 47.0%               | +36.7pp | 0.344      |
+| rcts-512          | 72.1% [70.2, 74.0]   | 382              | 123.0           | 49.9%               | +22.2pp | 0.006      |
+| rcts-1024         | 89.3% [88.1, 90.6]   | 744              | 63.4            | 69.5%               | +19.9pp | 0.003      |
 | sentence-window-3 | 98.9% [98.5, 99.3]   | 647              | 109.3           | 65.6%               | +33.3pp | 0.001      |
 
 `Length-matched grid` is the containment a fixed-stride splitter with the same mean chunk length would get on these spans; `Lift` is the strategy's containment minus that. Lift, not raw containment, is the number that reflects boundary quality.

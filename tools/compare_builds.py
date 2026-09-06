@@ -7,7 +7,7 @@ itself. This script puts the same strategy's numbers from two result files side 
 so a parser change shows up as a number rather than as an impression.
 
 Usage:
-    python scripts/compare_builds.py \\
+    python tools/compare_builds.py \\
         --before results/lexichunk_baseline/full_benchmark.json \\
         --after  results/lexichunk_fixed/full_benchmark.json
 

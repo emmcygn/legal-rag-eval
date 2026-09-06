@@ -2,7 +2,7 @@ include LICENSE README.md CONTRIBUTING.md SECURITY.md
 recursive-include docs *.md
 recursive-include queries *.yaml *.md
 recursive-include gold *.json *.md
-recursive-include evals *.yaml
+recursive-include evals *.yaml *.md
 recursive-include src/legal_rag_eval/data *.json *.txt
 recursive-include src/legal_rag_eval/fixtures/documents *.txt
 recursive-include src/legal_rag_eval/reporting/templates *.j2

@@ -55,7 +55,7 @@ length itself, which is what `rcts_1024` in section 2 exists for.
 Gold annotations live in `gold/<document_id>.json`, one file per fixture document, and are
 described in full in `gold/SCHEMA.md`. The short version:
 
-- They are seeded from each document's **own** numbering by `scripts/build_gold.py` (a
+- They are seeded from each document's **own** numbering by `tools/build_gold.py` (a
   regex seeder), then corrected by hand against the document text, with corrections logged
   in `gold/CHANGES.md`. No LexiChunk output is consulted at any point in producing them —
   they are independent of every chunker under test, LexiChunk included.

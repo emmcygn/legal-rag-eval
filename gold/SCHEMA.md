@@ -3,7 +3,7 @@
 One JSON file per fixture document: `gold/<document_id>.json`.
 
 Annotations are **independent of LexiChunk**. They are derived from the document's own
-numbering by `scripts/build_gold.py` (a regex seeder) and then corrected by hand against the
+numbering by `tools/build_gold.py` (a regex seeder) and then corrected by hand against the
 document text. No LexiChunk output is consulted at any point. Corrections are logged in
 `gold/CHANGES.md`.
 

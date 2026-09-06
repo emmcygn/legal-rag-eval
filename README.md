@@ -19,7 +19,7 @@ documents has a gold annotation file in [`gold/`](gold/): an ordered, non-overla
 partition of the numbered body into clauses with character spans, the defined terms with
 the span of each definition, and the explicit internal cross-references. The spans were
 seeded from each document's own numbering by
-[`scripts/build_gold.py`](scripts/build_gold.py) and then corrected by hand against the
+[`tools/build_gold.py`](tools/build_gold.py) and then corrected by hand against the
 text; every correction is logged in [`gold/CHANGES.md`](gold/CHANGES.md). See
 [`gold/SCHEMA.md`](gold/SCHEMA.md) for the format. The anchored-evidence dataset is
 authored the same way in one respect — the spans are written directly, never read off a
@@ -73,7 +73,7 @@ What the harness does **not** measure:
 | `us_terms_of_service` | synthetic | 25,743 | 114 (92) | 19 | 55 | 6 |
 | **Total** | | **98,365** | **365** (**285**) | **90** | **171** | **30** |
 
-How the annotations were made, in order: `scripts/build_gold.py` reads each document's own
+How the annotations were made, in order: `tools/build_gold.py` reads each document's own
 numbering with regexes and emits a first pass; a human then reads that pass against the
 document and corrects it, clause span by clause span, adding the defined terms and
 cross-references the regexes miss. `gold/CHANGES.md` records every correction per document,
@@ -481,7 +481,7 @@ src/legal_rag_eval/
   dashboard/             # Streamlit app
 gold/                    # Hand-checked ground truth, one JSON per document
 queries/                 # Annotated queries, relevant clauses given by gold identifier
-scripts/build_gold.py    # Seeds gold annotations from document numbering
+tools/build_gold.py    # Seeds gold annotations from document numbering
 ```
 
 ### Strategies compared

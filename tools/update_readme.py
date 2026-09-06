@@ -5,9 +5,9 @@ The README's tables used to be typed by hand and drifted away from the code they
 traced to a run. This script is the only supported way to change them.
 
 Usage:
-    python scripts/update_readme.py                      # results/full_benchmark.json
-    python scripts/update_readme.py --results path.json
-    python scripts/update_readme.py --check              # exit 1 if the README is stale
+    python tools/update_readme.py                      # results/full_benchmark.json
+    python tools/update_readme.py --results path.json
+    python tools/update_readme.py --check              # exit 1 if the README is stale
 """
 
 from __future__ import annotations

@@ -1,7 +1,7 @@
 # Gold annotation corrections
 
 This file is the audit trail for the ground truth. Every gold file in this directory was
-first produced mechanically by `scripts/build_gold.py`, a stdlib-only regex seeder that
+first produced mechanically by `tools/build_gold.py`, a stdlib-only regex seeder that
 reads each document's own numbering and never consults LexiChunk. Each file was then read
 against its document and corrected by hand. This is the human-in-the-loop step, and it is
 what makes these annotations usable as ground truth: a regex over legal prose gets clause
@@ -11,7 +11,7 @@ The corrections below are recorded per document, in the annotator's own words. W
 annotator checked a category and changed nothing, that is stated too — a silent category
 would be indistinguishable from an unchecked one.
 
-Because the committed files carry these corrections, `python scripts/build_gold.py --check`
+Because the committed files carry these corrections, `python tools/build_gold.py --check`
 reports drift by design. The seeder is a reproducible starting point, not the source of
 truth. `tests/test_gold_annotations.py` is what actually validates the committed files
 against the fixtures, and it runs in CI.
@@ -351,7 +351,7 @@ Correction pass performed by reading `src/legal_rag_eval/fixtures/documents/us_m
 (sanitised via `legal_rag_eval.gold.sanitize`) against the seeded `gold/us_msa.json`, clause by
 clause, using a throwaway inspection script (printed every clause span's boundary context,
 every defined-term span, and a regex sweep for candidate cross-references), and by reading
-`scripts/build_gold.py`'s `seed_us_article_section` / `seed_defined_terms` /
+`tools/build_gold.py`'s `seed_us_article_section` / `seed_defined_terms` /
 `seed_cross_references` to understand exactly what patterns the regex seeder does and does
 not catch, so that "missing" candidates could be told apart from patterns the seeder
 deliberately (and correctly) does not split.

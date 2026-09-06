@@ -6,7 +6,7 @@ binding JSON contract.
 
 ## Where these come from
 
-The annotations are produced **independently of LexiChunk**. `scripts/build_gold.py` is a
+The annotations are produced **independently of LexiChunk**. `tools/build_gold.py` is a
 standalone, stdlib-only regex seeder that reads each fixture's own numbering (recitals,
 chapters/articles, clause/section decimals, schedules, lettered sub-paragraphs) and derives
 clause spans, defined terms, and explicit cross-references directly from the text. No
@@ -20,10 +20,10 @@ etc.). Hand corrections are logged in `gold/CHANGES.md`.
 ## Regenerating
 
 ```
-python scripts/build_gold.py                 # seed gold/*.json for all five fixtures
-python scripts/build_gold.py --doc us_msa    # one document
-python scripts/build_gold.py --check         # re-seed in memory and diff against gold/*.json
-python scripts/build_gold.py --force         # overwrite hand corrections (destructive)
+python tools/build_gold.py                 # seed gold/*.json for all five fixtures
+python tools/build_gold.py --doc us_msa    # one document
+python tools/build_gold.py --check         # re-seed in memory and diff against gold/*.json
+python tools/build_gold.py --force         # overwrite hand corrections (destructive)
 ```
 
 `--check` exits non-zero if the freshly-seeded output differs from what is committed.
@@ -37,7 +37,7 @@ stray `--doc` run, and restoring them cost a full re-annotation.
 ## Important: `--check` failures are expected
 
 Because the committed `gold/*.json` files include hand corrections, running
-`python scripts/build_gold.py --check` after any hand correction **will** report drift —
+`python tools/build_gold.py --check` after any hand correction **will** report drift —
 that is expected and correct, not a bug. The seeder is a reproducible starting point, not
 the source of truth. Do not "fix" a `--check` failure by re-running the seeder and
 overwriting a hand-corrected file; that would discard the correction.

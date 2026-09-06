@@ -5,9 +5,9 @@ Standalone, stdlib-only. Never imports lexichunk or legal_rag_eval. See gold/REA
 and gold/SCHEMA.md for the contract this script implements.
 
 Usage:
-    python scripts/build_gold.py                 # writes gold/*.json for all fixtures
-    python scripts/build_gold.py --doc us_msa     # one document
-    python scripts/build_gold.py --check          # re-seed in memory, diff vs gold/, exit 1
+    python tools/build_gold.py                 # writes gold/*.json for all fixtures
+    python tools/build_gold.py --doc us_msa     # one document
+    python tools/build_gold.py --check          # re-seed in memory, diff vs gold/, exit 1
 """
 
 from __future__ import annotations

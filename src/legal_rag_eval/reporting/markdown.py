@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 _RCTS_1024 = "rcts_1024"
 
 #: Sentinels delimiting the generated block in README.md. Exported so callers (and the
-#: staleness check in ``scripts/update_readme.py``) use the same strings the writer does.
+#: staleness check in ``tools/update_readme.py``) use the same strings the writer does.
 START_MARKER = "<!-- BEGIN GENERATED RESULTS -->"
 END_MARKER = "<!-- END GENERATED RESULTS -->"
 

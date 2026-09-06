@@ -5,7 +5,7 @@
 that field is typed ``list[object]`` precisely so reporting never has to import the statistics
 module. ``ReconstructedComparison`` implements the
 ``legal_rag_eval.reporting.cli.ComparisonLike`` shape, which is all the reporting layer reads.
-This matters because ``scripts/update_readme.py`` renders the README from an exported JSON:
+This matters because ``tools/update_readme.py`` renders the README from an exported JSON:
 leaving ``comparisons`` empty on reconstruction silently dropped every bootstrap CI,
 Holm-adjusted p-value and leave-one-document-out range from the published tables. Entries
 that do not carry the full shape are skipped with a warning, and

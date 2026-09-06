@@ -44,6 +44,7 @@ coverage.xml
 # The contents are excluded rather than the directory itself, because git does not descend
 # into an excluded directory and the negations below would never be reached.
 results/*
+!results/README.md
 !results/*/
 results/*/*
 !results/*/*.json

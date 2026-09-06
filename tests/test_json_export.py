@@ -333,7 +333,7 @@ class TestReconstructBenchmarkResult:
     def test_roundtrip_preserves_comparisons(self, tmp_path: Path) -> None:
         """A round trip must keep the bootstrap CI, Holm p-value and LODO range.
 
-        `scripts/update_readme.py` renders the README from an exported JSON, so dropping
+        `tools/update_readme.py` renders the README from an exported JSON, so dropping
         `comparisons` on reconstruction silently published tables with no uncertainty in
         them at all. Reconstruction yields `ReconstructedComparison`, not `ComparisonResult`
         — the reporting layer reads the shape, not the class."""

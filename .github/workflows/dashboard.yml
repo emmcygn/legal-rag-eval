@@ -8,8 +8,6 @@ on:
       - "src/legal_rag_eval/evidence/**"
       - "src/legal_rag_eval/data/**"
       - "pyproject.toml"
-      - "streamlit_app.py"
-      - "requirements-dashboard.txt"
   pull_request:
     branches: [master, main]
     paths:
@@ -17,8 +15,6 @@ on:
       - "src/legal_rag_eval/evidence/**"
       - "src/legal_rag_eval/data/**"
       - "pyproject.toml"
-      - "streamlit_app.py"
-      - "requirements-dashboard.txt"
 
 jobs:
   smoke-test:
@@ -44,7 +40,7 @@ jobs:
 
       - name: Streamlit health check
         run: |
-          timeout 15 streamlit run streamlit_app.py --server.headless true --server.port 8501 &
+          timeout 15 streamlit run src/legal_rag_eval/dashboard/streamlit_app.py \n            --server.headless true --server.port 8501 &
           sleep 5
           curl -f http://localhost:8501/_stcore/health || exit 1
           echo "Dashboard health check passed"

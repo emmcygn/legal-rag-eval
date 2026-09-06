@@ -44,7 +44,7 @@ Fixture documents live in `src/legal_rag_eval/fixtures/documents/`. To add one:
 1. Add a UTF-8 `.txt` file.
 2. Add any required `Jurisdiction` or `DocumentType` value in `src/legal_rag_eval/models.py`.
 3. Register the filename in `_FIXTURE_METADATA` in `src/legal_rag_eval/fixtures/__init__.py`.
-4. Seed a gold annotation with `python scripts/build_gold.py`, then **correct it by hand against the document text** and log every correction in [`gold/CHANGES.md`](gold/CHANGES.md). The seeder is a first pass, not the annotation; see [`gold/README.md`](gold/README.md) and [`gold/SCHEMA.md`](gold/SCHEMA.md).
+4. Seed a gold annotation with `python tools/build_gold.py`, then **correct it by hand against the document text** and log every correction in [`gold/CHANGES.md`](gold/CHANGES.md). The seeder is a first pass, not the annotation; see [`gold/README.md`](gold/README.md) and [`gold/SCHEMA.md`](gold/SCHEMA.md).
 5. Add a matching `queries/<document_id>.yaml` file with at least six queries.
 
 `document_id` must match the fixture filename without `.txt`. Each query needs a unique `id`, query `text`, a `category`, and at least one `relevant_clauses` entry naming a gold clause `identifier` with a relevance grade, at least one of which must be grade 3. Query identifiers are resolved against `gold/`, so a query cannot reference a clause that does not exist. `tests/test_query_annotations.py` gates the set in CI: it rejects duplicate ids, unknown categories, unresolvable identifiers, queries whose relevant spans cover more than 25% of a document's characters or 30% of its clauses, and queries whose own text leaks the answer's identifier. The complete YAML shape is documented in [`queries/schema.md`](queries/schema.md).

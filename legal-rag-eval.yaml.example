@@ -1,69 +1,149 @@
-# legal-rag-eval Benchmark Configuration
-# Copy to legal-rag-eval.yaml and customize as needed. The CLI reads this file
-# (or the one passed to --config), so every value here actually takes effect;
-# the run's resolved configuration is written into the exported results JSON.
+# legal-rag-eval configuration
+#
+#   cp legal-rag-eval.yaml.example legal-rag-eval.yaml
+#
+# The CLI reads `legal-rag-eval.yaml` from the working directory, or the file passed to
+# `--config PATH`. Every value below actually takes effect; the run's resolved
+# configuration is written into the exported results JSON, so a published number can be
+# traced to the settings that produced it.
+#
+# ---------------------------------------------------------------------------
+# Precedence, highest first
+# ---------------------------------------------------------------------------
+#
+#   1. CLI flags          --strategies, --models, --top-k, --min-overlap-chars,
+#                         --output-dir, --seed, --enable-voyage, --corpus, --output
+#   2. Environment        LEGAL_RAG_EVAL_<FIELD>, uppercase, comma-separated for lists
+#                         (e.g. LEGAL_RAG_EVAL_TOP_K=20)
+#   3. This file          legal-rag-eval.yaml, or --config PATH
+#   4. Defaults           legal_rag_eval/config.py and
+#                         legal_rag_eval/evidence/benchmark.py
+#
+# A setting named at a higher level replaces the same setting from a lower one; nothing
+# is merged key-by-key within a list. The pre-rename `SCAFFOLDER_*` environment prefix is
+# still read for one release and warns when it is used; a `LEGAL_RAG_EVAL_*` value always
+# wins over the old name.
+#
+# ---------------------------------------------------------------------------
+# Layout
+# ---------------------------------------------------------------------------
+#
+# The two benchmarks have disjoint settings and each rejects keys it does not recognise,
+# so this file has one section per benchmark and each loader reads only its own. Delete
+# a section you are not configuring; its defaults still apply. A file with no section
+# headers at all is read as the older single-benchmark layout, for the benefit of
+# configs written before the two examples were merged.
 
-# Chunking strategies to compare.
-#   rcts_1024 is the size-matched control: LexiChunk emits ~790-char chunks, so
-#   comparing it only against rcts_512 measures chunk size as much as anything else.
-strategies:
-  - lexichunk
-  - lexichunk_contextual
-  - rcts_512
-  - rcts_1024
-  - sentence_split
-  - fixed_size
 
-# Embedding models for retrieval evaluation
-# Local models (no API key needed):
-#   - all-MiniLM-L6-v2 (fast, 384 dims)
-#   - bge-base-en-v1.5 (768 dims, slower, larger download)
-# Paid models (requires API key):
-#   - voyage-law-2 (legal-specialised, requires VOYAGE_API_KEY)
-embedding_models:
-  - all-MiniLM-L6-v2
-  # - bge-base-en-v1.5
-  # - voyage-law-2
+# ===========================================================================
+# evidence: the anchored-evidence benchmark
+#   legal-rag-eval benchmark            (make benchmark)
+#
+# Deterministic, offline, seconds. Every strategy ranks candidate source spans with the
+# same lexical ranker and fills the same context budget; the score is how much of the
+# independently annotated evidence lands inside that budget.
+# ===========================================================================
+evidence:
+  # The anchored-evidence dataset. Ships inside the package, so this default works from
+  # an installed wheel as well as a checkout.
+  dataset_path: src/legal_rag_eval/data/synthetic_contracts_v1.json
+  output_path: results/evidence-benchmark.json
 
-# Voyage AI settings
-# Set VOYAGE_API_KEY env var to enable automatically
-enable_voyage: false
+  # Only these three strategies exist for this benchmark. LexiChunk is scored
+  # boundary-only: its generated headers and expansions get no ranking text and no
+  # budget.
+  strategies:
+    - lexichunk
+    - token_window
+    - rcts
 
-# Retrieval evaluation parameters
-k_values: [1, 3, 5, 10]
-top_k: 10
+  # How many candidate spans the ranker considers, and how many tokens of context the
+  # selected spans may fill. The budget is shared by every strategy, which equalises the
+  # selection budget across them.
+  retrieval_depth: 5
+  context_budget_tokens: 128
 
-# Relevance judgement: a retrieved chunk counts as relevant when its span in the
-# document overlaps a gold-annotated relevant clause span by at least this many
-# characters.
-relevance_min_overlap_chars: 100
+  # Baseline parameters. Changing these changes the baseline, so the exported results
+  # record the values that ran.
+  token_window_tokens: 64
+  token_window_overlap: 8
+  rcts_chunk_chars: 512
+  rcts_chunk_overlap: 50
+  lexichunk_max_tokens: 512
 
-# Statistics
-significance_level: 0.05
-bootstrap_resamples: 10000
-seed: 42
 
-# Output formats: cli, json, html
-output_formats:
-  - cli
-  - json
+# ===========================================================================
+# gold: the gold-scored structural and retrieval benchmarks
+#   legal-rag-eval benchmark-structural   (make benchmark-structural)
+#   legal-rag-eval benchmark-embed        (make benchmark-embed)
+#   legal-rag-eval benchmark-legacy       (make benchmark-legacy)
+#   legal-rag-eval report                 (make report)
+#
+# Scored by character-span overlap against the hand-checked annotations in gold/.
+# Structural runs offline in seconds; benchmark-embed downloads model weights.
+# ===========================================================================
+gold:
+  # Chunking strategies to compare.
+  #   rcts_1024 is the size-matched control: LexiChunk emits ~790-char chunks, so
+  #   comparing it only against rcts_512 measures chunk size as much as anything else.
+  strategies:
+    - lexichunk
+    - lexichunk_contextual
+    - rcts_512
+    - rcts_1024
+    - sentence_split
+    - fixed_size
 
-# Directories (relative to repo root)
-fixture_dir: src/legal_rag_eval/fixtures/documents
-query_dir: queries
-gold_dir: gold
-output_dir: results
+  # Embedding models for retrieval evaluation.
+  # Local models (no API key needed):
+  #   - all-MiniLM-L6-v2 (fast, 384 dims)
+  #   - bge-base-en-v1.5 (768 dims, slower, larger download)
+  # Paid models (requires an API key):
+  #   - voyage-law-2 (legal-specialised, requires VOYAGE_API_KEY)
+  embedding_models:
+    - all-MiniLM-L6-v2
+    # - bge-base-en-v1.5
+    # - voyage-law-2
 
-# Embedding cache (set use_cache: false to disable)
-use_cache: true
-cache_dir: .cache/embeddings
+  # Voyage AI needs both this opt-in (or --enable-voyage) and VOYAGE_API_KEY. An
+  # exported key on its own never causes a paid API call.
+  enable_voyage: false
 
-# Chunking parameters for the baselines. Changing these changes the strategy,
-# so the exported results record the values that ran.
-fixed_chunk_size: 512
-fixed_chunk_overlap: 0        # FixedSizeStrategy implements no overlap
-rcts_512_chunk_size: 512
-rcts_512_chunk_overlap: 50
-rcts_1024_chunk_size: 1024
-rcts_1024_chunk_overlap: 100
-sentence_min_chunk_size: 100
+  # Retrieval evaluation parameters
+  k_values: [1, 3, 5, 10]
+  top_k: 10
+
+  # Relevance judgement: a retrieved chunk counts as relevant when its span in the
+  # document overlaps a gold-annotated relevant clause span by at least this many
+  # characters.
+  relevance_min_overlap_chars: 100
+
+  # Statistics
+  significance_level: 0.05
+  bootstrap_resamples: 10000
+  seed: 42
+
+  # Output formats: cli, json, html
+  output_formats:
+    - cli
+    - json
+
+  # Directories (relative to repo root)
+  fixture_dir: src/legal_rag_eval/fixtures/documents
+  query_dir: queries
+  gold_dir: gold
+  output_dir: results
+
+  # Embedding cache (set use_cache: false to disable)
+  use_cache: true
+  cache_dir: .cache/embeddings
+
+  # Chunking parameters for the baselines. Changing these changes the strategy, so the
+  # exported results record the values that ran.
+  fixed_chunk_size: 512
+  fixed_chunk_overlap: 0        # FixedSizeStrategy implements no overlap
+  rcts_512_chunk_size: 512
+  rcts_512_chunk_overlap: 50
+  rcts_1024_chunk_size: 1024
+  rcts_1024_chunk_overlap: 100
+  sentence_min_chunk_size: 100

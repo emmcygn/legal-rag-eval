@@ -690,9 +690,23 @@ three test modules. The five tests that load a real sentence-transformer model s
 cp legal-rag-eval.yaml.example legal-rag-eval.yaml
 ```
 
-The CLI reads this file (or `--config PATH`), applies `LEGAL_RAG_EVAL_*` environment overrides
-on top, then CLI flags, and writes the resolved configuration into the results JSON. Every
-documented key takes effect.
+One file configures all three benchmarks. It has a section per benchmark — `evidence:`
+for the anchored-evidence benchmark, `gold:` for the structural and retrieval ones —
+because the two have disjoint key sets and each rejects keys it does not recognise. Each
+loader reads only its own section and ignores the other's. Every documented key takes
+effect, and the resolved configuration is written into the results JSON.
+
+**Precedence, highest first:**
+
+| | Source | Example |
+|---|---|---|
+| 1 | CLI flags | `--top-k 20` |
+| 2 | Environment | `LEGAL_RAG_EVAL_TOP_K=20` |
+| 3 | Config file | `legal-rag-eval.yaml`, or `--config PATH` |
+| 4 | Defaults | `legal_rag_eval/config.py`, `legal_rag_eval/evidence/benchmark.py` |
+
+A setting named at a higher level replaces the same setting from a lower one; lists are
+replaced whole, never merged key by key.
 
 ```bash
 export LEGAL_RAG_EVAL_STRATEGIES="lexichunk,rcts_1024"
@@ -700,6 +714,9 @@ export LEGAL_RAG_EVAL_TOP_K=20
 export LEGAL_RAG_EVAL_RELEVANCE_MIN_OVERLAP_CHARS=150
 export VOYAGE_API_KEY=your-key-here    # enables voyage-law-2
 ```
+
+The pre-rename `SCAFFOLDER_*` prefix is still read for one release and warns when used; a
+`LEGAL_RAG_EVAL_*` value always wins over the old name.
 
 See [EXTENSIBILITY.md](EXTENSIBILITY.md) for extension guides.
 

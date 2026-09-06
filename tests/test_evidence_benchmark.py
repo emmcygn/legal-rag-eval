@@ -272,6 +272,69 @@ def test_config_loads_yaml_and_rejects_unknown_keys(tmp_path: Path) -> None:
         raise AssertionError("unknown config key was accepted")
 
 
+MERGED_CONFIG = """\
+evidence:
+  strategies: [token_window]
+  context_budget_tokens: 44
+gold:
+  top_k: 3
+  strategies: [lexichunk]
+"""
+
+
+def test_merged_config_reads_only_its_own_section(tmp_path: Path) -> None:
+    """One file carries both benchmarks; each loader ignores the other's keys."""
+    config_path = tmp_path / "legal-rag-eval.yaml"
+    config_path.write_text(MERGED_CONFIG, encoding="utf-8")
+
+    config = EvidenceBenchmarkConfig.load(config_path)
+
+    assert config.strategies == ("token_window",)
+    assert config.context_budget_tokens == 44
+    # `top_k` belongs to the gold section and is not an evidence key at all.
+    assert not hasattr(config, "top_k")
+
+
+def test_merged_config_missing_evidence_section_uses_defaults(tmp_path: Path) -> None:
+    config_path = tmp_path / "legal-rag-eval.yaml"
+    config_path.write_text("gold:\n  top_k: 3\n", encoding="utf-8")
+
+    config = EvidenceBenchmarkConfig.load(config_path)
+
+    assert config == EvidenceBenchmarkConfig()
+
+
+def test_merged_config_rejects_sections_mixed_with_loose_keys(tmp_path: Path) -> None:
+    config_path = tmp_path / "legal-rag-eval.yaml"
+    config_path.write_text("evidence:\n  retrieval_depth: 3\nretrieval_depth: 9\n", "utf-8")
+
+    try:
+        EvidenceBenchmarkConfig.load(config_path)
+    except ValueError as error:
+        assert "mixes layouts" in str(error)
+    else:
+        raise AssertionError("a file mixing sections and loose keys was accepted")
+
+
+def test_default_config_file_is_read_when_present(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    (tmp_path / "legal-rag-eval.yaml").write_text(MERGED_CONFIG, encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+
+    config = EvidenceBenchmarkConfig.load()
+
+    assert config.context_budget_tokens == 44
+
+
+def test_no_default_config_file_means_defaults(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.chdir(tmp_path)
+
+    assert EvidenceBenchmarkConfig.load() == EvidenceBenchmarkConfig()
+
+
 def test_config_rejects_falsey_nonmapping_yaml_roots(tmp_path: Path) -> None:
     config_path = tmp_path / "benchmark.yaml"
 

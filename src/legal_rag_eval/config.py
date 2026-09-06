@@ -57,6 +57,51 @@ def env_override_suffixes() -> set[str]:
     return suffixes
 
 
+#: The config file the CLI reads when ``--config`` is not given.
+DEFAULT_CONFIG_FILENAME = "legal-rag-eval.yaml"
+
+#: Section holding the anchored-evidence benchmark's keys (``benchmark``).
+EVIDENCE_SECTION = "evidence"
+
+#: Section holding the gold-scored benchmarks' keys (``benchmark-structural``,
+#: ``benchmark-embed``, ``benchmark-legacy``, ``report``).
+GOLD_SECTION = "gold"
+
+CONFIG_SECTIONS = frozenset({EVIDENCE_SECTION, GOLD_SECTION})
+
+
+def select_config_section(data: dict[str, Any], section: str, *, source: str) -> dict[str, Any]:
+    """Pick out the part of a parsed config file that ``section``'s loader owns.
+
+    The two benchmarks have disjoint key sets and each rejects keys it does not
+    recognise, which is why they used to need two files. A merged config file carries
+    one top-level section per benchmark, so both loaders read the same file and each
+    ignores the other's keys.
+
+    A file with no section headers at all is the older single-benchmark layout and is
+    read flat, exactly as before. Mixing the two -- section headers *and* loose keys
+    beside them -- is rejected rather than guessed at.
+    """
+    if not data:
+        return {}
+    present = CONFIG_SECTIONS & set(data)
+    if not present:
+        return dict(data)
+    stray = set(data) - CONFIG_SECTIONS
+    if stray:
+        raise ValueError(
+            f"{source} mixes layouts: it has section(s) {sorted(present)} and also "
+            f"top-level keys {sorted(stray)}. Move those keys under a section, or drop "
+            f"the sections and keep the file flat."
+        )
+    body = data.get(section)
+    if body is None:
+        return {}
+    if not isinstance(body, dict):
+        raise ValueError(f"{source}: the `{section}:` section must be a mapping.")
+    return dict(body)
+
+
 VALID_STRATEGIES = frozenset(
     {
         "lexichunk",
@@ -219,15 +264,21 @@ class BenchmarkConfig:
     def from_yaml(cls, path: str | Path) -> BenchmarkConfig:
         """Load config from a YAML file, merging with defaults.
 
-        Only keys that exist as dataclass fields are accepted.
-        Unknown keys raise ConfigError.
+        Reads the file's ``gold:`` section when it has one, and the whole file when it
+        does not -- see :func:`select_config_section`. Only keys that exist as dataclass
+        fields are accepted; unknown keys raise :class:`ConfigError`.
         """
         path = Path(path)
         if not path.exists():
             raise ConfigError(f"Config file not found: {path}")
 
         with open(path) as f:
-            data: dict[str, Any] = yaml.safe_load(f) or {}
+            raw: dict[str, Any] = yaml.safe_load(f) or {}
+
+        try:
+            data = select_config_section(raw, GOLD_SECTION, source=str(path))
+        except ValueError as exc:
+            raise ConfigError(str(exc)) from exc
 
         valid_fields = set(cls.__dataclass_fields__.keys())
         unknown_keys = set(data.keys()) - valid_fields
@@ -320,7 +371,7 @@ class BenchmarkConfig:
         if config_path:
             config = cls.from_yaml(config_path)
         else:
-            default_path = Path("legal-rag-eval.yaml")
+            default_path = Path(DEFAULT_CONFIG_FILENAME)
             config = cls.from_yaml(default_path) if default_path.exists() else cls()
 
         # Apply env overrides on top

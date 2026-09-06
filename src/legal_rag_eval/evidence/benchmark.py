@@ -15,6 +15,11 @@ from typing import TYPE_CHECKING, cast
 import yaml
 
 from legal_rag_eval import __version__
+from legal_rag_eval.config import (
+    DEFAULT_CONFIG_FILENAME,
+    EVIDENCE_SECTION,
+    select_config_section,
+)
 from legal_rag_eval.evidence.lexical import RankedCandidate, SpanCandidate, rank_lexical
 from legal_rag_eval.evidence.schema import (
     DatasetError,
@@ -60,9 +65,18 @@ class EvidenceBenchmarkConfig:
         dataset_path: Path | None = None,
         output_path: Path | None = None,
     ) -> EvidenceBenchmarkConfig:
-        """Load resolved benchmark settings from YAML plus explicit CLI overrides."""
+        """Load resolved benchmark settings from YAML plus explicit CLI overrides.
+
+        With no ``config_path``, ``legal-rag-eval.yaml`` in the working directory is
+        used if it exists. Either way the file's ``evidence:`` section is read when it
+        has one, and the whole file when it does not, so one config file can carry both
+        benchmarks' settings without either loader tripping over the other's keys.
+        """
         values: dict[str, object] = {}
         base_directory = Path.cwd()
+        if config_path is None:
+            default_path = Path(DEFAULT_CONFIG_FILENAME)
+            config_path = default_path if default_path.is_file() else None
         if config_path is not None:
             resolved_config = config_path.resolve()
             try:
@@ -73,11 +87,12 @@ class EvidenceBenchmarkConfig:
                 loaded = {}
             if not isinstance(loaded, dict):
                 raise ValueError("benchmark config root must be an object")
+            section = select_config_section(loaded, EVIDENCE_SECTION, source=str(resolved_config))
             allowed = set(cls.__dataclass_fields__)
-            unknown = set(loaded) - allowed
+            unknown = set(section) - allowed
             if unknown:
                 raise ValueError(f"unknown evidence benchmark config keys: {sorted(unknown)}")
-            values.update(loaded)
+            values.update(section)
             base_directory = resolved_config.parent
 
         if "strategies" in values:

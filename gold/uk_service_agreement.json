@@ -1,0 +1,1252 @@
+{
+  "document_id": "uk_service_agreement",
+  "source_file": "src/scaffolder/fixtures/documents/uk_service_agreement.txt",
+  "text_sha256": "3676cfa0ce34b08675a537847b4c955266c0aebbbe0ed4ab5a573422a64a9ef9",
+  "n_chars": 25187,
+  "numbering_style": "uk_decimal",
+  "clauses": [
+    {
+      "identifier": "1",
+      "level": 1,
+      "parent": null,
+      "char_start": 852,
+      "char_end": 889,
+      "is_top_level": true,
+      "heading": "Definitions and interpretation"
+    },
+    {
+      "identifier": "1.1",
+      "level": 2,
+      "parent": "1",
+      "char_start": 889,
+      "char_end": 4486,
+      "is_top_level": false,
+      "heading": "In this Agreement, the following terms shall have the meanings set out below"
+    },
+    {
+      "identifier": "1.2",
+      "level": 2,
+      "parent": "1",
+      "char_start": 4486,
+      "char_end": 4555,
+      "is_top_level": false,
+      "heading": "In this Agreement, unless the context otherwise requires"
+    },
+    {
+      "identifier": "1.2(a)",
+      "level": 3,
+      "parent": "1.2",
+      "char_start": 4555,
+      "char_end": 4690,
+      "is_top_level": false,
+      "heading": "references to clauses, schedules and paragraphs are to clauses of, schedules to and paragraphs of this Agreement;"
+    },
+    {
+      "identifier": "1.2(b)",
+      "level": 3,
+      "parent": "1.2",
+      "char_start": 4690,
+      "char_end": 4817,
+      "is_top_level": false,
+      "heading": "the singular includes the plural and vice versa and words importing any gender include all other genders;"
+    },
+    {
+      "identifier": "1.2(c)",
+      "level": 3,
+      "parent": "1.2",
+      "char_start": 4817,
+      "char_end": 5107,
+      "is_top_level": false,
+      "heading": "a reference to a statute or statutory provision includes any subordinate legislation made under that statute or statutor"
+    },
+    {
+      "identifier": "1.2(d)",
+      "level": 3,
+      "parent": "1.2",
+      "char_start": 5107,
+      "char_end": 5384,
+      "is_top_level": false,
+      "heading": "a reference to a \"person\" includes any individual, company, partnership, joint venture, association, corporation, uninco"
+    },
+    {
+      "identifier": "1.2(e)",
+      "level": 3,
+      "parent": "1.2",
+      "char_start": 5384,
+      "char_end": 5612,
+      "is_top_level": false,
+      "heading": "any phrase introduced by the terms \"including\", \"include\", \"in particular\" or any similar expression shall be construed "
+    },
+    {
+      "identifier": "2",
+      "level": 1,
+      "parent": null,
+      "char_start": 5612,
+      "char_end": 5627,
+      "is_top_level": true,
+      "heading": "Services"
+    },
+    {
+      "identifier": "2.1",
+      "level": 2,
+      "parent": "2",
+      "char_start": 5627,
+      "char_end": 5893,
+      "is_top_level": false,
+      "heading": "With effect from the Commencement Date and throughout the Term, the Supplier shall provide the Services to the Client in"
+    },
+    {
+      "identifier": "2.2",
+      "level": 2,
+      "parent": "2",
+      "char_start": 5893,
+      "char_end": 6103,
+      "is_top_level": false,
+      "heading": "The Supplier shall provide the Services with reasonable care and skill and in accordance with good industry practice app"
+    },
+    {
+      "identifier": "2.3",
+      "level": 2,
+      "parent": "2",
+      "char_start": 6103,
+      "char_end": 6506,
+      "is_top_level": false,
+      "heading": "The Supplier shall procure that sufficient personnel with appropriate qualifications, skills and experience are assigned"
+    },
+    {
+      "identifier": "2.4",
+      "level": 2,
+      "parent": "2",
+      "char_start": 6506,
+      "char_end": 6771,
+      "is_top_level": false,
+      "heading": "The Supplier shall comply with all applicable laws and regulations in the performance of the Services, including without"
+    },
+    {
+      "identifier": "2.5",
+      "level": 2,
+      "parent": "2",
+      "char_start": 6771,
+      "char_end": 6800,
+      "is_top_level": false,
+      "heading": "The Client shall"
+    },
+    {
+      "identifier": "2.5(a)",
+      "level": 3,
+      "parent": "2.5",
+      "char_start": 6800,
+      "char_end": 6969,
+      "is_top_level": false,
+      "heading": "provide the Supplier with such information, materials, access and cooperation as the Supplier reasonably requires in ord"
+    },
+    {
+      "identifier": "2.5(b)",
+      "level": 3,
+      "parent": "2.5",
+      "char_start": 6969,
+      "char_end": 7109,
+      "is_top_level": false,
+      "heading": "ensure that all information provided to the Supplier is accurate, complete and not misleading in any material respect;"
+    },
+    {
+      "identifier": "2.5(c)",
+      "level": 3,
+      "parent": "2.5",
+      "char_start": 7109,
+      "char_end": 7322,
+      "is_top_level": false,
+      "heading": "be responsible for the acts and omissions of the Authorised Users in relation to the Services and for ensuring that the "
+    },
+    {
+      "identifier": "2.5(d)",
+      "level": 3,
+      "parent": "2.5",
+      "char_start": 7322,
+      "char_end": 7458,
+      "is_top_level": false,
+      "heading": "promptly notify the Supplier of any changes in the Client's requirements that may affect the provision of the Services."
+    },
+    {
+      "identifier": "2.6",
+      "level": 2,
+      "parent": "2",
+      "char_start": 7458,
+      "char_end": 7701,
+      "is_top_level": false,
+      "heading": "The Supplier shall not be responsible for any failure or delay in the performance of the Services to the extent that suc"
+    },
+    {
+      "identifier": "2.7",
+      "level": 2,
+      "parent": "2",
+      "char_start": 7701,
+      "char_end": 8165,
+      "is_top_level": false,
+      "heading": "The parties may agree additional services by way of a Statement of Work in the form set out in Schedule 4, executed by a"
+    },
+    {
+      "identifier": "3",
+      "level": 1,
+      "parent": null,
+      "char_start": 8165,
+      "char_end": 8188,
+      "is_top_level": true,
+      "heading": "Fees and payment"
+    },
+    {
+      "identifier": "3.1",
+      "level": 2,
+      "parent": "3",
+      "char_start": 8188,
+      "char_end": 8382,
+      "is_top_level": false,
+      "heading": "In consideration of the provision of the Services, the Client shall pay the Fees to the Supplier in accordance with the "
+    },
+    {
+      "identifier": "3.2",
+      "level": 2,
+      "parent": "3",
+      "char_start": 8382,
+      "char_end": 8624,
+      "is_top_level": false,
+      "heading": "The Supplier shall submit invoices to the Client monthly in arrears (or at such other intervals as agreed in Schedule 2)"
+    },
+    {
+      "identifier": "3.3",
+      "level": 2,
+      "parent": "3",
+      "char_start": 8624,
+      "char_end": 8753,
+      "is_top_level": false,
+      "heading": "The Client shall pay each undisputed invoice within thirty (30) days of the date of receipt (the \"Payment Due Date\")."
+    },
+    {
+      "identifier": "3.4",
+      "level": 2,
+      "parent": "3",
+      "char_start": 8753,
+      "char_end": 8911,
+      "is_top_level": false,
+      "heading": "If the Client fails to pay any invoice by the Payment Due Date, the Supplier may, without prejudice to any other right o"
+    },
+    {
+      "identifier": "3.4(a)",
+      "level": 3,
+      "parent": "3.4",
+      "char_start": 8911,
+      "char_end": 9208,
+      "is_top_level": false,
+      "heading": "charge interest on the overdue amount at the rate of four percent (4%) per annum above the base rate of the Bank of Engl"
+    },
+    {
+      "identifier": "3.4(b)",
+      "level": 3,
+      "parent": "3.4",
+      "char_start": 9208,
+      "char_end": 9379,
+      "is_top_level": false,
+      "heading": "after giving the Client not less than fifteen (15) Business Days' written notice, suspend the provision of the Services "
+    },
+    {
+      "identifier": "3.5",
+      "level": 2,
+      "parent": "3",
+      "char_start": 9379,
+      "char_end": 9675,
+      "is_top_level": false,
+      "heading": "All Fees quoted and payable under this Agreement are exclusive of value added tax (VAT) or any other applicable sales or"
+    },
+    {
+      "identifier": "3.6",
+      "level": 2,
+      "parent": "3",
+      "char_start": 9675,
+      "char_end": 9768,
+      "is_top_level": false,
+      "heading": "If the Client disputes in good faith any element of an invoice, the Client shall"
+    },
+    {
+      "identifier": "3.6(a)",
+      "level": 3,
+      "parent": "3.6",
+      "char_start": 9768,
+      "char_end": 9847,
+      "is_top_level": false,
+      "heading": "pay the undisputed portion of such invoice by the Payment Due Date;"
+    },
+    {
+      "identifier": "3.6(b)",
+      "level": 3,
+      "parent": "3.6",
+      "char_start": 9847,
+      "char_end": 9991,
+      "is_top_level": false,
+      "heading": "notify the Supplier in writing of the grounds for the dispute within ten (10) Business Days of receipt of the invoice; a"
+    },
+    {
+      "identifier": "3.6(c)",
+      "level": 3,
+      "parent": "3.6",
+      "char_start": 9991,
+      "char_end": 10078,
+      "is_top_level": false,
+      "heading": "co-operate in good faith with the Supplier to resolve the dispute expeditiously."
+    },
+    {
+      "identifier": "3.7",
+      "level": 2,
+      "parent": "3",
+      "char_start": 10078,
+      "char_end": 10483,
+      "is_top_level": false,
+      "heading": "The Supplier shall be entitled to review and increase the Fees annually on each anniversary of the Commencement Date by "
+    },
+    {
+      "identifier": "4",
+      "level": 1,
+      "parent": null,
+      "char_start": 10483,
+      "char_end": 10505,
+      "is_top_level": true,
+      "heading": "Confidentiality"
+    },
+    {
+      "identifier": "4.1",
+      "level": 2,
+      "parent": "4",
+      "char_start": 10505,
+      "char_end": 10758,
+      "is_top_level": false,
+      "heading": "Each party undertakes to keep confidential and not to disclose to any third party any Confidential Information of the ot"
+    },
+    {
+      "identifier": "4.2",
+      "level": 2,
+      "parent": "4",
+      "char_start": 10758,
+      "char_end": 10837,
+      "is_top_level": false,
+      "heading": "Each party may disclose the other party's Confidential Information"
+    },
+    {
+      "identifier": "4.2(a)",
+      "level": 3,
+      "parent": "4.2",
+      "char_start": 10837,
+      "char_end": 11178,
+      "is_top_level": false,
+      "heading": "to its employees, officers, directors, Affiliates, agents or professional advisers who have a need to know the Confident"
+    },
+    {
+      "identifier": "4.2(b)",
+      "level": 3,
+      "parent": "4.2",
+      "char_start": 11178,
+      "char_end": 11611,
+      "is_top_level": false,
+      "heading": "to the extent required by applicable law, any governmental or regulatory authority or any court or other tribunal of com"
+    },
+    {
+      "identifier": "4.3",
+      "level": 2,
+      "parent": "4",
+      "char_start": 11611,
+      "char_end": 11708,
+      "is_top_level": false,
+      "heading": "The obligations of confidentiality in clause 4.1 shall not apply to information that"
+    },
+    {
+      "identifier": "4.3(a)",
+      "level": 3,
+      "parent": "4.3",
+      "char_start": 11708,
+      "char_end": 11833,
+      "is_top_level": false,
+      "heading": "is or becomes generally available to the public other than as a result of any breach of this Agreement;"
+    },
+    {
+      "identifier": "4.3(b)",
+      "level": 3,
+      "parent": "4.3",
+      "char_start": 11833,
+      "char_end": 11999,
+      "is_top_level": false,
+      "heading": "was already known to the Receiving Party prior to disclosure by the Disclosing Party, as evidenced by written records pr"
+    },
+    {
+      "identifier": "4.3(c)",
+      "level": 3,
+      "parent": "4.3",
+      "char_start": 11999,
+      "char_end": 12161,
+      "is_top_level": false,
+      "heading": "is received by the Receiving Party from a third party who is not under any obligation of confidentiality in relation to "
+    },
+    {
+      "identifier": "4.3(d)",
+      "level": 3,
+      "parent": "4.3",
+      "char_start": 12161,
+      "char_end": 12307,
+      "is_top_level": false,
+      "heading": "is independently developed by the Receiving Party without use of or reference to the Disclosing Party's Confidential Inf"
+    },
+    {
+      "identifier": "4.4",
+      "level": 2,
+      "parent": "4",
+      "char_start": 12307,
+      "char_end": 12654,
+      "is_top_level": false,
+      "heading": "Each party shall take all reasonable steps to protect the other party's Confidential Information and prevent its unautho"
+    },
+    {
+      "identifier": "4.5",
+      "level": 2,
+      "parent": "4",
+      "char_start": 12654,
+      "char_end": 12787,
+      "is_top_level": false,
+      "heading": "The provisions of this clause 4 shall survive the expiry or termination of this Agreement for a period of five (5) years"
+    },
+    {
+      "identifier": "5",
+      "level": 1,
+      "parent": null,
+      "char_start": 12787,
+      "char_end": 12817,
+      "is_top_level": true,
+      "heading": "Limitation of liability"
+    },
+    {
+      "identifier": "5.1",
+      "level": 2,
+      "parent": "5",
+      "char_start": 12817,
+      "char_end": 12907,
+      "is_top_level": false,
+      "heading": "Nothing in this Agreement shall limit or exclude either party's liability for"
+    },
+    {
+      "identifier": "5.1(a)",
+      "level": 3,
+      "parent": "5.1",
+      "char_start": 12907,
+      "char_end": 13040,
+      "is_top_level": false,
+      "heading": "death or personal injury caused by its negligence or the negligence of its employees, agents or subcontractors;"
+    },
+    {
+      "identifier": "5.1(b)",
+      "level": 3,
+      "parent": "5.1",
+      "char_start": 13040,
+      "char_end": 13093,
+      "is_top_level": false,
+      "heading": "fraud or fraudulent misrepresentation; or"
+    },
+    {
+      "identifier": "5.1(c)",
+      "level": 3,
+      "parent": "5.1",
+      "char_start": 13093,
+      "char_end": 13182,
+      "is_top_level": false,
+      "heading": "any other liability that cannot be limited or excluded as a matter of English law."
+    },
+    {
+      "identifier": "5.2",
+      "level": 2,
+      "parent": "5",
+      "char_start": 13182,
+      "char_end": 13411,
+      "is_top_level": false,
+      "heading": "Subject to clause 5.1, neither party shall be liable to the other under or in connection with this Agreement, whether in"
+    },
+    {
+      "identifier": "5.2(a)",
+      "level": 3,
+      "parent": "5.2",
+      "char_start": 13411,
+      "char_end": 13458,
+      "is_top_level": false,
+      "heading": "loss of profits, revenue or income;"
+    },
+    {
+      "identifier": "5.2(b)",
+      "level": 3,
+      "parent": "5.2",
+      "char_start": 13458,
+      "char_end": 13500,
+      "is_top_level": false,
+      "heading": "loss of business or contracts;"
+    },
+    {
+      "identifier": "5.2(c)",
+      "level": 3,
+      "parent": "5.2",
+      "char_start": 13500,
+      "char_end": 13540,
+      "is_top_level": false,
+      "heading": "loss of anticipated savings;"
+    },
+    {
+      "identifier": "5.2(d)",
+      "level": 3,
+      "parent": "5.2",
+      "char_start": 13540,
+      "char_end": 13583,
+      "is_top_level": false,
+      "heading": "loss of goodwill or reputation;"
+    },
+    {
+      "identifier": "5.2(e)",
+      "level": 3,
+      "parent": "5.2",
+      "char_start": 13583,
+      "char_end": 13640,
+      "is_top_level": false,
+      "heading": "loss or corruption of data or information; or"
+    },
+    {
+      "identifier": "5.2(f)",
+      "level": 3,
+      "parent": "5.2",
+      "char_start": 13640,
+      "char_end": 13829,
+      "is_top_level": false,
+      "heading": "any indirect or consequential loss,"
+    },
+    {
+      "identifier": "5.3",
+      "level": 2,
+      "parent": "5",
+      "char_start": 13829,
+      "char_end": 14317,
+      "is_top_level": false,
+      "heading": "Subject to clauses 5.1 and 5.2, each party's total aggregate liability to the other under or in connection with this Agr"
+    },
+    {
+      "identifier": "5.4",
+      "level": 2,
+      "parent": "5",
+      "char_start": 14317,
+      "char_end": 14578,
+      "is_top_level": false,
+      "heading": "In no event shall the Supplier's liability for any claims arising in connection with this Agreement exceed, in the aggre"
+    },
+    {
+      "identifier": "5.5",
+      "level": 2,
+      "parent": "5",
+      "char_start": 14578,
+      "char_end": 14855,
+      "is_top_level": false,
+      "heading": "The Client acknowledges that the Fees have been calculated on the basis of, and reflect, the allocation of risk set out "
+    },
+    {
+      "identifier": "6",
+      "level": 1,
+      "parent": null,
+      "char_start": 14855,
+      "char_end": 14882,
+      "is_top_level": true,
+      "heading": "Term and termination"
+    },
+    {
+      "identifier": "6.1",
+      "level": 2,
+      "parent": "6",
+      "char_start": 14882,
+      "char_end": 15093,
+      "is_top_level": false,
+      "heading": "This Agreement shall commence on the Commencement Date and shall continue for an initial period of two (2) years (the \"I"
+    },
+    {
+      "identifier": "6.2",
+      "level": 2,
+      "parent": "6",
+      "char_start": 15093,
+      "char_end": 15441,
+      "is_top_level": false,
+      "heading": "Following the expiry of the Initial Term, this Agreement shall automatically renew for successive periods of one (1) yea"
+    },
+    {
+      "identifier": "6.3",
+      "level": 2,
+      "parent": "6",
+      "char_start": 15441,
+      "char_end": 15569,
+      "is_top_level": false,
+      "heading": "Either party may terminate this Agreement with immediate effect by giving written notice to the other party if"
+    },
+    {
+      "identifier": "6.3(a)",
+      "level": 3,
+      "parent": "6.3",
+      "char_start": 15569,
+      "char_end": 15864,
+      "is_top_level": false,
+      "heading": "the other party commits a material breach of any term of this Agreement and (where such breach is capable of remedy) fai"
+    },
+    {
+      "identifier": "6.3(b)",
+      "level": 3,
+      "parent": "6.3",
+      "char_start": 15864,
+      "char_end": 16192,
+      "is_top_level": false,
+      "heading": "the other party becomes insolvent or is unable to pay its debts as they fall due within the meaning of section 123 of th"
+    },
+    {
+      "identifier": "6.3(c)",
+      "level": 3,
+      "parent": "6.3",
+      "char_start": 16192,
+      "char_end": 16352,
+      "is_top_level": false,
+      "heading": "the other party undergoes a change of control, where \"change of control\" has the meaning given in section 1124 of the Co"
+    },
+    {
+      "identifier": "6.4",
+      "level": 2,
+      "parent": "6",
+      "char_start": 16352,
+      "char_end": 16527,
+      "is_top_level": false,
+      "heading": "The Supplier may terminate this Agreement in accordance with clause 3.4(b) above following the Client's failure to pay u"
+    },
+    {
+      "identifier": "6.5",
+      "level": 2,
+      "parent": "6",
+      "char_start": 16527,
+      "char_end": 16597,
+      "is_top_level": false,
+      "heading": "On expiry or termination of this Agreement for any reason"
+    },
+    {
+      "identifier": "6.5(a)",
+      "level": 3,
+      "parent": "6.5",
+      "char_start": 16597,
+      "char_end": 16909,
+      "is_top_level": false,
+      "heading": "the Client shall immediately cease to use the Services and shall promptly return to the Supplier or destroy (at the Supp"
+    },
+    {
+      "identifier": "6.5(b)",
+      "level": 3,
+      "parent": "6.5",
+      "char_start": 16909,
+      "char_end": 17174,
+      "is_top_level": false,
+      "heading": "the Supplier shall promptly return to the Client or destroy (at the Client's election) all Confidential Information of t"
+    },
+    {
+      "identifier": "6.5(c)",
+      "level": 3,
+      "parent": "6.5",
+      "char_start": 17174,
+      "char_end": 17290,
+      "is_top_level": false,
+      "heading": "each party shall pay to the other all sums outstanding and due at the date of termination; and"
+    },
+    {
+      "identifier": "6.5(d)",
+      "level": 3,
+      "parent": "6.5",
+      "char_start": 17290,
+      "char_end": 17494,
+      "is_top_level": false,
+      "heading": "any provisions of this Agreement that expressly or by their nature are intended to survive termination (including clause"
+    },
+    {
+      "identifier": "6.6",
+      "level": 2,
+      "parent": "6",
+      "char_start": 17494,
+      "char_end": 17690,
+      "is_top_level": false,
+      "heading": "Termination or expiry of this Agreement shall not affect any rights, remedies, obligations or liabilities of the parties"
+    },
+    {
+      "identifier": "7",
+      "level": 1,
+      "parent": null,
+      "char_start": 17690,
+      "char_end": 17727,
+      "is_top_level": true,
+      "heading": "Governing law and jurisdiction"
+    },
+    {
+      "identifier": "7.1",
+      "level": 2,
+      "parent": "7",
+      "char_start": 17727,
+      "char_end": 17989,
+      "is_top_level": false,
+      "heading": "This Agreement and any dispute or claim (including non-contractual disputes or claims) arising out of or in connection w"
+    },
+    {
+      "identifier": "7.2",
+      "level": 2,
+      "parent": "7",
+      "char_start": 17989,
+      "char_end": 18277,
+      "is_top_level": false,
+      "heading": "Each party irrevocably agrees that the courts of England and Wales shall have exclusive jurisdiction to settle any dispu"
+    },
+    {
+      "identifier": "8",
+      "level": 1,
+      "parent": null,
+      "char_start": 18277,
+      "char_end": 18291,
+      "is_top_level": true,
+      "heading": "General"
+    },
+    {
+      "identifier": "8.1",
+      "level": 2,
+      "parent": "8",
+      "char_start": 18291,
+      "char_end": 18693,
+      "is_top_level": false,
+      "heading": "This Agreement, together with the Schedules and any Statements of Work entered into pursuant to clause 2.7, constitutes "
+    },
+    {
+      "identifier": "8.2",
+      "level": 2,
+      "parent": "8",
+      "char_start": 18693,
+      "char_end": 18925,
+      "is_top_level": false,
+      "heading": "Each party acknowledges that, in entering into this Agreement, it does not rely on any statement, representation, assura"
+    },
+    {
+      "identifier": "8.3",
+      "level": 2,
+      "parent": "8",
+      "char_start": 18925,
+      "char_end": 19080,
+      "is_top_level": false,
+      "heading": "No variation of this Agreement shall be effective unless it is in writing and signed by duly authorised representatives "
+    },
+    {
+      "identifier": "8.4",
+      "level": 2,
+      "parent": "8",
+      "char_start": 19080,
+      "char_end": 19424,
+      "is_top_level": false,
+      "heading": "No failure or delay by either party in exercising any right, power or remedy under this Agreement shall operate as a wai"
+    },
+    {
+      "identifier": "8.5",
+      "level": 2,
+      "parent": "8",
+      "char_start": 19424,
+      "char_end": 19927,
+      "is_top_level": false,
+      "heading": "If any provision or part-provision of this Agreement is or becomes invalid, illegal or unenforceable, it shall be deemed"
+    },
+    {
+      "identifier": "8.6",
+      "level": 2,
+      "parent": "8",
+      "char_start": 19927,
+      "char_end": 20138,
+      "is_top_level": false,
+      "heading": "This Agreement may be executed in any number of counterparts, each of which when executed shall constitute a duplicate o"
+    },
+    {
+      "identifier": "8.7",
+      "level": 2,
+      "parent": "8",
+      "char_start": 20138,
+      "char_end": 20500,
+      "is_top_level": false,
+      "heading": "Nothing in this Agreement shall constitute or be deemed to constitute a partnership, joint venture or agency relationshi"
+    },
+    {
+      "identifier": "8.8",
+      "level": 2,
+      "parent": "8",
+      "char_start": 20500,
+      "char_end": 21038,
+      "is_top_level": false,
+      "heading": "Neither party may assign, novate or otherwise transfer any of its rights or obligations under this Agreement without the"
+    },
+    {
+      "identifier": "8.9",
+      "level": 2,
+      "parent": "8",
+      "char_start": 21038,
+      "char_end": 22155,
+      "is_top_level": false,
+      "heading": "Any notice given under or in connection with this Agreement shall be in writing and shall be delivered by hand, sent by "
+    },
+    {
+      "identifier": "schedule_1",
+      "level": 1,
+      "parent": null,
+      "char_start": 22155,
+      "char_end": 22190,
+      "is_top_level": true,
+      "heading": "SERVICES DESCRIPTION"
+    },
+    {
+      "identifier": "schedule_1.1",
+      "level": 2,
+      "parent": "schedule_1",
+      "char_start": 22190,
+      "char_end": 22217,
+      "is_top_level": false,
+      "heading": "Overview of Services"
+    },
+    {
+      "identifier": "schedule_1.1.1",
+      "level": 3,
+      "parent": "schedule_1.1",
+      "char_start": 22217,
+      "char_end": 23030,
+      "is_top_level": false,
+      "heading": "The Supplier shall provide the following categories of services to the Client during the Term (collectively, the \"Servic"
+    },
+    {
+      "identifier": "schedule_1.2",
+      "level": 2,
+      "parent": "schedule_1",
+      "char_start": 23030,
+      "char_end": 23069,
+      "is_top_level": false,
+      "heading": "Software development methodology"
+    },
+    {
+      "identifier": "schedule_1.2.1",
+      "level": 3,
+      "parent": "schedule_1.2",
+      "char_start": 23069,
+      "char_end": 23294,
+      "is_top_level": false,
+      "heading": "The Supplier shall deliver all Software Development Services using an agile development methodology, with two-week sprin"
+    },
+    {
+      "identifier": "schedule_1.2.2",
+      "level": 3,
+      "parent": "schedule_1.2",
+      "char_start": 23294,
+      "char_end": 23487,
+      "is_top_level": false,
+      "heading": "The Supplier shall maintain a prioritised product backlog in a project management tool agreed between the parties, to wh"
+    },
+    {
+      "identifier": "schedule_1.3",
+      "level": 2,
+      "parent": "schedule_1",
+      "char_start": 23487,
+      "char_end": 23520,
+      "is_top_level": false,
+      "heading": "Support service parameters"
+    },
+    {
+      "identifier": "schedule_1.3.1",
+      "level": 3,
+      "parent": "schedule_1.3",
+      "char_start": 23520,
+      "char_end": 23825,
+      "is_top_level": false,
+      "heading": "The Managed Support Services shall be provided during the following hours"
+    },
+    {
+      "identifier": "schedule_1.3.2",
+      "level": 3,
+      "parent": "schedule_1.3",
+      "char_start": 23825,
+      "char_end": 23990,
+      "is_top_level": false,
+      "heading": "The Supplier shall provide the Client with access to a named account manager who shall be the primary point of contact f"
+    },
+    {
+      "identifier": "schedule_2",
+      "level": 1,
+      "parent": null,
+      "char_start": 23990,
+      "char_end": 24027,
+      "is_top_level": true,
+      "heading": "FEES AND PAYMENT TERMS"
+    },
+    {
+      "identifier": "schedule_2.1",
+      "level": 2,
+      "parent": "schedule_2",
+      "char_start": 24027,
+      "char_end": 24063,
+      "is_top_level": false,
+      "heading": "Software Development Services"
+    },
+    {
+      "identifier": "schedule_2.1.1",
+      "level": 3,
+      "parent": "schedule_2.1",
+      "char_start": 24063,
+      "char_end": 24482,
+      "is_top_level": false,
+      "heading": "Software Development Services shall be charged at the daily rates set out below, based on a standard working day of eigh"
+    },
+    {
+      "identifier": "schedule_2.2",
+      "level": 2,
+      "parent": "schedule_2",
+      "char_start": 24482,
+      "char_end": 24513,
+      "is_top_level": false,
+      "heading": "Managed Support Services"
+    },
+    {
+      "identifier": "schedule_2.2.1",
+      "level": 3,
+      "parent": "schedule_2.2",
+      "char_start": 24513,
+      "char_end": 24842,
+      "is_top_level": false,
+      "heading": "Managed Support Services shall be charged at a fixed monthly retainer of £18,500 per month (exclusive of VAT), covering "
+    },
+    {
+      "identifier": "schedule_2.3",
+      "level": 2,
+      "parent": "schedule_2",
+      "char_start": 24842,
+      "char_end": 24857,
+      "is_top_level": false,
+      "heading": "Expenses"
+    },
+    {
+      "identifier": "schedule_2.3.1",
+      "level": 3,
+      "parent": "schedule_2.3",
+      "char_start": 24857,
+      "char_end": 25187,
+      "is_top_level": false,
+      "heading": "The Client shall reimburse the Supplier for all reasonable and properly documented out-of-pocket expenses incurred by th"
+    }
+  ],
+  "defined_terms": [
+    {
+      "term": "Affiliate",
+      "definition_span": [
+        978,
+        1115
+      ]
+    },
+    {
+      "term": "control",
+      "definition_span": [
+        1115,
+        1350
+      ]
+    },
+    {
+      "term": "Authorised Users",
+      "definition_span": [
+        1357,
+        1567
+      ]
+    },
+    {
+      "term": "Business Day",
+      "definition_span": [
+        1574,
+        1724
+      ]
+    },
+    {
+      "term": "Commencement Date",
+      "definition_span": [
+        1731,
+        1770
+      ]
+    },
+    {
+      "term": "Confidential Information",
+      "definition_span": [
+        1777,
+        2309
+      ]
+    },
+    {
+      "term": "Disclosing Party",
+      "definition_span": [
+        1810,
+        1921
+      ]
+    },
+    {
+      "term": "Receiving Party",
+      "definition_span": [
+        1810,
+        1921
+      ]
+    },
+    {
+      "term": "Data Protection Legislation",
+      "definition_span": [
+        2316,
+        2740
+      ]
+    },
+    {
+      "term": "UK GDPR",
+      "definition_span": [
+        2352,
+        2601
+      ]
+    },
+    {
+      "term": "Fees",
+      "definition_span": [
+        2747,
+        2943
+      ]
+    },
+    {
+      "term": "Intellectual Property Rights",
+      "definition_span": [
+        2950,
+        3868
+      ]
+    },
+    {
+      "term": "Services",
+      "definition_span": [
+        3875,
+        4123
+      ]
+    },
+    {
+      "term": "Service Levels",
+      "definition_span": [
+        4130,
+        4334
+      ]
+    },
+    {
+      "term": "Term",
+      "definition_span": [
+        4341,
+        4484
+      ]
+    },
+    {
+      "term": "Payment Due Date",
+      "definition_span": [
+        8629,
+        8751
+      ]
+    },
+    {
+      "term": "Initial Term",
+      "definition_span": [
+        14887,
+        15091
+      ]
+    },
+    {
+      "term": "Renewal Term",
+      "definition_span": [
+        15098,
+        15439
+      ]
+    }
+  ],
+  "cross_references": [
+    {
+      "raw_text": "the UK General Data Protection Regulation",
+      "char_start": 2352,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "the European Union (Withdrawal) Act 2018",
+      "char_start": 2510,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "the Data Protection Act 2018",
+      "char_start": 2603,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "Schedule 2",
+      "char_start": 2821,
+      "target_identifier": "schedule_2",
+      "kind": "internal_schedule"
+    },
+    {
+      "raw_text": "Schedule 1",
+      "char_start": 3989,
+      "target_identifier": "schedule_1",
+      "kind": "internal_schedule"
+    },
+    {
+      "raw_text": "6",
+      "char_start": 4464,
+      "target_identifier": "6",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "2.5",
+      "char_start": 7689,
+      "target_identifier": "2.5",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "3",
+      "char_start": 8355,
+      "target_identifier": "3",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "Schedule 2",
+      "char_start": 8369,
+      "target_identifier": "schedule_2",
+      "kind": "internal_schedule"
+    },
+    {
+      "raw_text": "Schedule 2",
+      "char_start": 8501,
+      "target_identifier": "schedule_2",
+      "kind": "internal_schedule"
+    },
+    {
+      "raw_text": "4",
+      "char_start": 10754,
+      "target_identifier": "4",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "4",
+      "char_start": 11165,
+      "target_identifier": "4",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "4.1",
+      "char_start": 11661,
+      "target_identifier": "4.1",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "4",
+      "char_start": 12689,
+      "target_identifier": "4",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "5.1",
+      "char_start": 13205,
+      "target_identifier": "5.1",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "5.1",
+      "char_start": 13853,
+      "target_identifier": "5.1",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "5.2",
+      "char_start": 13861,
+      "target_identifier": "5.2",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "5.3",
+      "char_start": 14484,
+      "target_identifier": "5.3",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "5",
+      "char_start": 14723,
+      "target_identifier": "5",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "6",
+      "char_start": 15089,
+      "target_identifier": "6",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "the Insolvency Act 1986",
+      "char_start": 15997,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "the Corporation Tax Act 2010",
+      "char_start": 16321,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "3.4(b)",
+      "char_start": 16425,
+      "target_identifier": "3.4(b)",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "3",
+      "char_start": 16523,
+      "target_identifier": "3",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "4",
+      "char_start": 17427,
+      "target_identifier": "4",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "5",
+      "char_start": 17430,
+      "target_identifier": "5",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "7",
+      "char_start": 17433,
+      "target_identifier": "7",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "8",
+      "char_start": 17439,
+      "target_identifier": "8",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "2.7",
+      "char_start": 18404,
+      "target_identifier": "2.7",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "2.7",
+      "char_start": 22554,
+      "target_identifier": "2.7",
+      "kind": "internal_clause"
+    },
+    {
+      "raw_text": "paragraph 1.1 above",
+      "char_start": 24800,
+      "target_identifier": "schedule_2.1.1",
+      "kind": "internal_schedule"
+    }
+  ]
+}

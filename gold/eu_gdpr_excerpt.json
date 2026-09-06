@@ -1,0 +1,256 @@
+{
+  "document_id": "eu_gdpr_excerpt",
+  "source_file": "src/scaffolder/fixtures/documents/eu_gdpr_excerpt.txt",
+  "text_sha256": "06d5053c3304215343fd2b6ee943981fe280aa1b6004a37b90b07047b376ad9e",
+  "n_chars": 5141,
+  "numbering_style": "eu_regulation",
+  "clauses": [
+    {
+      "identifier": "recital_1",
+      "level": 1,
+      "parent": null,
+      "char_start": 0,
+      "char_end": 110,
+      "is_top_level": true,
+      "heading": "The protection of natural persons in relation to the processing of personal data is a fundamental right."
+    },
+    {
+      "identifier": "recital_2",
+      "level": 1,
+      "parent": null,
+      "char_start": 110,
+      "char_end": 412,
+      "is_top_level": true,
+      "heading": "The principles of, and rules on the protection of natural persons with regard to the processing of their personal data s"
+    },
+    {
+      "identifier": "recital_3",
+      "level": 1,
+      "parent": null,
+      "char_start": 412,
+      "char_end": 487,
+      "is_top_level": true,
+      "heading": "The free movement of personal data within the Union shall be ensured."
+    },
+    {
+      "identifier": "chapter_1",
+      "level": 1,
+      "parent": null,
+      "char_start": 487,
+      "char_end": 517,
+      "is_top_level": true,
+      "heading": "GENERAL PROVISIONS"
+    },
+    {
+      "identifier": "article_1",
+      "level": 2,
+      "parent": "chapter_1",
+      "char_start": 517,
+      "char_end": 553,
+      "is_top_level": false,
+      "heading": "Subject matter and scope"
+    },
+    {
+      "identifier": "article_1_1",
+      "level": 3,
+      "parent": "article_1",
+      "char_start": 553,
+      "char_end": 740,
+      "is_top_level": false,
+      "heading": "This Regulation lays down rules relating to the protection of natural persons with regard to the processing of personal "
+    },
+    {
+      "identifier": "article_1_2",
+      "level": 3,
+      "parent": "article_1",
+      "char_start": 740,
+      "char_end": 886,
+      "is_top_level": false,
+      "heading": "This Regulation protects fundamental rights and freedoms of natural persons and in particular their right to the protect"
+    },
+    {
+      "identifier": "article_1_3",
+      "level": 3,
+      "parent": "article_1",
+      "char_start": 886,
+      "char_end": 1094,
+      "is_top_level": false,
+      "heading": "The free movement of personal data within the Union shall be neither restricted nor prohibited for reasons connected wit"
+    },
+    {
+      "identifier": "article_2",
+      "level": 2,
+      "parent": "chapter_1",
+      "char_start": 1094,
+      "char_end": 1120,
+      "is_top_level": false,
+      "heading": "Material scope"
+    },
+    {
+      "identifier": "article_2_1",
+      "level": 3,
+      "parent": "article_2",
+      "char_start": 1120,
+      "char_end": 1372,
+      "is_top_level": false,
+      "heading": "This Regulation applies to the processing of personal data wholly or partly by automated means and to the processing oth"
+    },
+    {
+      "identifier": "article_2_2",
+      "level": 3,
+      "parent": "article_2",
+      "char_start": 1372,
+      "char_end": 1847,
+      "is_top_level": false,
+      "heading": "This Regulation does not apply to the processing of personal data: (a) in the course of an activity which falls outside "
+    },
+    {
+      "identifier": "article_3",
+      "level": 2,
+      "parent": "chapter_1",
+      "char_start": 1847,
+      "char_end": 1876,
+      "is_top_level": false,
+      "heading": "Territorial scope"
+    },
+    {
+      "identifier": "article_3_1",
+      "level": 3,
+      "parent": "article_3",
+      "char_start": 1876,
+      "char_end": 2107,
+      "is_top_level": false,
+      "heading": "This Regulation applies to the processing of personal data in the context of the activities of an establishment of a con"
+    },
+    {
+      "identifier": "article_3_2",
+      "level": 3,
+      "parent": "article_3",
+      "char_start": 2107,
+      "char_end": 2554,
+      "is_top_level": false,
+      "heading": "This Regulation applies to the processing of personal data of data subjects who are in the Union by a controller or proc"
+    },
+    {
+      "identifier": "article_4",
+      "level": 2,
+      "parent": "chapter_1",
+      "char_start": 2554,
+      "char_end": 3557,
+      "is_top_level": false,
+      "heading": "Definitions"
+    },
+    {
+      "identifier": "chapter_2",
+      "level": 1,
+      "parent": null,
+      "char_start": 3557,
+      "char_end": 3580,
+      "is_top_level": true,
+      "heading": "PRINCIPLES"
+    },
+    {
+      "identifier": "article_5",
+      "level": 2,
+      "parent": "chapter_2",
+      "char_start": 3580,
+      "char_end": 3642,
+      "is_top_level": false,
+      "heading": "Principles relating to processing of personal data"
+    },
+    {
+      "identifier": "article_5_1",
+      "level": 3,
+      "parent": "article_5",
+      "char_start": 3642,
+      "char_end": 4250,
+      "is_top_level": false,
+      "heading": "Personal data shall be: (a) processed lawfully, fairly and in a transparent manner in relation to the data subject; (b) "
+    },
+    {
+      "identifier": "article_5_2",
+      "level": 3,
+      "parent": "article_5",
+      "char_start": 4250,
+      "char_end": 4352,
+      "is_top_level": false,
+      "heading": "The controller shall be responsible for, and be able to demonstrate compliance with, paragraph 1."
+    },
+    {
+      "identifier": "article_6",
+      "level": 2,
+      "parent": "chapter_2",
+      "char_start": 4352,
+      "char_end": 4388,
+      "is_top_level": false,
+      "heading": "Lawfulness of processing"
+    },
+    {
+      "identifier": "article_6_1",
+      "level": 3,
+      "parent": "article_6",
+      "char_start": 4388,
+      "char_end": 5141,
+      "is_top_level": false,
+      "heading": "Processing shall be lawful only if and to the extent that at least one of the following applies: (a) the data subject ha"
+    }
+  ],
+  "defined_terms": [
+    {
+      "term": "Personal Data",
+      "definition_span": [
+        2647,
+        2828
+      ]
+    },
+    {
+      "term": "Processing",
+      "definition_span": [
+        2828,
+        2982
+      ]
+    },
+    {
+      "term": "Controller",
+      "definition_span": [
+        2982,
+        3176
+      ]
+    },
+    {
+      "term": "Processor",
+      "definition_span": [
+        3176,
+        3319
+      ]
+    },
+    {
+      "term": "Recipient",
+      "definition_span": [
+        3319,
+        3446
+      ]
+    },
+    {
+      "term": "Consent",
+      "definition_span": [
+        3446,
+        3555
+      ]
+    }
+  ],
+  "cross_references": [
+    {
+      "raw_text": "TEU",
+      "char_start": 1632,
+      "target_identifier": null,
+      "kind": "external_statute"
+    },
+    {
+      "raw_text": "paragraph 1",
+      "char_start": 4338,
+      "target_identifier": "article_5_1",
+      "kind": "internal_clause"
+    }
+  ]
+}

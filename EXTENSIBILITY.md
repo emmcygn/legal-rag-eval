@@ -1,324 +1,113 @@
-# Legacy Extensibility Guide
+# Legacy Diagnostics and Extension Guide
 
-This guide describes the deprecated structural and embedding diagnostics. The authoritative public benchmark interface is the anchored-evidence schema and CLI documented in `README.md` and `docs/methodology.md`.
+The structural and embedding pipelines predate the anchored-evidence benchmark and remain available for regression testing and implementation experiments. They are separate from the authoritative benchmark described in the [README](README.md) and [methodology](docs/methodology.md).
 
-This document describes how to extend the scaffolder with custom fixtures, chunking strategies, embedding models, metrics, queries, and output formats.
+The legacy fixtures duplicate SDK output, so their structural labels are not independent evidence. Their retrieval metrics and statistical tests must not be used to support legal-validity, customer-performance, or product-superiority claims.
 
-## 1. Architecture Overview
+## Architecture
 
-The scaffolder follows a plugin architecture:
-
-```
-Document → Chunking Strategies → ChunkSets → Embedding → FAISS Index → Retrieval → Metrics
+```text
+Documents → chunking strategies → embeddings → retrieval → metrics → reports
 ```
 
-Each stage is independently extensible through well-defined interfaces.
+The main extension points are the shared protocols and enums in `src/scaffolder/models.py`, registries under `src/scaffolder/chunking/` and `src/scaffolder/embedding/`, metric functions in `src/scaffolder/metrics/`, and renderers in `src/scaffolder/reporting/`.
 
-### Key Extension Points
+## Commands
 
-| Component | Interface | Registration |
-|-----------|----------|-------------|
-| Chunking strategies | `ChunkingStrategy` protocol | `chunking/__init__.py` registry |
-| Embedding models | `Embedder` protocol | `embedding/__init__.py` factory |
-| Metrics | Functions in `metrics/` | Called by pipeline |
-| Test fixtures | `.txt` files | `fixtures/documents/` + metadata |
-| Queries | YAML files | `queries/*.yaml` |
-| Output formats | Functions in `reporting/` | Config `output_formats` |
-
-## 2. Adding Test Fixtures
-
-### Step 1: Create the document file
-
-Place a `.txt` file in `src/scaffolder/fixtures/documents/`:
-
-```
-src/scaffolder/fixtures/documents/my_contract.txt
-```
-
-### Step 2: Register metadata
-
-Add an entry to `_FIXTURE_METADATA` in `src/scaffolder/fixtures/__init__.py`:
-
-```python
-_FIXTURE_METADATA["my_contract.txt"] = (Jurisdiction.US, DocumentType.MSA)
-```
-
-If you need new jurisdiction or document type values, add them to the enums in `models.py`.
-
-### Step 3: Add queries
-
-Create `queries/my_contract.yaml` following the schema in `queries/schema.md`.
-
-## 3. Adding Chunking Strategies
-
-### The Strategy Interface
-
-A chunking strategy must implement the `ChunkingStrategy` protocol from `models.py`:
-
-```python
-from scaffolder.models import ChunkingStrategy, Document, ChunkSet, Chunk, StrategyName
-
-class MyStrategy:
-    name = StrategyName.LEXICHUNK  # Add your own enum value first
-
-    def chunk(self, document: Document) -> ChunkSet:
-        chunks = []
-        # Your chunking logic here
-        return ChunkSet(
-            strategy=self.name,
-            document_id=document.id,
-            chunks=tuple(chunks),
-            elapsed_seconds=0.0,
-        )
-```
-
-### Registration in 5 Steps
-
-1. **Add enum value** in `models.py`:
-   ```python
-   class StrategyName(str, enum.Enum):
-       # ...existing values...
-       CHONKIE = "chonkie"
-   ```
-
-2. **Create strategy class** in `src/scaffolder/chunking/strategies.py` (or a new file):
-   ```python
-   class ChonkieStrategy:
-       name = StrategyName.CHONKIE
-
-       def chunk(self, document: Document) -> ChunkSet:
-           import time
-           from chonkie import SemanticChunker
-
-           start = time.perf_counter()
-           chunker = SemanticChunker(max_chunk_size=512)
-           raw_chunks = chunker.chunk(document.text)
-
-           chunks = tuple(
-               Chunk(
-                   id=f"{self.name.value}_{document.id}_{i}",
-                   text=c.text,
-                   document_id=document.id,
-                   strategy=self.name,
-                   index=i,
-                   metadata={"source": "chonkie"},
-               )
-               for i, c in enumerate(raw_chunks)
-           )
-
-           return ChunkSet(
-               strategy=self.name,
-               document_id=document.id,
-               chunks=chunks,
-               elapsed_seconds=time.perf_counter() - start,
-           )
-   ```
-
-3. **Register** in `src/scaffolder/chunking/__init__.py`:
-   ```python
-   _STRATEGY_REGISTRY[StrategyName.CHONKIE] = ChonkieStrategy
-   ```
-
-4. **Add to config** in `config.py`:
-   ```python
-   VALID_STRATEGIES = [..., "chonkie"]
-   ```
-
-5. **Test** your strategy:
-   ```python
-   def test_chonkie_strategy():
-       from scaffolder.chunking import get_strategy
-       from scaffolder.fixtures import FixtureManager
-
-       strategy = get_strategy(StrategyName.CHONKIE)
-       doc = FixtureManager().load_all()[0]
-       result = strategy.chunk(doc)
-       assert result.count > 0
-       assert all(c.text for c in result.chunks)
-   ```
-
-## 4. Adding Embedding Models
-
-### Local Models (sentence-transformers)
-
-The `EmbeddingPipeline` in `embedding/pipeline.py` supports any sentence-transformers model. To add a new one:
-
-1. **Add enum value** in `models.py`:
-   ```python
-   class EmbeddingModelName(str, enum.Enum):
-       # ...existing values...
-       NOMIC_EMBED = "nomic-embed-text-v1.5"
-   ```
-
-2. **Add HuggingFace model ID** in `embedding/pipeline.py`:
-   ```python
-   _MODEL_IDS[EmbeddingModelName.NOMIC_EMBED] = "nomic-ai/nomic-embed-text-v1.5"
-   ```
-
-3. **Add to config** in `config.py`:
-   ```python
-   VALID_EMBEDDING_MODELS = [..., "nomic-embed-text-v1.5"]
-   ```
-
-4. **Test** that embedding works:
-   ```python
-   def test_nomic_embedding():
-       from scaffolder.embedding.pipeline import EmbeddingPipeline
-       from scaffolder.models import EmbeddingModelName
-
-       pipeline = EmbeddingPipeline()
-       embeddings = pipeline.embed_texts(["test clause"], EmbeddingModelName.NOMIC_EMBED)
-       assert embeddings.shape[0] == 1
-       assert embeddings.shape[1] > 0
-   ```
-
-### API-Based Models
-
-Follow the `VoyageEmbedder` pattern in `embedding/voyage.py`:
-
-1. Implement the `Embedder` protocol: `model_name` (property), `dimension` (property), `embed_texts(texts)` method
-2. Handle rate limiting, retries, and error cases
-3. Register in the `EmbeddingPipeline._get_adapter()` factory
-4. Gate availability on the API key environment variable (see `embedding/__init__.py`)
-
-## 5. Adding Metrics
-
-### Structural Metrics
-
-Add new metric functions in `src/scaffolder/metrics/structural.py`. Each function takes a `ChunkSet` and `Document` and returns a float:
-
-```python
-def citation_preservation_rate(chunk_set: ChunkSet, document: Document) -> float:
-    """Measure how well legal citations are preserved within chunks.
-
-    Returns 0.0-1.0 where 1.0 means all citations are kept intact.
-    """
-    import re
-
-    citation_pattern = re.compile(r"\b\d+\s+U\.S\.C\.\s+§\s*\d+")
-    doc_citations = set(citation_pattern.findall(document.text))
-
-    if not doc_citations:
-        return 1.0  # No citations to fragment
-
-    preserved = 0
-    for citation in doc_citations:
-        # Check if the full citation appears in at least one chunk
-        if any(citation in c.text for c in chunk_set.chunks):
-            preserved += 1
-
-    return preserved / len(doc_citations)
-```
-
-Wire it into `compute_structural_metrics()` in the same file, and add a corresponding field to `StructuralMetrics` in `models.py`.
-
-### Retrieval Metrics
-
-Add to `src/scaffolder/metrics/retrieval.py`. Retrieval metrics take `RetrievalResult` objects:
-
-```python
-def reciprocal_rank_fusion(results_a: list[RetrievalResult], results_b: list[RetrievalResult], k: int = 60) -> list[float]:
-    """Compute RRF scores combining two retrieval result sets."""
-    # Implementation here
-    ...
-```
-
-### Testing Custom Metrics
-
-```python
-def test_citation_preservation():
-    from scaffolder.metrics.structural import citation_preservation_rate
-
-    # Create test ChunkSet with known citations
-    chunks = (Chunk(id="c1", text="Under 42 U.S.C. § 1983...", ...),)
-    chunk_set = ChunkSet(strategy=StrategyName.LEXICHUNK, ...)
-    doc = Document(text="Under 42 U.S.C. § 1983, the plaintiff...", ...)
-
-    assert citation_preservation_rate(chunk_set, doc) == 1.0
-```
-
-## 6. Adding Query Sets
-
-### YAML Schema
-
-Each query file follows this schema (see `queries/schema.md` for full details):
-
-```yaml
-document_id: my_contract
-queries:
-  - id: my_q1
-    text: "What are the payment terms?"
-    failure_mode: clause_fragmentation
-    relevant_sections:
-      - section_id: "clause_payment"
-        relevance: 3
-        description: "Payment terms clause"
-    notes: "Tests whether the chunker keeps payment terms together."
-```
-
-### Valid Failure Modes
-
-- `clause_fragmentation` — clause split across chunks
-- `orphaned_cross_refs` — cross-references lost
-- `lost_definitions` — defined terms separated from usage
-- `destroyed_hierarchy` — section hierarchy broken
-- `cross_doc_contamination` — wrong document's content retrieved
-
-### Adding Queries
-
-1. Create `queries/<document_id>.yaml`
-2. Follow the naming convention: `{jurisdiction}_{doc_abbrev}_q{N}` for query IDs
-3. Each query must have at least one `relevant_section` with a `relevance` grade (3=exact, 2=partial, 1=background)
-
-## 7. Adding Output Formats
-
-### CLI Reporters
-
-Add functions to `src/scaffolder/reporting/cli.py` that accept `BenchmarkResult` and render with Rich:
-
-```python
-def render_my_table(result: BenchmarkResult, console: Console | None = None) -> None:
-    # Use Rich Table, Panel, etc.
-    pass
-```
-
-### JSON Export
-
-The JSON exporter in `reporting/json_export.py` uses `dataclasses.asdict()` — any new dataclass fields are automatically included.
-
-### HTML Reports
-
-Add Jinja2 templates to `src/scaffolder/reporting/templates/` and rendering functions to `reporting/html.py`.
-
-## 8. Configuration Reference
-
-All configuration is managed through `BenchmarkConfig` in `config.py`.
-
-### Precedence (highest to lowest)
-1. Environment variables (`SCAFFOLDER_*`)
-2. YAML config file (`scaffolder.yaml`)
-3. Defaults
-
-### Key Fields
-
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `strategies` | `list[str]` | All 4 | Chunking strategies to compare |
-| `embedding_models` | `list[str]` | `["all-MiniLM-L6-v2"]` | Embedding models |
-| `enable_voyage` | `bool` | `False` | Enable Voyage AI |
-| `k_values` | `list[int]` | `[1,3,5,10]` | K values for P@k |
-| `top_k` | `int` | `10` | Max results per query |
-| `significance_level` | `float` | `0.05` | Statistical test threshold |
-| `fixed_chunk_size` | `int` | `512` | Fixed-size baseline chunk size |
-| `rcts_chunk_size` | `int` | `1000` | RCTS baseline chunk size |
-
-### Environment Variables
-
-All fields can be overridden with `SCAFFOLDER_` prefix:
+Run the structural diagnostic without embeddings:
 
 ```bash
-export SCAFFOLDER_STRATEGIES="lexichunk,fixed_size"
-export SCAFFOLDER_TOP_K=20
-export SCAFFOLDER_ENABLE_VOYAGE=true
-export VOYAGE_API_KEY=your-key-here
+python -m scaffolder benchmark-legacy
 ```
+
+Install the embedding dependencies from the repository root, then run the model-based retrieval diagnostic:
+
+```bash
+python -m pip install -e ".[embeddings]"
+python -m scaffolder benchmark-embed
+```
+
+The model-based command may download `sentence-transformers/all-MiniLM-L6-v2`. Passing `--enable-voyage` adds `voyage-law-2` and requires both the `voyage` optional dependency and `VOYAGE_API_KEY`; install both extras with `python -m pip install -e ".[embeddings,voyage]"`. The adapter layer also retains `BAAI/bge-base-en-v1.5`, although the current legacy CLI does not select it.
+
+Use `--json` to write legacy results under `results/`. These outputs use the older report schema and should remain separate from `evidence_benchmark_report_v1` reports.
+
+## Test Fixtures and Queries
+
+Legacy fixture documents live in `src/scaffolder/fixtures/documents/`. To add one:
+
+1. Add a UTF-8 `.txt` file.
+2. Add any required `Jurisdiction` or `DocumentType` value in `src/scaffolder/models.py`.
+3. Register the filename in `_FIXTURE_METADATA` in `src/scaffolder/fixtures/__init__.py`.
+4. Add a matching `queries/<document_id>.yaml` file.
+
+`document_id` must match the fixture filename without `.txt`. Each query needs a unique `id`, query `text`, one supported `failure_mode`, and at least one `relevant_sections` entry with a section ID and relevance grade. The supported failure modes, relevance scale, naming convention, and complete YAML shape are documented in [`queries/schema.md`](queries/schema.md).
+
+Legacy fixtures and query annotations are regression assets. New datasets for the primary benchmark must instead use the `anchored_evidence_v1` interface and follow the provenance requirements in the [dataset card](docs/dataset-card.md) and [contribution guide](CONTRIBUTING.md).
+
+## Chunking Strategies
+
+A legacy strategy must implement the `ChunkingStrategy` protocol and return a `ChunkSet` for each `Document`. To register one:
+
+1. Add its identifier to `StrategyName` in `src/scaffolder/models.py`.
+2. Implement the strategy under `src/scaffolder/chunking/`.
+3. Add it to `_STRATEGY_REGISTRY` in `src/scaffolder/chunking/__init__.py`.
+4. If configuration-based consumers should accept it, add its string value to `VALID_STRATEGIES` in `src/scaffolder/config.py`.
+5. Add focused strategy and pipeline tests.
+
+Keep canonical source text separate from generated context in chunk metadata. Changes to the legacy strategy registry must not alter the primary benchmark's boundary-only source-span accounting.
+
+## Embedding Models
+
+Local embedding adapters implement the `Embedder` protocol in `src/scaffolder/models.py`. To register a local model:
+
+1. Add its enum value to `EmbeddingModelName` in `src/scaffolder/models.py`.
+2. Add its exact Hugging Face model ID to `_MODEL_IDS` and embedding dimension to `_MODEL_DIMS` in `src/scaffolder/embedding/pipeline.py`.
+3. Route the new enum value to its adapter in `EmbeddingPipeline._get_adapter()`.
+4. Add its string value to `VALID_EMBEDDING_MODELS` in `src/scaffolder/config.py` for configuration-based consumers.
+
+The registered local IDs are:
+
+- `sentence-transformers/all-MiniLM-L6-v2`
+- `BAAI/bge-base-en-v1.5`
+
+API-backed models should follow `VoyageEmbedder` in `src/scaffolder/embedding/voyage.py` and its wrapper in `src/scaffolder/embedding/pipeline.py`: validate credentials, handle provider errors, expose the model name and dimension, and register the adapter explicitly. Keep API use opt-in; the presence of a credential alone must not change which benchmark runs.
+
+Add model dependencies to an appropriate optional dependency group and test adapter selection, dimensions, batching, and failure handling. Record the exact model ID and relevant provider version in any published legacy result.
+
+## Metrics
+
+Structural metrics operate on `ChunkSet` and `Document` values in `src/scaffolder/metrics/structural.py`. Retrieval metrics operate on `RetrievalResult` values in `src/scaffolder/metrics/retrieval.py`; significance helpers are in `src/scaffolder/metrics/statistical.py`.
+
+When adding a metric, update the corresponding result dataclass in `src/scaffolder/models.py`, wire the calculation into the legacy pipeline, expose it through the applicable reporter, and add tests with explicit expected values. Do not reuse the names of standard information-retrieval metrics for materially different formulas.
+
+## Reports
+
+CLI rendering is implemented in `src/scaffolder/reporting/cli.py`, JSON serialization in `src/scaffolder/reporting/json_export.py`, and HTML rendering in `src/scaffolder/reporting/html.py` with templates under `src/scaffolder/reporting/templates/`.
+
+New output fields should be represented in the shared result dataclasses and covered by serialization and rendering tests. Preserve report schema distinctions between legacy diagnostics and the primary anchored-evidence benchmark.
+
+## Legacy Configuration
+
+`BenchmarkConfig` in `src/scaffolder/config.py` supports legacy library and configuration-based consumers. `BenchmarkConfig.load()` applies values in this order, from highest to lowest precedence:
+
+1. `SCAFFOLDER_*` environment variables
+2. an explicit YAML file, or `scaffolder.yaml` when present
+3. dataclass defaults
+
+Key defaults are:
+
+| Setting | Default |
+| --- | --- |
+| Strategies | `lexichunk`, `rcts`, `sentence_split`, `fixed_size` |
+| Embedding models | `all-MiniLM-L6-v2` |
+| Retrieval cutoffs | `1`, `3`, `5`, `10` |
+| Maximum retrieved results | `10` |
+| Fixed-size chunks | `512` characters with `50` overlap |
+| RCTS chunks | `1000` characters with `200` overlap |
+| Output formats | `cli`, `json` |
+
+Supported environment overrides are `SCAFFOLDER_STRATEGIES`, `SCAFFOLDER_EMBEDDING_MODELS`, `SCAFFOLDER_ENABLE_VOYAGE`, `SCAFFOLDER_FIXTURE_DIR`, `SCAFFOLDER_QUERY_DIR`, `SCAFFOLDER_OUTPUT_DIR`, `SCAFFOLDER_TOP_K`, `SCAFFOLDER_K_VALUES`, `SCAFFOLDER_OUTPUT_FORMATS`, `SCAFFOLDER_SIGNIFICANCE_LEVEL`, `SCAFFOLDER_USE_CACHE`, and `SCAFFOLDER_CACHE_DIR`.
+
+The current `benchmark-legacy` and `benchmark-embed` commands do not load `BenchmarkConfig`; they construct their legacy runs directly. Do not describe YAML or environment overrides as affecting those commands unless the CLI wiring is updated and tested.
+
+See [Contributing](CONTRIBUTING.md) for validation requirements. Extensions to legacy components must not introduce a second implementation of the primary anchored-evidence scoring path.

@@ -24,6 +24,11 @@ if TYPE_CHECKING:
 
 _RCTS_1024 = "rcts_1024"
 
+#: Sentinels delimiting the generated block in README.md. Exported so callers (and the
+#: staleness check in ``scripts/update_readme.py``) use the same strings the writer does.
+START_MARKER = "<!-- BEGIN GENERATED RESULTS -->"
+END_MARKER = "<!-- END GENERATED RESULTS -->"
+
 
 # -- Formatting helpers (see module docstring: 3dp for rates, 0dp for counts, "n/a" for None) --
 
@@ -196,42 +201,57 @@ def _comparisons_section(result: BenchmarkResult) -> str:
             "(bootstrap CI / Holm-adjusted p / Wilcoxon / LODO)._"
         )
 
-    ordered = sorted(rows, key=lambda c: (c.metric_name, c.strategy_a.value, c.strategy_b.value))
-
-    lines = [
+    blocks = [
         "### Strategy comparisons",
         "",
         "The absolute delta and its bootstrap 95% CI are the headline figures — never a "
         "relative percent change. A row is significant only if it survives Holm correction "
-        f"across the whole family of tests. `{_RCTS_1024}` is the **size-matched control**: "
-        "it uses the same target chunk size as LexiChunk, so it isolates what the chunking "
-        "*strategy* contributes from what chunk *size* alone would contribute.",
-        "",
-        "| Metric | A | B | n | Δ | 95% CI | p (Holm) | p (Wilcoxon) | Effect size (d) | "
-        "LODO range |",
-        "|---|---|---|---|---|---|---|---|---|---|",
+        "across the whole family of tests below (every metric, pair and embedding model in "
+        f"this run). `{_RCTS_1024}` is the **size-matched control**: it uses the same target "
+        "chunk size as LexiChunk, so it isolates what the chunking *strategy* contributes "
+        "from what chunk *size* alone would contribute. The LODO range is the delta's spread "
+        "across the five leave-one-document-out refits; a range straddling zero means one "
+        "document carries the result.",
     ]
-    for c in ordered:
-        is_control = c.strategy_b.value == _RCTS_1024
-        b_label = f"{c.strategy_b.value}"
-        if is_control:
-            b_label = f"**{b_label} (size-matched control)**"
-        holm_cell = _fmt_p(c.p_value_holm) + (" **" if c.significant_holm else "")
-        lines.append(
-            _row(
-                c.metric_name,
-                c.strategy_a.value,
-                b_label,
-                c.n,
-                _fmt_delta(c.delta),
-                _fmt_ci(c.ci_low, c.ci_high),
-                holm_cell,
-                _fmt_p(c.p_value_wilcoxon),
-                _fmt_effect_size(c.cohens_d),
-                _fmt_lodo(c.lodo_min_delta, c.lodo_max_delta),
-            )
+
+    # One table per embedding model. Without the split, the same metric and strategy pair
+    # appears once per model with nothing in the row to tell the two apart.
+    for model in sorted({c.embedding_model for c in rows}):
+        model_rows = sorted(
+            (c for c in rows if c.embedding_model == model),
+            key=lambda c: (c.metric_name, c.strategy_a.value, c.strategy_b.value),
         )
-    return "\n".join(lines)
+        sizes = sorted({c.n for c in model_rows})
+        n_label = str(sizes[0]) if len(sizes) == 1 else "varies"
+        lines = [
+            "",
+            f"**{model}** ({len(model_rows)} tests, n = {n_label} queries each)",
+            "",
+            "| Metric | A | B | n | Δ | 95% CI | p (Holm) | p (Wilcoxon) | Effect size (d) | "
+            "LODO range |",
+            "|---|---|---|---|---|---|---|---|---|---|",
+        ]
+        for c in model_rows:
+            b_label = f"{c.strategy_b.value}"
+            if c.strategy_b.value == _RCTS_1024:
+                b_label = f"**{b_label} (size-matched control)**"
+            holm_cell = _fmt_p(c.p_value_holm) + (" **" if c.significant_holm else "")
+            lines.append(
+                _row(
+                    c.metric_name,
+                    c.strategy_a.value,
+                    b_label,
+                    c.n,
+                    _fmt_delta(c.delta),
+                    _fmt_ci(c.ci_low, c.ci_high),
+                    holm_cell,
+                    _fmt_p(c.p_value_wilcoxon),
+                    _fmt_effect_size(c.cohens_d),
+                    _fmt_lodo(c.lodo_min_delta, c.lodo_max_delta),
+                )
+            )
+        blocks.append("\n".join(lines))
+    return "\n".join(blocks)
 
 
 def _mean_chunk_lengths(
@@ -298,8 +318,8 @@ def update_readme(
     readme_path: str | Path,
     result: BenchmarkResult,
     *,
-    start_marker: str = "<!-- BEGIN GENERATED RESULTS -->",
-    end_marker: str = "<!-- END GENERATED RESULTS -->",
+    start_marker: str = START_MARKER,
+    end_marker: str = END_MARKER,
 ) -> Path:
     """Replace everything between ``start_marker`` and ``end_marker`` in-place.
 

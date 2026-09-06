@@ -18,6 +18,7 @@ from scaffolder.models import (
 
 if TYPE_CHECKING:
     from pathlib import Path
+from scaffolder.reporting.cli import ComparisonLike
 from scaffolder.reporting.json_export import (
     export_json,
     export_json_string,
@@ -319,9 +320,8 @@ class TestReconstructBenchmarkResult:
         result = reconstruct_benchmark_result(data)
         assert len(result.significance_results) == 0
 
-    def test_comparisons_not_reconstructed_but_does_not_raise(self) -> None:
-        """`comparisons` (ComparisonResult objects) is intentionally not rebuilt from JSON —
-        it is untyped `object` data; the significance fallback covers reporting instead."""
+    def test_partial_comparison_skipped(self) -> None:
+        """An entry missing most of the shape is dropped with a warning, not half-built."""
         data = {
             "comparisons": [
                 {"metric_name": "mrr", "strategy_a": "lexichunk", "strategy_b": "rcts_1024"}
@@ -330,10 +330,13 @@ class TestReconstructBenchmarkResult:
         result = reconstruct_benchmark_result(data)
         assert result.comparisons == []
 
-    def test_roundtrip_with_comparisons_does_not_raise(self, tmp_path: Path) -> None:
-        """`comparisons` holds `ComparisonResult` dataclasses; export/load/reconstruct must
-        never raise even though reconstruction deliberately leaves `comparisons` empty
-        (see the `test_comparisons_not_reconstructed_but_does_not_raise` test above)."""
+    def test_roundtrip_preserves_comparisons(self, tmp_path: Path) -> None:
+        """A round trip must keep the bootstrap CI, Holm p-value and LODO range.
+
+        `scripts/update_readme.py` renders the README from an exported JSON, so dropping
+        `comparisons` on reconstruction silently published tables with no uncertainty in
+        them at all. Reconstruction yields `ReconstructedComparison`, not `ComparisonResult`
+        — the reporting layer reads the shape, not the class."""
         from scaffolder.metrics.statistical import ComparisonResult
 
         original = _make_result()
@@ -369,8 +372,17 @@ class TestReconstructBenchmarkResult:
         data = load_json(path)
         reconstructed = reconstruct_benchmark_result(data)
 
-        assert reconstructed.comparisons == []
         assert len(reconstructed.significance_results) == 1
+        assert len(reconstructed.comparisons) == 1
+        rebuilt = reconstructed.comparisons[0]
+        assert isinstance(rebuilt, ComparisonLike)
+        assert rebuilt.metric_name == "mrr"
+        assert rebuilt.strategy_a is StrategyName.LEXICHUNK
+        assert rebuilt.strategy_b is StrategyName.RCTS_1024
+        assert (rebuilt.ci_low, rebuilt.ci_high) == (0.05, 0.35)
+        assert rebuilt.p_value_holm == 0.04
+        assert rebuilt.significant_holm is True
+        assert (rebuilt.lodo_min_delta, rebuilt.lodo_max_delta) == (0.1, 0.3)
 
     def test_roundtrip_via_json_full(self, tmp_path: Path) -> None:
         """Export a result to JSON, then reconstruct it."""

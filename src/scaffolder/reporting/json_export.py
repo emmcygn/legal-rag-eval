@@ -1,13 +1,16 @@
 """JSON export and reconstruction for benchmark results.
 
-``reconstruct_benchmark_result`` deliberately does not rebuild ``BenchmarkResult.comparisons``
-(the rich ``ComparisonResult`` objects): that field is typed ``list[object]`` precisely because
-reporting has no business depending on ``scaffolder.metrics.statistical`` for its shape, and a
-generic dict-to-dataclass reconstruction of an arbitrary ``object`` field is not something this
-module can do safely. Reconstructed results always keep ``legacy_structural_metrics`` and
-``significance_results`` (via ``ComparisonResult.to_significance_result()`` at export time), so
-the CLI/HTML significance section already has a correct fallback: see
-``scaffolder.reporting.cli.render_significance_section``.
+``reconstruct_benchmark_result`` rebuilds ``BenchmarkResult.comparisons`` as
+``ReconstructedComparison`` values, not as ``scaffolder.metrics.statistical.ComparisonResult``:
+that field is typed ``list[object]`` precisely so reporting never has to import the statistics
+module. ``ReconstructedComparison`` implements the
+``scaffolder.reporting.cli.ComparisonLike`` shape, which is all the reporting layer reads.
+This matters because ``scripts/update_readme.py`` renders the README from an exported JSON:
+leaving ``comparisons`` empty on reconstruction silently dropped every bootstrap CI,
+Holm-adjusted p-value and leave-one-document-out range from the published tables. Entries
+that do not carry the full shape are skipped with a warning, and
+``significance_results`` (the older, always-JSON-safe shape) is reconstructed alongside it as
+the CLI/HTML fallback: see ``scaffolder.reporting.cli.render_significance_section``.
 """
 
 from __future__ import annotations
@@ -15,7 +18,7 @@ from __future__ import annotations
 import contextlib
 import json
 import logging
-from dataclasses import asdict
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -43,6 +46,65 @@ logger = logging.getLogger(__name__)
 _LEGACY_STRUCTURAL_MARKER_KEYS = frozenset(
     {"definition_preservation_rate", "cross_ref_resolution_rate", "hierarchy_depth_retained"}
 )
+
+
+@dataclass(frozen=True)
+class ReconstructedComparison:
+    """A comparison read back from an exported results JSON.
+
+    Implements ``scaffolder.reporting.cli.ComparisonLike``. It is a separate type from
+    ``ComparisonResult`` on purpose: this module must not depend on the statistics package,
+    and a value read from disk has no claim to that class's invariants.
+    """
+
+    metric_name: str
+    strategy_a: StrategyName
+    strategy_b: StrategyName
+    embedding_model: str
+    n: int
+    mean_a: float
+    mean_b: float
+    delta: float
+    ci_low: float
+    ci_high: float
+    t_statistic: float
+    p_value_t: float
+    p_value_wilcoxon: float
+    p_value_holm: float
+    significant_holm: bool
+    cohens_d: float
+    rank_biserial: float
+    n_documents: int
+    lodo_min_delta: float
+    lodo_max_delta: float
+    lodo_worst_document: str
+
+
+def _parse_comparison(data: Mapping[str, Any]) -> ReconstructedComparison:
+    """Rebuild one comparison. Raises KeyError/ValueError on a partial or unknown entry."""
+    return ReconstructedComparison(
+        metric_name=str(data["metric_name"]),
+        strategy_a=StrategyName(data["strategy_a"]),
+        strategy_b=StrategyName(data["strategy_b"]),
+        embedding_model=str(data["embedding_model"]),
+        n=int(data["n"]),
+        mean_a=float(data["mean_a"]),
+        mean_b=float(data["mean_b"]),
+        delta=float(data["delta"]),
+        ci_low=float(data["ci_low"]),
+        ci_high=float(data["ci_high"]),
+        t_statistic=float(data["t_statistic"]),
+        p_value_t=float(data["p_value_t"]),
+        p_value_wilcoxon=float(data["p_value_wilcoxon"]),
+        p_value_holm=float(data["p_value_holm"]),
+        significant_holm=bool(data["significant_holm"]),
+        cohens_d=float(data["cohens_d"]),
+        rank_biserial=float(data["rank_biserial"]),
+        n_documents=int(data["n_documents"]),
+        lodo_min_delta=float(data["lodo_min_delta"]),
+        lodo_max_delta=float(data["lodo_max_delta"]),
+        lodo_worst_document=str(data["lodo_worst_document"]),
+    )
 
 
 def _serialize(obj: Any) -> Any:
@@ -199,10 +261,10 @@ def reconstruct_benchmark_result(data: dict[str, Any]) -> BenchmarkResult:
     entries are detected by their keys (see `_is_legacy_structural_shape`) and routed to
     ``legacy_structural_metrics``, leaving ``structural_metrics`` empty for that entry.
 
-    ``comparisons`` (the rich `~scaffolder.metrics.statistical.ComparisonResult` objects) is
-    intentionally left as reconstructed by `BenchmarkResult`'s default (empty) — see the
-    module docstring. ``significance_results`` (the legacy, always-JSON-safe shape) is
-    reconstructed normally and is what the CLI/HTML significance section falls back to.
+    ``comparisons`` comes back as `ReconstructedComparison` values, which implement the
+    shape the reporting layer reads (see the module docstring). ``significance_results``
+    (the legacy, always-JSON-safe shape) is reconstructed alongside it and is what the
+    CLI/HTML significance section falls back to.
     """
     result = BenchmarkResult(timestamp=data.get("timestamp", ""))
 
@@ -242,6 +304,12 @@ def reconstruct_benchmark_result(data: dict[str, Any]) -> BenchmarkResult:
             result.retrieval_metrics.append(_parse_retrieval(rm_data))
         except (KeyError, ValueError, TypeError) as exc:
             logger.warning("Skipping malformed retrieval_metrics[%d]: %s", i, exc)
+
+    for i, c_data in enumerate(data.get("comparisons", [])):
+        try:
+            result.comparisons.append(_parse_comparison(c_data))
+        except (KeyError, ValueError, TypeError) as exc:
+            logger.warning("Skipping malformed comparisons[%d]: %s", i, exc)
 
     for i, sr_data in enumerate(data.get("significance_results", [])):
         try:

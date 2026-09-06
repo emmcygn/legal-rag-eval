@@ -7,8 +7,11 @@ dist/
 build/
 *.egg
 
-# Virtual environments
+# Virtual environments. `.venv-*` covers the per-LexiChunk-build environments the
+# baseline-vs-fixed comparison needs (uv writes a self-ignoring .gitignore into a venv it
+# creates, but `python -m venv` does not, so name the pattern rather than relying on that).
 .venv/
+.venv-*/
 venv/
 env/
 

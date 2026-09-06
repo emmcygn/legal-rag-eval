@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import importlib.util
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -17,6 +18,14 @@ from scaffolder.embedding import (
 )
 from scaffolder.models import Chunk, EmbeddingModelName, StrategyName
 
+# sentence-transformers is the ``[embeddings]`` extra, and these tests load a real model.
+# The CI test job installs ``[dev]`` only, so they skip there; the retrieval benchmark job
+# installs ``[embeddings]`` and runs them.
+requires_sentence_transformers = pytest.mark.skipif(
+    importlib.util.find_spec("sentence_transformers") is None,
+    reason="sentence-transformers not installed (optional [embeddings] extra)",
+)
+
 SAMPLE_TEXTS = [
     "The Service Provider shall deliver services.",
     "Fees are due within 30 days of invoice date.",
@@ -25,12 +34,14 @@ SAMPLE_TEXTS = [
 
 
 class TestSentenceTransformerAdapter:
+    @requires_sentence_transformers
     def test_minilm_shape(self) -> None:
         adapter = SentenceTransformerAdapter(EmbeddingModelName.MINILM)
         result = adapter.embed_texts(SAMPLE_TEXTS)
         assert result.shape == (3, 384)
         assert result.dtype == np.float32
 
+    @requires_sentence_transformers
     def test_minilm_normalized(self) -> None:
         adapter = SentenceTransformerAdapter(EmbeddingModelName.MINILM)
         result = adapter.embed_texts(SAMPLE_TEXTS)
@@ -81,11 +92,13 @@ class TestEmbeddingCache:
 
 
 class TestEmbeddingPipeline:
+    @requires_sentence_transformers
     def test_embed_texts_shape(self) -> None:
         pipeline = EmbeddingPipeline(use_cache=False)
         result = pipeline.embed_texts(SAMPLE_TEXTS, EmbeddingModelName.MINILM)
         assert result.shape == (3, 384)
 
+    @requires_sentence_transformers
     def test_embed_with_cache(self, tmp_path: Path) -> None:
         pipeline = EmbeddingPipeline(cache_dir=tmp_path / "cache")
         # First call embeds
@@ -101,6 +114,7 @@ class TestEmbeddingPipeline:
         assert stats2["hits"] == 3
         np.testing.assert_array_almost_equal(result1, result2)
 
+    @requires_sentence_transformers
     def test_embed_chunks(self) -> None:
         chunks = [
             Chunk(

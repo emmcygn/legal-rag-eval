@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import streamlit as st
 
@@ -251,11 +251,16 @@ def render_page() -> None:
         lexi_key = f"chunks_{doc_id}_lexichunk"
         base_key = f"chunks_{doc_id}_{last_baseline}"
 
-        lexi_result = st.session_state.get(lexi_key)  # type: ignore[assignment]
-        base_result = st.session_state.get(base_key)  # type: ignore[assignment]
+        # `cast` to a distinct name rather than `# type: ignore`: whether
+        # st.session_state.get is typed depends on whether streamlit is installed, so an
+        # ignore that is needed in a dashboard environment is an unused-ignore error on a
+        # CI runner without it. The names differ from the ones bound above because those
+        # are non-optional.
+        stored_lexi = cast("ChunkSet | None", st.session_state.get(lexi_key))
+        stored_base = cast("ChunkSet | None", st.session_state.get(base_key))
 
-        if lexi_result and base_result:
-            _render_results(lexi_result, base_result, last_baseline_label)
+        if stored_lexi and stored_base:
+            _render_results(stored_lexi, stored_base, last_baseline_label)
 
 
 def _render_results(lexi: ChunkSet, baseline: ChunkSet, baseline_name: str) -> None:

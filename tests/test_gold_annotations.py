@@ -127,8 +127,7 @@ def test_subtree_spans_contain_every_descendant(
         for child in gold.children(clause.identifier):
             child_start, child_end = gold.subtree_span(child)
             assert start <= child_start and child_end <= end, (
-                f"{document_id}: subtree of {clause.identifier} does not contain "
-                f"{child.identifier}"
+                f"{document_id}: subtree of {clause.identifier} does not contain {child.identifier}"
             )
 
 
@@ -150,8 +149,7 @@ def test_top_level_subtrees_do_not_overlap(annotated: tuple[str, GoldAnnotation,
     spans = sorted(gold.subtree_span(c) for c in gold.top_level_clauses)
     for (a_start, a_end), (b_start, b_end) in zip(spans, spans[1:], strict=False):
         assert a_end <= b_start, (
-            f"{document_id}: top-level subtrees [{a_start},{a_end}) and "
-            f"[{b_start},{b_end}) overlap"
+            f"{document_id}: top-level subtrees [{a_start},{a_end}) and [{b_start},{b_end}) overlap"
         )
 
 

@@ -62,6 +62,12 @@ voyage = [
 dashboard = [
     "streamlit>=1.30",
 ]
+# External, public-dataset evaluations (scaffolder.evals). Kept optional so the
+# core benchmark does not drag in Hugging Face `datasets` or scikit-learn.
+evals = [
+    "datasets>=2.18",
+    "scikit-learn>=1.3",
+]
 dev = [
     "build>=1.2,<2",
     "faiss-cpu>=1.7,<2",
@@ -72,7 +78,7 @@ dev = [
     "types-PyYAML>=6.0",
 ]
 all = [
-    "scaffolder[embeddings,voyage,dashboard,dev]",
+    "scaffolder[embeddings,voyage,dashboard,evals,dev]",
 ]
 
 [project.scripts]
@@ -90,7 +96,12 @@ scaffolder = [
 ]
 
 [tool.setuptools.data-files]
+# The gold annotations and the queries anchored to them are data a consumer of an
+# installed wheel needs in order to reproduce a published number, so they ship
+# alongside the package rather than living only in the repo.
 "share/scaffolder/queries" = ["queries/*.yaml", "queries/schema.md"]
+"share/scaffolder/gold" = ["gold/*.json", "gold/SCHEMA.md", "gold/README.md"]
+"share/scaffolder/evals" = ["evals/*.yaml"]
 
 [tool.ruff]
 target-version = "py310"
@@ -121,6 +132,10 @@ module = [
     # `embeddings` extra, so on a CI runner that installs `[dev]` only, mypy
     # would fail on an import the code already guards with try/except ImportError.
     "torch.*",
+    # Both arrive with the `evals` extra and are imported lazily inside the
+    # external-evaluation loaders, for the same reason.
+    "datasets.*",
+    "sklearn.*",
 ]
 ignore_missing_imports = true
 

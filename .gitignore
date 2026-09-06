@@ -34,14 +34,17 @@ coverage.xml
 # Benchmark outputs. The published runs are committed: the README's results tables are
 # generated from them, so a reader has to be able to see the run behind a published
 # number. Those live in a subdirectory named after the LexiChunk build that produced them
-# (results/lexichunk_fixed/, results/lexichunk_baseline/). Ad-hoc runs land in results/
-# itself with the CLI's default filenames and are not committed, so `make
-# benchmark-structural` on a developer's machine never rewrites the evidence. Rendered
-# reports and caches are not committed either.
+# (results/lexichunk_fixed/, results/lexichunk_baseline/), plus results/external/ for the
+# LEDGAR and CUAD evaluations. Ad-hoc runs land in results/ itself with the CLI's default
+# filenames and are not committed, so `make benchmark-structural` on a developer's machine
+# never rewrites the evidence. Rendered reports and caches are not committed either.
+# The contents are excluded rather than the directory itself, because git does not descend
+# into an excluded directory and the negations below would never be reached.
 results/*
 !results/*/
 results/*/*
 !results/*/*.json
+!results/external/*.md
 .cache/
 *.faiss
 requirements.lock

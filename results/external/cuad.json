@@ -1,0 +1,231 @@
+{
+  "corpus": {
+    "mean_contract_chars": 47431.96,
+    "mean_span_chars": 242.11228641171684,
+    "median_span_chars": 182.0
+  },
+  "dataset": {
+    "contracts_available": 510,
+    "id": "theatticusproject/cuad-qa",
+    "revision": "refs/convert/parquet",
+    "split": "train+test"
+  },
+  "evaluation": "cuad",
+  "failures": [],
+  "sampling": {
+    "contracts": 100,
+    "requested_contracts": 100,
+    "seed": 0,
+    "spans": 2458
+  },
+  "strategies": [
+    {
+      "chunks_per_span_distribution": {
+        "1": 2411,
+        "2": 40,
+        "3": 6,
+        "4+": 1
+      },
+      "containment": {
+        "high": 0.9857607811228641,
+        "low": 0.9751830756712775,
+        "n": 2458,
+        "point": 0.9808787632221319
+      },
+      "failures": 0,
+      "grid_expected_containment": 0.8177647660157406,
+      "lift_over_length_matched_grid": 0.1631139972063913,
+      "mean_chunk_chars": 1305.887665198238,
+      "mean_chunks_per_contract": 36.32,
+      "mean_chunks_per_span": 1.0223759153783565,
+      "median_chunk_chars": 1512.0,
+      "name": "lexichunk-512tok",
+      "note": "LexiChunk, max 512 tokens (~2048 chars)",
+      "per_contract_containment": {
+        "high": 0.991235028741334,
+        "low": 0.9795165625669351,
+        "n": 100,
+        "point": 0.98573683937781
+      },
+      "seconds_per_contract": 0.7137561169999753,
+      "spans_evaluated": 2458
+    },
+    {
+      "chunks_per_span_distribution": {
+        "1": 2431,
+        "2": 23,
+        "3": 3,
+        "4+": 1
+      },
+      "containment": {
+        "high": 0.9926769731489016,
+        "low": 0.984947111472742,
+        "n": 2458,
+        "point": 0.9890154597233524
+      },
+      "failures": 0,
+      "grid_expected_containment": 0.8821684748110237,
+      "lift_over_length_matched_grid": 0.10684698491232869,
+      "mean_chunk_chars": 2044.440948275862,
+      "mean_chunks_per_contract": 23.2,
+      "mean_chunks_per_span": 1.013018714401953,
+      "median_chunk_chars": 1657.0,
+      "name": "lexichunk-1024tok",
+      "note": "LexiChunk, max 1024 tokens (~4096 chars)",
+      "per_contract_containment": {
+        "high": 0.9953450713525842,
+        "low": 0.9867264864084636,
+        "n": 100,
+        "point": 0.9914069763599254
+      },
+      "seconds_per_contract": 0.6704942149998897,
+      "spans_evaluated": 2458
+    },
+    {
+      "chunks_per_span_distribution": {
+        "1": 2057,
+        "2": 294,
+        "3": 59,
+        "4+": 48
+      },
+      "containment": {
+        "high": 0.8519121236777868,
+        "low": 0.822213181448332,
+        "n": 2458,
+        "point": 0.8368592351505288
+      },
+      "failures": 0,
+      "grid_expected_containment": 0.4699994497966433,
+      "lift_over_length_matched_grid": 0.3668597853538855,
+      "mean_chunk_chars": 345.8082251713577,
+      "mean_chunks_per_contract": 137.14,
+      "mean_chunks_per_span": 1.2457282343368592,
+      "median_chunk_chars": 364.0,
+      "name": "lexichunk-128tok",
+      "note": "LexiChunk length-matched to rcts-512 (~512 chars)",
+      "per_contract_containment": {
+        "high": 0.9102268035157476,
+        "low": 0.8619237791432977,
+        "n": 100,
+        "point": 0.8864782132561134
+      },
+      "seconds_per_contract": 0.6557182360000298,
+      "spans_evaluated": 2458
+    },
+    {
+      "chunks_per_span_distribution": {
+        "1": 1772,
+        "2": 600,
+        "3": 64,
+        "4+": 22
+      },
+      "containment": {
+        "high": 0.7400325467860048,
+        "low": 0.7021969080553295,
+        "n": 2458,
+        "point": 0.7209113100081367
+      },
+      "failures": 0,
+      "grid_expected_containment": 0.4992570878654975,
+      "lift_over_length_matched_grid": 0.2216542221426392,
+      "mean_chunk_chars": 382.41263517359135,
+      "mean_chunks_per_contract": 122.99,
+      "mean_chunks_per_span": 1.3291293734743694,
+      "median_chunk_chars": 476.0,
+      "name": "rcts-512",
+      "note": "RecursiveCharacterTextSplitter",
+      "per_contract_containment": {
+        "high": 0.8047794654254161,
+        "low": 0.7427093358756031,
+        "n": 100,
+        "point": 0.773251822056871
+      },
+      "seconds_per_contract": 0.0068227360000673795,
+      "spans_evaluated": 2458
+    },
+    {
+      "chunks_per_span_distribution": {
+        "1": 2196,
+        "2": 246,
+        "3": 11,
+        "4+": 5
+      },
+      "containment": {
+        "high": 0.9056143205858421,
+        "low": 0.8812042310821806,
+        "n": 2458,
+        "point": 0.8934092758340114
+      },
+      "failures": 0,
+      "grid_expected_containment": 0.6945337203988159,
+      "lift_over_length_matched_grid": 0.19887555543519553,
+      "mean_chunk_chars": 744.2014819486047,
+      "mean_chunks_per_contract": 63.43,
+      "mean_chunks_per_span": 1.1159479251423923,
+      "median_chunk_chars": 888.0,
+      "name": "rcts-1024",
+      "note": "RecursiveCharacterTextSplitter",
+      "per_contract_containment": {
+        "high": 0.9310188172179887,
+        "low": 0.892890815391435,
+        "n": 100,
+        "point": 0.9120190948131724
+      },
+      "seconds_per_contract": 0.004894356000004336,
+      "spans_evaluated": 2458
+    },
+    {
+      "chunks_per_span_distribution": {
+        "1": 1344,
+        "2": 1091,
+        "3": 20,
+        "4+": 3
+      },
+      "containment": {
+        "high": 0.9930838079739626,
+        "low": 0.984947111472742,
+        "n": 2458,
+        "point": 0.9890154597233524
+      },
+      "failures": 0,
+      "grid_expected_containment": 0.6560132353938831,
+      "lift_over_length_matched_grid": 0.33300222432946924,
+      "mean_chunk_chars": 646.9199231262012,
+      "mean_chunks_per_contract": 109.27,
+      "mean_chunks_per_span": 1.4650122050447518,
+      "median_chunk_chars": 536.0,
+      "name": "sentence-window-3",
+      "note": "3-sentence windows, stride 2 (overlapping)",
+      "per_contract_containment": {
+        "high": 0.9945214454147374,
+        "low": 0.9853603381725797,
+        "n": 100,
+        "point": 0.9901290745006273
+      },
+      "seconds_per_contract": 0.0012273900001309812,
+      "spans_evaluated": 2458
+    }
+  ],
+  "structure": {
+    "contracts": 100,
+    "exceptions": 0,
+    "fallback_rate": 0.48,
+    "fell_back": 48,
+    "jurisdiction_comparison": {
+      "uk_mean_top_level_nodes": 4.82,
+      "uk_parse_rate_top_level": 0.31,
+      "us_mean_top_level_nodes": 2.75,
+      "us_parse_rate_top_level": 0.14
+    },
+    "mean_top_level_nodes": 2.75,
+    "mean_total_nodes": 22.76,
+    "median_top_level_nodes": 1.0,
+    "median_total_nodes": 5.5,
+    "min_clauses": 5,
+    "parse_rate_any_level": 0.52,
+    "parse_rate_top_level": 0.14,
+    "parsed_any_level": 52,
+    "parsed_top_level": 14,
+    "single_chunk_contracts": 5
+  }
+}
